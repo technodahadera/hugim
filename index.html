@@ -41,7 +41,7 @@ function applyPayload(payload){
   teachers=payload.teachers||[];
   dayOrder=payload.days||dayOrder;
   refillFixedSelect('missingDay',dayOrder);
-  refillSelect('missingCourse',unique(data.filter(x=>x.status==='חסר מורה'||x.status==='לבדיקה').map(x=>x.course)).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי החוגים');
+  refillSelect('missingCourse',unique(data.map(x=>x.course)).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי החוגים');
   refillFixedSelect('teacherDay',dayOrder);
   refillFixedSelect('dayFilter',dayOrder);
   refillSelect('teacherSelect',teachers,'בחר מורה');
