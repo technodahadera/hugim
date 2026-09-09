@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>מערכת ניהול חוגים תשפ"ז</title>
+<style>
+:root{--navy:#14324b;--blue:#1d6fa5;--sky:#eef7fc;--red:#b42318;--redbg:#fff0ee;--orange:#a15c00;--orangebg:#fff6e5;--green:#197a48;--greenbg:#edf8f2;--gray:#667085;--line:#d9e2e8;--card:#fff;--bg:#f5f8fa}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Hebrew",sans-serif;background:var(--bg);color:#172b3a}header{background:linear-gradient(110deg,var(--navy),#235f82);color:white;padding:24px 28px;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px #0002}.head{max-width:1500px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}h1{margin:0;font-size:28px}.sub{opacity:.85;margin-top:5px}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid #ffffff55;background:#ffffff15;color:white;padding:10px 15px;border-radius:999px;cursor:pointer;font-weight:700}.tab.active{background:white;color:var(--navy)}main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.view.active{display:block}.kpis{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:14px;margin-bottom:18px}.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 2px 10px #1231  }.kpi .label{color:var(--gray);font-size:14px}.kpi .num{font-size:30px;font-weight:800;margin-top:4px}.kpi.alert .num{color:var(--red)}.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 2px 10px #1231}.panel h2{margin:0 0 14px;font-size:20px}.filters{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:14px}select,input{width:100%;padding:11px;border:1px solid #cbd5dc;border-radius:10px;background:white;font:inherit}.btn{border:0;background:var(--blue);color:white;padding:11px 15px;border-radius:10px;cursor:pointer;font-weight:700}.table-wrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:separate;border-spacing:0;min-width:1020px;background:white}th{position:sticky;top:0;background:var(--navy);color:white;text-align:right;padding:11px;z-index:2}td{padding:10px 11px;border-bottom:1px solid #edf0f2;vertical-align:top}tr:hover td{background:#f8fbfd}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.ok{color:var(--green);background:var(--greenbg)}.missing{color:var(--red);background:var(--redbg)}.review{color:var(--orange);background:var(--orangebg)}.other{color:#475467;background:#f2f4f7}.teacher-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:8px 0;background:#fff}.teacher-card strong{font-size:17px}.day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.day-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.day-card h3{margin:0 0 8px}.bar{height:8px;background:#e8eef2;border-radius:99px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:var(--blue)}.warnline{border-right:4px solid var(--red);background:var(--redbg);padding:10px 12px;border-radius:8px;margin:7px 0}.muted{color:var(--gray);font-size:13px}.raw{white-space:pre-line;line-height:1.4}.empty{padding:28px;text-align:center;color:var(--gray)}@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(2,1fr)}.day-grid{grid-template-columns:1fr}}@media(max-width:600px){h1{font-size:22px}.kpis,.filters{grid-template-columns:1fr}header{position:static}}
+</style>
+</head><body>
+<header><div class="head"><div><h1>מערכת ניהול חוגי אחר הצהריים – תשפ"ז</h1><div class="sub">מחובר ישירות לגיליון "תשפז" · <span id="refreshStatus">טוען נתונים…</span></div></div><div class="tabs"><button class="tab" id="refreshBtn" type="button">רענן נתונים</button><button class="tab active" data-view="dashboard">לוח בקרה</button><button class="tab" data-view="missing">חוסרי מורים</button><button class="tab" data-view="teacher">מערכת מורה</button><button class="tab" data-view="schedule">מערכת מלאה</button></div></div></header>
+<main>
+<section id="dashboard" class="view active"><div class="kpis" id="kpis"></div><div class="panel"><h2>תמונת מצב לפי יום</h2><div class="day-grid" id="dayGrid"></div></div><div class="panel"><h2>חוסרים שדורשים טיפול</h2><div id="topMissing"></div></div></section>
+<section id="missing" class="view"><div class="panel"><h2>חוסרי מורים</h2><div class="filters"><select id="missingDay"><option value="">כל הימים</option></select><select id="missingType"><option value="חסר מורה">חסר מורה ודאי</option><option value="לבדיקה">לבדיקה</option><option value="">הכול</option></select><input id="missingSearch" placeholder="חיפוש חוג / חדר / קבוצה"/><button class="btn" onclick="resetMissing()">נקה סינון</button></div><div id="missingTable"></div></div></section>
+<section id="teacher" class="view"><div class="panel"><h2>מערכת שעות של מורה</h2><div class="filters" style="grid-template-columns:2fr 1fr 1fr"><select id="teacherSelect"><option value="">בחר מורה</option></select><select id="teacherDay"><option value="">כל הימים</option></select><button class="btn" onclick="print()">הדפס מערכת מורה</button></div><div id="teacherSummary" class="muted"></div><div id="teacherSchedule"></div></div></section>
+<section id="schedule" class="view"><div class="panel"><h2>מערכת מלאה</h2><div class="filters"><select id="dayFilter"><option value="">כל הימים</option></select><select id="timeFilter"><option value="">כל השעות</option></select><select id="statusFilter"><option value="">כל הסטטוסים</option><option>מאויש</option><option>חסר מורה</option><option>לבדיקה</option><option>שריון/תכנית אחרת</option></select><select id="floorFilter"><option value="">כל הקומות</option></select><input id="searchFilter" placeholder="חיפוש חוג, מורה, חדר או קבוצה"/></div><div id="fullTable"></div></div></section>
+</main>
+
+<script>
+// הדבק כאן את כתובת ה-Web App שקיבלת מ-Google Apps Script.
+// הכתובת צריכה להסתיים ב-/exec
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRqiCWT1j1SEh325Dh5uiQEjdXpQcavr6w1zAPEU7X9Fx41B44Ll7xX-IBiZnGkRNK5g/exec';
+
+let data=[];
+let teachers=[];
+let dayOrder=["יום א'","יום ב'","יום ג'","יום ד'","יום ה'"];
+let refreshTimer=null;
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function badge(s){let c=s==='מאויש'?'ok':s==='חסר מורה'?'missing':s==='לבדיקה'?'review':'other';return `<span class="badge ${c}">${esc(s)}</span>`}
+function setStatus(text,isError=false){const el=document.getElementById('refreshStatus');el.textContent=text;el.style.color=isError?'#ffd6d2':'';}
+function setLoading(on){const b=document.getElementById('refreshBtn');b.disabled=on;b.textContent=on?'מרענן…':'רענן נתונים';}
+function unique(arr){return [...new Set(arr.filter(Boolean))];}
+function refillSelect(id, values, firstLabel){const sel=document.getElementById(id);const old=sel.value;sel.innerHTML=`<option value="">${firstLabel}</option>`;values.forEach(v=>{let o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});if(values.includes(old))sel.value=old;}
+function refillFixedSelect(id, values){const sel=document.getElementById(id);const old=sel.value;const first=sel.options[0]?.textContent||'';sel.innerHTML=`<option value="">${first}</option>`;values.forEach(v=>{let o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});if(values.includes(old))sel.value=old;}
+
+function applyPayload(payload){
+  if(payload && payload.error){throw new Error(payload.message||'שגיאה לא ידועה');}
+  data=payload.records||[];
+  teachers=payload.teachers||[];
+  dayOrder=payload.days||dayOrder;
+  refillFixedSelect('missingDay',dayOrder);
+  refillFixedSelect('teacherDay',dayOrder);
+  refillFixedSelect('dayFilter',dayOrder);
+  refillSelect('teacherSelect',teachers,'בחר מורה');
+  refillSelect('timeFilter',unique(data.map(x=>x.time)).sort(),'כל השעות');
+  refillSelect('floorFilter',unique(data.map(x=>x.floor)),'כל הקומות');
+  renderDashboard();renderMissing();renderTeacher();renderFull();
+  setStatus(`עודכן מהגיליון: ${payload.refreshedAt||'כעת'}`);
+}
+
+function loadJsonp(){
+  return new Promise((resolve,reject)=>{
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PASTE_YOUR_')){
+      reject(new Error('יש להדביק בקוד את כתובת ה-Web App של Google Apps Script.'));
+      return;
+    }
+    const callback='__chugim_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+    const script=document.createElement('script');
+    const timer=setTimeout(()=>cleanup(new Error('השרת לא החזיר תשובה בזמן.')),15000);
+
+    function cleanup(error,payload){
+      clearTimeout(timer);
+      try{delete window[callback]}catch(e){window[callback]=undefined}
+      script.remove();
+      error?reject(error):resolve(payload);
+    }
+
+    window[callback]=(payload)=>cleanup(null,payload);
+    script.onerror=()=>cleanup(new Error('לא ניתן להתחבר ל-Google Apps Script. בדוק שהפריסה מוגדרת כ-Web App.'));
+    const sep=APPS_SCRIPT_URL.includes('?')?'&':'?';
+    script.src=APPS_SCRIPT_URL+sep+'callback='+encodeURIComponent(callback)+'&ts='+Date.now();
+    document.head.appendChild(script);
+  });
+}
+
+async function refreshData(showLoading=true){
+  if(showLoading){setLoading(true);setStatus('מרענן נתונים…');}
+  try{
+    const payload=await loadJsonp();
+    applyPayload(payload);
+  }catch(err){
+    setStatus('שגיאה בקריאת הגיליון: '+(err?.message||err),true);
+  }finally{
+    setLoading(false);
+  }
+}
+
+function table(rows,showRaw=false){if(!rows.length)return '<div class="empty">לא נמצאו שיבוצים מתאימים.</div>';let h=`<div class="table-wrap"><table><thead><tr><th>יום</th><th>שעה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>כמות</th><th>סטטוס</th>${showRaw?'<th>פרטי מקור</th>':''}</tr></thead><tbody>`;for(const r of rows){h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${r.count??'—'}</td><td>${badge(r.status)}</td>${showRaw?`<td class="raw">${esc(r.raw)}<div class="muted">${esc(r.source_cell)}</div></td>`:''}</tr>`}return h+'</tbody></table></div>'}
+function renderDashboard(){let active=data.filter(x=>x.status!=='שריון/תכנית אחרת'),missing=data.filter(x=>x.status==='חסר מורה'),review=data.filter(x=>x.status==='לבדיקה');let cards=[['סה"כ שיבוצים',data.length,''],['שיבוצים פעילים',active.length,''],['מורים מזוהים',teachers.length,''],['חסרי מורים',missing.length,'alert'],['לבדיקה',review.length,'']];document.getElementById('kpis').innerHTML=cards.map(x=>`<div class="kpi ${x[2]}"><div class="label">${x[0]}</div><div class="num">${x[1]}</div></div>`).join('');let max=Math.max(...dayOrder.map(d=>active.filter(x=>x.day===d).length),1);document.getElementById('dayGrid').innerHTML=dayOrder.map(d=>{let a=active.filter(x=>x.day===d).length,m=missing.filter(x=>x.day===d).length,q=review.filter(x=>x.day===d).length;return `<div class="day-card"><h3>${d}</h3><div>${a} שיבוצים פעילים</div><div class="muted">${m} חסרי מורה · ${q} לבדיקה</div><div class="bar"><span style="width:${Math.round(a/max*100)}%"></span></div></div>`}).join('');document.getElementById('topMissing').innerHTML=missing.slice(0,12).map(r=>`<div class="warnline"><strong>${esc(r.day)} · ${esc(r.time)} · ${esc(r.room)}</strong><br>${esc(r.course)} ${r.group?'— '+esc(r.group):''}</div>`).join('')+(missing.length>12?`<div class="muted">ועוד ${missing.length-12} שיבוצים — בלשונית "חוסרי מורים".</div>`:'')}
+function renderMissing(){let d=document.getElementById('missingDay').value,t=document.getElementById('missingType').value,q=document.getElementById('missingSearch').value.trim().toLowerCase();let rows=data.filter(x=>(x.status==='חסר מורה'||x.status==='לבדיקה')&&(!d||x.day===d)&&(!t||x.status===t)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('missingTable').innerHTML=table(rows,true)}
+function resetMissing(){document.getElementById('missingDay').value='';document.getElementById('missingType').value='חסר מורה';document.getElementById('missingSearch').value='';renderMissing()}
+function renderTeacher(){let t=document.getElementById('teacherSelect').value,d=document.getElementById('teacherDay').value;let rows=data.filter(x=>x.teachers.includes(t)&&(!d||x.day===d));document.getElementById('teacherSummary').textContent=t?`${rows.length} שיבוצים נמצאו עבור ${t}${d?' ב'+d:''}.`:'בחר מורה כדי להציג את המערכת שלו.';document.getElementById('teacherSchedule').innerHTML=t?table(rows,true):''}
+function renderFull(){let d=document.getElementById('dayFilter').value,t=document.getElementById('timeFilter').value,s=document.getElementById('statusFilter').value,f=document.getElementById('floorFilter').value,q=document.getElementById('searchFilter').value.trim().toLowerCase();let rows=data.filter(x=>(!d||x.day===d)&&(!t||x.time===t)&&(!s||x.status===s)&&(!f||x.floor===f)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('fullTable').innerHTML=table(rows,true)}
+
+document.querySelectorAll('.tab[data-view]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-view]').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active')});
+['missingDay','missingType','missingSearch'].forEach(id=>document.getElementById(id).addEventListener(id.includes('Search')?'input':'change',renderMissing));
+['teacherSelect','teacherDay'].forEach(id=>document.getElementById(id).addEventListener('change',renderTeacher));
+['dayFilter','timeFilter','statusFilter','floorFilter'].forEach(id=>document.getElementById(id).addEventListener('change',renderFull));document.getElementById('searchFilter').addEventListener('input',renderFull);
+document.getElementById('refreshBtn').addEventListener('click',()=>refreshData(true));
+refreshData(true);
+refreshTimer=setInterval(()=>refreshData(false),60000);
+</script>
+</body></html>
