@@ -269,9 +269,10 @@ let marketingSort={key:'remaining',dir:'desc'};
 
 function marketingGrade(r){
   const course=String(r.course||'').trim().replace(/[״׳]/g,"'");
-  // מדע לטף א/ב הם שמות חוגים שמגדירים ישירות את שכבת הגיל.
+  // חוגים ששמם מגדיר ישירות את שכבת הגיל.
   if(/^מדע\s+לטף\s+א'?$/i.test(course)) return "א'";
   if(/^מדע\s+לטף\s+ב'?$/i.test(course)) return "ב'";
+  if(/^חידות\s+וחדרי\s+בריחה$/i.test(course)) return "ד'-ה'";
 
   const text=((r.group||'')+'\n'+(r.raw||'')).replace(/[״׳]/g,"'");
   if(/(?:^|\n)\s*גן(?:\s|$)/m.test(text)) return 'גן';
