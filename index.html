@@ -110,8 +110,12 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     </div>
     <div id="studentAnomalyList" class="below-list hidden">
       <div class="panel">
-        <h2>כיתות עם חריגות במספר תלמידים</h2>
-        <div id="studentAnomalyTable"></div>
+        <h2>כיתות מתחת ל־11 תלמידים</h2>
+        <div id="under11Table"></div>
+      </div>
+      <div class="panel">
+        <h2>כיתות מעל 24 תלמידים</h2>
+        <div id="over24Table"></div>
       </div>
     </div>
     <div class="panel"><h2>תמונת מצב לפי יום</h2><div class="day-grid" id="dayGrid"></div></div>
@@ -667,7 +671,12 @@ function renderDashboard(){
   document.getElementById('studentAnomalyCount').textContent=studentAnomalies.length;
   document.getElementById('studentAnomalyBreakdown').textContent=
     `${under11.length} מתחת ל־11 · ${over24.length} מעל 24`;
-  document.getElementById('studentAnomalyTable').innerHTML=studentAnomalyTable(studentAnomalies);
+  document.getElementById('under11Table').innerHTML=under11.length
+    ? studentAnomalyTable(under11)
+    : '<div class="empty">אין כרגע כיתות מתחת ל־11 תלמידים.</div>';
+  document.getElementById('over24Table').innerHTML=over24.length
+    ? studentAnomalyTable(over24)
+    : '<div class="empty">אין כרגע כיתות מעל 24 תלמידים.</div>';
 
   let max=Math.max(...dayOrder.map(d=>active.filter(x=>x.day===d).length),1);
   document.getElementById('dayGrid').innerHTML=dayOrder.map(d=>{
