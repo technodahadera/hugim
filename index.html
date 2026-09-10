@@ -176,15 +176,24 @@ function makePieData(items,labelFn){
   return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
 
+const STUDENT_DASHBOARD_EXCLUDED_POPULATIONS=new Set(['מצטייני יישוב']);
+
+function dashboardStudentCount(r){
+  const population=populationOf(r);
+  if(STUDENT_DASHBOARD_EXCLUDED_POPULATIONS.has(population)) return null;
+  return studentCount(r);
+}
+
 function makePopulationStudentData(items){
   const totals={};
   items.forEach(r=>{
-    const n=studentCount(r);
-    if(n===null) return;
     const k=populationOf(r);
-    totals[k]=(totals[k]||0)+n;
+    if(k==='אחר') return;
+    if(!(k in totals)) totals[k]=0;
+    const n=dashboardStudentCount(r);
+    if(n!==null) totals[k]+=n;
   });
-  return Object.entries(totals).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+  return Object.entries(totals).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'he'));
 }
 
 function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel=''){
@@ -302,13 +311,17 @@ function renderDashboard(){
   const populations=makePopulationStudentData(data);
   renderPie('populationChart',populations,false,'','תלמידים');
 
-  const rowsWithStudentCount=data.filter(r=>studentCount(r)!==null);
-  const totalStudents=rowsWithStudentCount.reduce((sum,r)=>sum+studentCount(r),0);
-  const rowsMissingStudentCount=data.filter(r=>populationOf(r)!=='אחר'&&studentCount(r)===null);
+  const rowsWithStudentCount=data.filter(r=>dashboardStudentCount(r)!==null);
+  const totalStudents=rowsWithStudentCount.reduce((sum,r)=>sum+dashboardStudentCount(r),0);
+  const rowsMissingStudentCount=data.filter(r=>{
+    const population=populationOf(r);
+    return population!=='אחר' && !STUDENT_DASHBOARD_EXCLUDED_POPULATIONS.has(population) && dashboardStudentCount(r)===null;
+  });
   document.getElementById('totalStudentsCount').textContent=totalStudents.toLocaleString('he-IL');
+  const excludedNote='מצטייני יישוב מוצג כ־0 ואינו נכלל בסכום — טרם שובצו תלמידים';
   document.getElementById('totalStudentsNote').textContent=rowsMissingStudentCount.length
-    ? `מבוסס על הכיתות שבהן מוזן מספר תלמידים · ${rowsMissingStudentCount.length} כיתות ללא מספר אינן נכללות בסכום`
-    : 'מבוסס על כל הכיתות שבהן מוזן מספר תלמידים';
+    ? `${excludedNote} · ${rowsMissingStudentCount.length} כיתות נוספות ללא מספר תלמידים אינן נכללות בסכום`
+    : excludedNote;
 
   const assigned=active.filter(x=>Array.isArray(x.teachers)&&x.teachers.length>0).length;
   const unassigned=active.length-assigned;
