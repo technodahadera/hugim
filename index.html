@@ -26,10 +26,12 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 .summary-strip{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px;margin-bottom:14px}.total-students-card{background:linear-gradient(135deg,#fff,#eef9fd);border:1px solid var(--line);border-radius:18px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px}.total-students-card .total-num{font-size:48px;font-weight:900;color:var(--blue-dark);line-height:1}.total-students-card .total-copy strong{display:block;font-size:18px;color:var(--ink)}.total-students-card .total-copy span{display:block;margin-top:5px;color:var(--muted);font-size:13px}.metric-card{height:100%;min-height:230px;background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.metric-card .metric-num{font-size:54px;font-weight:900;color:var(--pink);line-height:1}.metric-card .metric-title{font-weight:800;font-size:17px;margin-top:10px;color:var(--ink)}.metric-card .metric-note{font-size:13px;color:var(--muted);margin:6px 0 15px}.link-btn{border:0;background:transparent;color:var(--blue-dark);font-weight:800;cursor:pointer;padding:7px 10px;border-radius:8px}.link-btn:hover{background:#eef8fc}
 .hidden{display:none!important}.below-list{margin-top:14px}.below-list .panel{border-right:4px solid var(--pink)}
 .day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.day-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.day-card h3{margin:0 0 8px}.bar{height:8px;background:#eef1f3;border-radius:99px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}.warnline{border-right:4px solid var(--pink);background:#fff5f8;padding:10px 12px;border-radius:8px;margin:7px 0}
+.goal-panel{background:linear-gradient(135deg,#fff,#f5fbfe);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);margin:0 0 16px}.goal-panel h2{margin:0 0 5px;font-size:20px;color:var(--ink)}.goal-sub{color:var(--muted);font-size:13px;margin-bottom:16px}.goal-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px}.goal-card{background:#fff;border:1px solid #e5eaed;border-radius:15px;padding:16px 17px}.goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.goal-title{font-weight:800;color:var(--ink)}.goal-numbers{margin-top:4px;color:var(--muted);font-size:13px}.goal-pct{font-size:28px;font-weight:900;color:var(--blue-dark);line-height:1}.goal-track{height:14px;border-radius:999px;background:#edf1f3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}.goal-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .45s ease}.goal-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;font-size:13px;color:var(--muted)}.goal-meta strong{color:var(--ink)}
+.marketing-toolbar{display:grid;grid-template-columns:minmax(220px,320px) 1fr auto;gap:10px;align-items:center;margin-bottom:14px}.capacity-ok{font-weight:700;color:#39751a}.capacity-warn{font-weight:800;color:var(--red)}.marketing-note{color:var(--muted);font-size:13px}.marketing-summary{margin:10px 0 14px;color:var(--muted);font-size:13px}
 .filters{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:14px}select,input{width:100%;padding:11px;border:1px solid #cfd7dc;border-radius:10px;background:white;font:inherit;color:var(--text)}select:focus,input:focus{outline:2px solid #bfe6f7;border-color:var(--blue)}.btn{border:0;background:var(--blue-dark);color:white;padding:11px 15px;border-radius:10px;cursor:pointer;font-weight:700}
 .table-wrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;background:white}th{position:sticky;top:0;background:var(--ink);color:white;text-align:right;padding:11px;z-index:2}td{padding:10px 11px;border-bottom:1px solid #edf0f2;vertical-align:top}tr:hover td{background:#f8fbfc}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.ok{color:#39751a;background:var(--greenbg)}.missing{color:var(--red);background:var(--redbg)}.review{color:#96611d;background:var(--orangebg)}.other{color:#586169;background:#f1f3f4}.muted{color:var(--muted);font-size:13px}.empty{padding:28px;text-align:center;color:var(--muted)}
 @media(max-width:1150px){.dashboard-grid{grid-template-columns:1fr 1fr}.metric-card{grid-column:1/-1;min-height:170px}.chart-box{flex-wrap:wrap}.pie{width:165px;height:165px}.day-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.summary-strip{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.metric-card{grid-column:auto}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:160px}.chart-box{min-height:auto}}
+@media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.metric-card{grid-column:auto}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:160px}.chart-box{min-height:auto}}
 @media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:135px;height:50px}.chart-box{display:block}.pie{margin:0 auto 18px}.legend{min-width:0}}
 </style>
 </head>
@@ -49,6 +51,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <button class="tab" data-view="missing">חוסרי מורים</button>
       <button class="tab" data-view="teacher">מערכת מורה</button>
       <button class="tab" data-view="schedule">מערכת מלאה</button>
+      <button class="tab" data-view="marketing">לצרכי שיווק</button>
     </div>
   </div>
 </header>
@@ -64,6 +67,29 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <div class="total-copy"><strong>הערכת מספר תלמידים*</strong><span id="estimatedStudentsNote">הנתון יוצג לאחר טעינת המערכת</span></div>
       </div>
     </div>
+    <div class="goal-panel">
+      <h2>התקדמות לעבר היעד השנתי</h2>
+      <div class="goal-sub">מבוסס על הנתונים המעודכנים בלשונית „תשפז” בלבד</div>
+      <div class="goal-grid">
+        <div class="goal-card">
+          <div class="goal-head">
+            <div><div class="goal-title">יעד חוגים שנלקחו</div><div class="goal-numbers"><strong id="coursesGoalCurrent">—</strong> מתוך 1,800</div></div>
+            <div class="goal-pct" id="coursesGoalPct">—</div>
+          </div>
+          <div class="goal-track"><div class="goal-fill" id="coursesGoalFill"></div></div>
+          <div class="goal-meta"><span id="coursesGoalRemaining">—</span><span>יעד: <strong>1,800 חוגים</strong></span></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-head">
+            <div><div class="goal-title">יעד תלמידים משוער*</div><div class="goal-numbers"><strong id="studentsGoalCurrent">—</strong> מתוך כ־900</div></div>
+            <div class="goal-pct" id="studentsGoalPct">—</div>
+          </div>
+          <div class="goal-track"><div class="goal-fill" id="studentsGoalFill"></div></div>
+          <div class="goal-meta"><span id="studentsGoalRemaining">—</span><span>יעד: <strong>כ־900 תלמידים</strong></span></div>
+        </div>
+      </div>
+      <div class="marketing-note" style="margin-top:10px">* מספר התלמידים הוא הערכה המבוססת על הנחה ממוצעת של שני חוגים לתלמיד.</div>
+    </div>
     <div class="dashboard-grid">
       <div class="panel">
         <h2>חלוקת החוגים שנלקחו לפי סוג אוכלוסייה</h2>
@@ -73,17 +99,18 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <h2>מצב שיבוץ מורים</h2>
         <div id="teacherChart" class="chart-box"><div class="chart-loading">הגרף יוצג לאחר טעינת הנתונים</div></div>
       </div>
-      <div id="under11Card" class="metric-card">
-        <div class="metric-num" id="under11Count">—</div>
-        <div class="metric-title">כיתות עם פחות מ־11 תלמידים</div>
-        <div class="metric-note">חוגי אחר הצהריים מסוג „חוגים” בלבד · סף המינימום לפתיחת כיתה</div>
-        <button class="link-btn" id="toggleUnder11" type="button">הצג את רשימת הכיתות</button>
+      <div id="studentAnomalyCard" class="metric-card">
+        <div class="metric-num" id="studentAnomalyCount">—</div>
+        <div class="metric-title">כיתות עם חריגות במספר תלמידים</div>
+        <div class="metric-note">חוגי אחר הצהריים מסוג „חוגים” בלבד · פחות מ־11 או יותר מ־24 תלמידים</div>
+        <div class="muted" id="studentAnomalyBreakdown">הפירוט יוצג לאחר טעינת הנתונים</div>
+        <button class="link-btn" id="toggleStudentAnomalies" type="button">הצג את רשימת הכיתות החריגות</button>
       </div>
     </div>
-    <div id="under11List" class="below-list hidden">
+    <div id="studentAnomalyList" class="below-list hidden">
       <div class="panel">
-        <h2>כיתות מתחת לסף המינימום</h2>
-        <div id="under11Table"></div>
+        <h2>כיתות עם חריגות במספר תלמידים</h2>
+        <div id="studentAnomalyTable"></div>
       </div>
     </div>
     <div class="panel"><h2>תמונת מצב לפי יום</h2><div class="day-grid" id="dayGrid"></div></div>
@@ -128,6 +155,20 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <input id="searchFilter" placeholder="חיפוש חוג, מורה, חדר או קבוצה"/>
       </div>
       <div id="fullTable"></div>
+    </div>
+  </section>
+
+  <section id="marketing" class="view">
+    <div class="panel">
+      <h2>לצרכי שיווק</h2>
+      <div class="marketing-toolbar">
+        <select id="marketingPopulation"><option value="">כל סוגי האוכלוסייה</option></select>
+        <input id="marketingSearch" placeholder="חיפוש לפי שם חוג או כיתה" />
+        <button class="btn" id="exportMarketingCsv" type="button">ייצוא הטבלה ל־CSV</button>
+      </div>
+      <div class="marketing-note">הטבלה מופקת ישירות מהנתונים בלשונית „תשפז”. קיבולת מלאה מוגדרת כ־24 תלמידים לכל חוג.</div>
+      <div class="marketing-summary" id="marketingSummary"></div>
+      <div id="marketingTable"></div>
     </div>
   </section>
 </main>
@@ -204,6 +245,108 @@ function makePopulationCourseData(items){
   return Object.entries(totals).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'he'));
 }
 
+function updateGoalProgress(prefix,current,target,approximate=false){
+  const safeCurrent=Number.isFinite(current)?current:0;
+  const pct=target>0?(safeCurrent/target*100):0;
+  const shownPct=Math.round(pct);
+  const remaining=Math.max(target-safeCurrent,0);
+  document.getElementById(prefix+'Current').textContent=(approximate?'כ־':'')+Math.round(safeCurrent).toLocaleString('he-IL');
+  document.getElementById(prefix+'Pct').textContent=shownPct+'%';
+  document.getElementById(prefix+'Fill').style.width=Math.min(pct,100).toFixed(1)+'%';
+  document.getElementById(prefix+'Remaining').textContent=safeCurrent>=target
+    ? 'היעד הושג'
+    : 'חסרים '+(approximate?'כ־':'')+Math.round(remaining).toLocaleString('he-IL');
+}
+
+function marketingGrade(r){
+  const text=((r.group||'')+'\n'+(r.raw||'')).replace(/[״׳]/g,"'");
+  if(/(?:^|\n)\s*גן(?:\s|$)/m.test(text)) return 'גן';
+  let m=text.match(/כיתה\s+([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)/);
+  if(m) return m[1].replace(/\s+/g,'');
+  m=text.match(/(?:מצטייני\s*ישוב|מצטייני\s*יישוב|מצטיינים|חוגים)\s*(?:-|–|:)?\s*([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)/);
+  if(m) return m[1].replace(/\s+/g,'');
+  const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  for(const line of lines){
+    const standalone=line.match(/^([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)$/);
+    if(standalone) return standalone[1].replace(/\s+/g,'');
+    const ending=line.match(/[-–]\s*([ב-ט]'?\s*[-+]\s*[ב-ט]'?)$/);
+    if(ending) return ending[1].replace(/\s+/g,'');
+  }
+  return '—';
+}
+
+function isMarketingCourseRow(r){
+  const pop=populationOf(r);
+  if(pop==='אחר') return false;
+  const raw=String(r.raw||'');
+  const course=String(r.course||'').trim();
+  if(!course || course==='ללא כותרת') return false;
+  if(/שמור ל|השתלמות מוסדית|צוות מחוננים|מליאה 3 קבוצות|יום הולדת/.test(raw)) return false;
+  if(['חריש','עופרים','מצוינות','מצטיינים','מצטייני ישוב','מצטייני יישוב','חוגים'].includes(course)) return false;
+  return true;
+}
+
+function marketingRows(){
+  const pop=document.getElementById('marketingPopulation')?.value||'';
+  const q=(document.getElementById('marketingSearch')?.value||'').trim().toLowerCase();
+  return uniqueSourceRecords(data).filter(isMarketingCourseRow).filter(r=>{
+    const p=populationOf(r);
+    if(pop && p!==pop) return false;
+    if(q){
+      const hay=[r.course,marketingGrade(r),r.day,r.time,p,r.group].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a,b)=>{
+    const pa=populationOf(a).localeCompare(populationOf(b),'he');
+    if(pa) return pa;
+    const da=dayOrder.indexOf(a.day), db=dayOrder.indexOf(b.day);
+    if(da!==db) return da-db;
+    if(a.time!==b.time) return String(a.time).localeCompare(String(b.time));
+    return String(a.course||'').localeCompare(String(b.course||''),'he');
+  });
+}
+
+function marketingTable(rows){
+  if(!rows.length) return '<div class="empty">לא נמצאו חוגים מתאימים.</div>';
+  let h='<div class="table-wrap"><table><thead><tr><th>שם החוג</th><th>גיל / כיתה</th><th>יום</th><th>שעה</th><th>מספר תלמידים שנרשמו</th><th>קיבולת מלאה</th><th>מקום נותר</th></tr></thead><tbody>';
+  for(const r of rows){
+    const n=studentCount(r);
+    const remaining=n===null?null:24-n;
+    const cls=remaining!==null&&remaining<0?'capacity-warn':'capacity-ok';
+    h+=`<tr><td><strong>${esc(r.course)}</strong></td><td>${esc(marketingGrade(r))}</td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${n===null?'—':n}</td><td>24</td><td class="${cls}">${remaining===null?'—':remaining}</td></tr>`;
+  }
+  return h+'</tbody></table></div>';
+}
+
+function renderMarketing(){
+  const rows=marketingRows();
+  const known=rows.filter(r=>studentCount(r)!==null);
+  const enrolled=known.reduce((s,r)=>s+studentCount(r),0);
+  document.getElementById('marketingSummary').textContent=
+    `${rows.length} חוגים בטבלה · ${enrolled.toLocaleString('he-IL')} הרשמות בחוגים עם מספר מעודכן`+
+    (rows.length-known.length?` · ${rows.length-known.length} חוגים ללא מספר תלמידים מעודכן`:'');
+  document.getElementById('marketingTable').innerHTML=marketingTable(rows);
+}
+
+function exportMarketingCsv(){
+  const rows=marketingRows();
+  const header=['שם החוג','גיל / כיתה','יום','שעה','מספר תלמידים שנרשמו','קיבולת מלאה','מקום נותר'];
+  const csvRows=[header,...rows.map(r=>{
+    const n=studentCount(r);
+    return [r.course,marketingGrade(r),r.day,r.time,n===null?'':n,24,n===null?'':24-n];
+  })];
+  const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const csv='\ufeff'+csvRows.map(row=>row.map(quote).join(',')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='טבלת_שיווק_חוגים_תשפז.csv';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
 function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel=''){
   const el=document.getElementById(containerId);
   const total=entries.reduce((s,x)=>s+x[1],0);
@@ -233,7 +376,8 @@ function applyPayload(payload){
   refillSelect('teacherSelect',teachers,'בחר מורה');
   refillSelect('timeFilter',unique(data.map(x=>x.time)).sort(),'כל השעות');
   refillSelect('floorFilter',unique(data.map(x=>x.floor)),'כל הקומות');
-  renderDashboard();renderMissing();renderTeacher();renderFull();
+  refillSelect('marketingPopulation',unique(uniqueSourceRecords(data).map(populationOf).filter(x=>x!=='אחר')).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי האוכלוסייה');
+  renderDashboard();renderMissing();renderTeacher();renderFull();renderMarketing();
   setStatus(`עודכן מהגיליון: ${payload.refreshedAt||'כעת'}`);
 }
 
@@ -311,6 +455,17 @@ function table(rows){
   return h+'</tbody></table></div>';
 }
 
+function studentAnomalyTable(rows){
+  if(!rows.length)return '<div class="empty">לא נמצאו כיתות עם חריגה במספר התלמידים.</div>';
+  let h='<div class="table-wrap"><table><thead><tr><th>חריגה</th><th>יום</th><th>שעה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
+  for(const r of rows){
+    const n=studentCount(r);
+    const anomaly=n<11?'מתחת ל־11':'מעל 24';
+    h+=`<tr><td><strong>${anomaly}</strong></td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${n??'—'}</td><td>${badge(r.status)}</td></tr>`;
+  }
+  return h+'</tbody></table></div>';
+}
+
 function renderDashboard(){
   const active=data.filter(x=>x.status!=='שריון/תכנית אחרת');
   const missing=data.filter(x=>x.status==='חסר מורה');
@@ -335,13 +490,35 @@ function renderDashboard(){
   document.getElementById('estimatedStudentsNote').textContent=
     `* הערכה בלבד: ${totalCourses.toLocaleString('he-IL')} חוגים שנלקחו חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים. בפועל יש תלמידים שלוקחים חוג אחד או יותר משני חוגים.`;
 
-  const assigned=active.filter(x=>Array.isArray(x.teachers)&&x.teachers.length>0).length;
-  const unassigned=active.length-assigned;
-  renderPie('teacherChart',[['עם שיבוץ מורה',assigned],['ללא שיבוץ מורה',unassigned]],true,'כיתות פעילות');
+  updateGoalProgress('coursesGoal',totalCourses,1800,false);
+  updateGoalProgress('studentsGoal',estimatedStudents,900,true);
 
-  const under11=uniqueSourceRecords(active).filter(x=>populationOf(x)==='חוגים'&&studentCount(x)!==null&&studentCount(x)<11);
-  document.getElementById('under11Count').textContent=under11.length;
-  document.getElementById('under11Table').innerHTML=table(under11);
+  // מצב שיבוץ מורים: חלוקה פשוטה של כלל הכיתות הפעילות לכיתות עם מורה וללא מורה.
+  const activeSource=uniqueSourceRecords(active);
+  const totalClasses=activeSource.length;
+  const classesWithTeacher=activeSource.filter(x=>Array.isArray(x.teachers)&&x.teachers.length>0).length;
+  const classesWithoutTeacher=totalClasses-classesWithTeacher;
+  renderPie(
+    'teacherChart',
+    [['כיתות עם מורה',classesWithTeacher],['כיתות ללא מורה',classesWithoutTeacher]],
+    true,
+    'סה״כ כיתות'
+  );
+
+  // חריגות במספר תלמידים: באוכלוסיית "חוגים" בלבד, פחות מ-11 או יותר מ-24.
+  const publicClubRows=activeSource.filter(x=>populationOf(x)==='חוגים'&&studentCount(x)!==null);
+  const under11=publicClubRows.filter(x=>studentCount(x)<11);
+  const over24=publicClubRows.filter(x=>studentCount(x)>24);
+  const studentAnomalies=[...under11,...over24].sort((a,b)=>{
+    const da=dayOrder.indexOf(a.day), db=dayOrder.indexOf(b.day);
+    if(da!==db) return da-db;
+    if(a.time!==b.time) return String(a.time).localeCompare(String(b.time));
+    return String(a.room||'').localeCompare(String(b.room||''),'he');
+  });
+  document.getElementById('studentAnomalyCount').textContent=studentAnomalies.length;
+  document.getElementById('studentAnomalyBreakdown').textContent=
+    `${under11.length} מתחת ל־11 · ${over24.length} מעל 24`;
+  document.getElementById('studentAnomalyTable').innerHTML=studentAnomalyTable(studentAnomalies);
 
   let max=Math.max(...dayOrder.map(d=>active.filter(x=>x.day===d).length),1);
   document.getElementById('dayGrid').innerHTML=dayOrder.map(d=>{
@@ -361,6 +538,9 @@ document.querySelectorAll('.tab[data-view]').forEach(b=>b.onclick=()=>{document.
 ['teacherSelect','teacherDay'].forEach(id=>document.getElementById(id).addEventListener('change',renderTeacher));
 ['dayFilter','timeFilter','statusFilter','floorFilter'].forEach(id=>document.getElementById(id).addEventListener('change',renderFull));
 document.getElementById('searchFilter').addEventListener('input',renderFull);
+document.getElementById('marketingPopulation').addEventListener('change',renderMarketing);
+document.getElementById('marketingSearch').addEventListener('input',renderMarketing);
+document.getElementById('exportMarketingCsv').addEventListener('click',exportMarketingCsv);
 const HOST=(location.hostname||'').toLowerCase();
 const IS_CHATGPT_PREVIEW=!HOST || /chatgpt|openai|sandbox|preview|oaiusercontent/.test(HOST) || location.protocol==='file:';
 const ALLOW_NETWORK=/^https?:$/.test(location.protocol) && !IS_CHATGPT_PREVIEW;
@@ -386,11 +566,11 @@ document.getElementById('refreshBtn').addEventListener('click',()=>{
   }
   refreshData(true);
 });
-document.getElementById('toggleUnder11').addEventListener('click',()=>{
-  const list=document.getElementById('under11List');
+document.getElementById('toggleStudentAnomalies').addEventListener('click',()=>{
+  const list=document.getElementById('studentAnomalyList');
   const opening=list.classList.contains('hidden');
   list.classList.toggle('hidden');
-  document.getElementById('toggleUnder11').textContent=opening?'הסתר את רשימת הכיתות':'הצג את רשימת הכיתות';
+  document.getElementById('toggleStudentAnomalies').textContent=opening?'הסתר את רשימת הכיתות החריגות':'הצג את רשימת הכיתות החריגות';
   if(opening)list.scrollIntoView({behavior:'smooth',block:'start'});
 });
 
