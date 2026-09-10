@@ -534,31 +534,28 @@ function applyPayload(payload){
   setStatus(`עודכן מהגיליון: ${payload.refreshedAt||'כעת'}`);
 }
 
-async function loadFetch(timeoutMs=25000){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+const DATA_CACHE_KEY='technoda_chugim_tashpaz_payload_v1';
+
+function saveCachedPayload(payload){
   try{
-    const sep=APPS_SCRIPT_URL.includes('?')?'&':'?';
-    const response=await fetch(APPS_SCRIPT_URL+sep+'ts='+Date.now(),{
-      method:'GET',
-      cache:'no-store',
-      redirect:'follow',
-      signal:controller.signal
-    });
-    if(!response.ok) throw new Error('Google Apps Script החזיר שגיאת HTTP '+response.status);
-    const text=await response.text();
-    let payload;
-    try{payload=JSON.parse(text);}catch(e){
-      throw new Error('Google Apps Script לא החזיר JSON תקין. בדוק שהפריסה פעילה ומוגדרת Anyone.');
-    }
-    return payload;
-  }catch(err){
-    if(err && err.name==='AbortError') throw new Error('השרת לא החזיר תשובה בזמן.');
-    throw err;
-  }finally{clearTimeout(timer);}
+    localStorage.setItem(DATA_CACHE_KEY,JSON.stringify({savedAt:Date.now(),payload}));
+  }catch(e){}
 }
 
-function loadJsonp(timeoutMs=35000){
+function loadCachedPayload(){
+  try{
+    const cached=JSON.parse(localStorage.getItem(DATA_CACHE_KEY)||'null');
+    if(!cached||!cached.payload||!Array.isArray(cached.payload.records)) return false;
+    applyPayload(cached.payload);
+    const ageMinutes=Math.max(0,Math.round((Date.now()-(cached.savedAt||Date.now()))/60000));
+    setStatus(`מציג נתונים שמורים${ageMinutes?` מלפני כ־${ageMinutes} דקות`:''} · מעדכן מהגיליון…`);
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+function loadJsonp(timeoutMs=18000){
   return new Promise((resolve,reject)=>{
     const callback='__chugim_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
     const script=document.createElement('script');
@@ -583,18 +580,26 @@ function loadJsonp(timeoutMs=35000){
 async function refreshData(showLoading=true){
   if(refreshInFlight)return;
   refreshInFlight=true;
-  if(showLoading){setLoading(true);setStatus('טוען נתונים מהענן…');}
+  if(showLoading){setLoading(true);setStatus('טוען נתונים מהגיליון…');}
   try{
+    // GitHub Pages משתמש ישירות ב-JSONP. כך לא ממתינים קודם ל-fetch שעלול להיתקע בגלל CORS/redirect של Apps Script.
     let payload;
     try{
-      payload=await loadFetch(25000);
-    }catch(fetchErr){
-      setStatus('מנסה ערוץ חיבור חלופי…');
-      payload=await loadJsonp(35000);
+      payload=await loadJsonp(18000);
+    }catch(firstErr){
+      setStatus('החיבור איטי, מנסה שוב…');
+      payload=await loadJsonp(22000);
     }
     applyPayload(payload);
+    saveCachedPayload(payload);
   }catch(err){
-    setStatus('שגיאה בקריאת הגיליון: '+(err?.message||err),true);
+    const hasData=Array.isArray(data)&&data.length>0;
+    setStatus(
+      hasData
+        ? 'מוצגים הנתונים האחרונים שנשמרו · לא התקבל כרגע עדכון מהגיליון.'
+        : 'שגיאה בקריאת הגיליון: '+(err?.message||err),
+      !hasData
+    );
   }finally{
     refreshInFlight=false;
     setLoading(false);
@@ -735,7 +740,8 @@ document.getElementById('toggleStudentAnomalies').addEventListener('click',()=>{
 // טעינה אחת בלבד בעת הכניסה לאתר שפורסם. בתוך Preview של ChatGPT אין חיבור לרשת.
 loadProductionAssets();
 if(ALLOW_NETWORK){
-  refreshData(true);
+  const hasCachedData=loadCachedPayload();
+  refreshData(!hasCachedData);
 }else{
   setStatus('תצוגה מקדימה בלבד — הנתונים ייטענו באתר שפורסם.');
   const b=document.getElementById('refreshBtn');
