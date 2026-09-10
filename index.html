@@ -23,16 +23,17 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 .dashboard-grid{display:grid;grid-template-columns:1.45fr 1fr .75fr;gap:14px;margin-bottom:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:19px;margin:14px 0;box-shadow:var(--shadow)}.dashboard-grid .panel{margin:0}.panel h2{margin:0 0 15px;font-size:20px;color:var(--ink)}.panel h3{margin:0 0 8px;color:var(--ink)}
 .chart-box{display:flex;align-items:center;gap:22px;min-height:230px}.pie{width:190px;height:190px;border-radius:50%;flex:0 0 auto;background:#e9edef;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}.donut{position:relative}.donut:after{content:"";position:absolute;inset:38px;background:#fff;border-radius:50%;box-shadow:0 0 0 1px #edf0f2}.donut-center{position:absolute;z-index:2;text-align:center;pointer-events:none}.donut-wrap{position:relative;display:grid;place-items:center;flex:0 0 auto}.donut-center strong{display:block;font-size:28px;color:var(--ink)}.donut-center span{font-size:12px;color:var(--muted)}
 .legend{display:grid;gap:8px;flex:1;min-width:180px}.legend-row{display:grid;grid-template-columns:13px 1fr auto;gap:8px;align-items:center;font-size:14px}.legend-dot{width:11px;height:11px;border-radius:3px}.legend-count{font-weight:800;color:var(--ink);white-space:nowrap}.legend-pct{color:var(--muted);font-size:12px;margin-inline-start:5px}.chart-loading{width:100%;padding:38px 10px;text-align:center;color:var(--muted)}
+.pie-wrap{position:relative;width:190px;height:190px;flex:0 0 auto}.pie-wrap .pie{position:absolute;inset:0;width:100%;height:100%}.pie-slice-label{position:absolute;transform:translate(-50%,-50%);z-index:3;min-width:22px;text-align:center;color:#fff;font-size:10px;font-weight:900;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.75),0 0 2px rgba(0,0,0,.55);pointer-events:none}
 .summary-strip{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px;margin-bottom:14px}.total-students-card{background:linear-gradient(135deg,#fff,#eef9fd);border:1px solid var(--line);border-radius:18px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px}.total-students-card .total-num{font-size:48px;font-weight:900;color:var(--blue-dark);line-height:1}.total-students-card .total-copy strong{display:block;font-size:18px;color:var(--ink)}.total-students-card .total-copy span{display:block;margin-top:5px;color:var(--muted);font-size:13px}.metric-card{height:100%;min-height:230px;background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.metric-card .metric-num{font-size:54px;font-weight:900;color:var(--pink);line-height:1}.metric-card .metric-title{font-weight:800;font-size:17px;margin-top:10px;color:var(--ink)}.metric-card .metric-note{font-size:13px;color:var(--muted);margin:6px 0 15px}.link-btn{border:0;background:transparent;color:var(--blue-dark);font-weight:800;cursor:pointer;padding:7px 10px;border-radius:8px}.link-btn:hover{background:#eef8fc}
 .hidden{display:none!important}.below-list{margin-top:14px}.below-list .panel{border-right:4px solid var(--pink)}
 .day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.day-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.day-card h3{margin:0 0 8px}.bar{height:8px;background:#eef1f3;border-radius:99px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}.warnline{border-right:4px solid var(--pink);background:#fff5f8;padding:10px 12px;border-radius:8px;margin:7px 0}
 .goal-panel{background:linear-gradient(135deg,#fff,#f5fbfe);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);margin:0 0 16px}.goal-panel h2{margin:0 0 5px;font-size:20px;color:var(--ink)}.goal-sub{color:var(--muted);font-size:13px;margin-bottom:16px}.goal-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px}.goal-card{background:#fff;border:1px solid #e5eaed;border-radius:15px;padding:16px 17px}.goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.goal-title{font-weight:800;color:var(--ink)}.goal-numbers{margin-top:4px;color:var(--muted);font-size:13px}.goal-pct{font-size:28px;font-weight:900;color:var(--blue-dark);line-height:1}.goal-track{height:14px;border-radius:999px;background:#edf1f3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}.goal-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .45s ease}.goal-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;font-size:13px;color:var(--muted)}.goal-meta strong{color:var(--ink)}
-.marketing-toolbar{display:grid;grid-template-columns:minmax(220px,320px) 1fr auto;gap:10px;align-items:center;margin-bottom:14px}.capacity-ok{font-weight:700;color:#39751a}.capacity-warn{font-weight:800;color:var(--red)}.marketing-note{color:var(--muted);font-size:13px}.marketing-summary{margin:10px 0 14px;color:var(--muted);font-size:13px}
+.marketing-toolbar{display:grid;grid-template-columns:minmax(220px,320px) 1fr auto;gap:10px;align-items:center;margin-bottom:14px}.capacity-ok{font-weight:700;color:#39751a}.capacity-warn{font-weight:800;color:var(--red)}.marketing-note{color:var(--muted);font-size:13px}.marketing-summary{margin:10px 0 14px;color:var(--muted);font-size:13px}.marketing-table th{vertical-align:top}.marketing-sort-btn{width:100%;border:0;background:transparent;color:inherit;font:inherit;font-weight:800;text-align:right;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px}.marketing-sort-arrow{font-size:11px;opacity:.75}.marketing-filter-row th{top:41px;background:#5a6065;padding:6px;z-index:3}.marketing-filter-row select{padding:7px 8px;border-radius:7px;border:1px solid #858b90;font-size:12px;min-width:105px}.marketing-filter-empty{color:#d8dde0;text-align:center}.marketing-priority-high td{background:#fff4f6}.marketing-priority-medium td{background:#fff9ed}.marketing-priority-high:hover td,.marketing-priority-medium:hover td{background:#f8fbfc}.marketing-remaining{font-weight:900}.marketing-remaining.high{color:var(--pink)}.marketing-remaining.medium{color:#a76814}
 .filters{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:14px}select,input{width:100%;padding:11px;border:1px solid #cfd7dc;border-radius:10px;background:white;font:inherit;color:var(--text)}select:focus,input:focus{outline:2px solid #bfe6f7;border-color:var(--blue)}.btn{border:0;background:var(--blue-dark);color:white;padding:11px 15px;border-radius:10px;cursor:pointer;font-weight:700}
 .table-wrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;background:white}th{position:sticky;top:0;background:var(--ink);color:white;text-align:right;padding:11px;z-index:2}td{padding:10px 11px;border-bottom:1px solid #edf0f2;vertical-align:top}tr:hover td{background:#f8fbfc}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.ok{color:#39751a;background:var(--greenbg)}.missing{color:var(--red);background:var(--redbg)}.review{color:#96611d;background:var(--orangebg)}.other{color:#586169;background:#f1f3f4}.muted{color:var(--muted);font-size:13px}.empty{padding:28px;text-align:center;color:var(--muted)}
-@media(max-width:1150px){.dashboard-grid{grid-template-columns:1fr 1fr}.metric-card{grid-column:1/-1;min-height:170px}.chart-box{flex-wrap:wrap}.pie{width:165px;height:165px}.day-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1150px){.dashboard-grid{grid-template-columns:1fr 1fr}.metric-card{grid-column:1/-1;min-height:170px}.chart-box{flex-wrap:wrap}.pie,.pie-wrap{width:165px;height:165px}.day-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-grid{grid-template-columns:1fr}.metric-card{grid-column:auto}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:160px}.chart-box{min-height:auto}}
-@media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:135px;height:50px}.chart-box{display:block}.pie{margin:0 auto 18px}.legend{min-width:0}}
+@media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:135px;height:50px}.chart-box{display:block}.pie,.pie-wrap{margin:0 auto 18px}.legend{min-width:0}.marketing-filter-row th{top:40px}}
 </style>
 </head>
 <body>
@@ -163,10 +164,10 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <h2>לצרכי שיווק</h2>
       <div class="marketing-toolbar">
         <select id="marketingPopulation"><option value="">כל סוגי האוכלוסייה</option></select>
-        <input id="marketingSearch" placeholder="חיפוש לפי שם חוג או כיתה" />
+        <input id="marketingSearch" placeholder="חיפוש חופשי בטבלת השיווק" />
         <button class="btn" id="exportMarketingCsv" type="button">ייצוא הטבלה ל־CSV</button>
       </div>
-      <div class="marketing-note">הטבלה מופקת ישירות מהנתונים בלשונית „תשפז”. קיבולת מלאה מוגדרת כ־24 תלמידים לכל חוג.</div>
+      <div class="marketing-note">הטבלה מופקת ישירות מהנתונים בלשונית „תשפז”. ניתן לסנן ולמיין כל עמודה למעט קיבולת מלאה. כברירת מחדל הטבלה מסודרת לפי המקום הנותר — מהגבוה לנמוך, כדי לזהות היכן השיווק דחוף יותר.</div>
       <div class="marketing-summary" id="marketingSummary"></div>
       <div id="marketingTable"></div>
     </div>
@@ -212,6 +213,7 @@ function populationOf(r){
   if(/חריש/.test(s)) return 'חריש';
   if(/עופרים/.test(s)) return 'עופרים';
   if(/ימין\s*אורד/.test(s)) return 'ימין אורד';
+  if(/יהודים\s*[-–]?\s*ערבים/.test(s)) return 'יהודים–ערבים';
   return 'אחר';
 }
 
@@ -258,65 +260,193 @@ function updateGoalProgress(prefix,current,target,approximate=false){
     : 'חסרים '+(approximate?'כ־':'')+Math.round(remaining).toLocaleString('he-IL');
 }
 
+const marketingColumnFilters={course:'',grade:'',day:'',time:'',enrolled:'',remaining:''};
+let marketingSort={key:'remaining',dir:'desc'};
+
 function marketingGrade(r){
+  const course=String(r.course||'').trim().replace(/[״׳]/g,"'");
+  // מדע לטף א/ב הם שמות חוגים שמגדירים ישירות את שכבת הגיל.
+  if(/^מדע\s+לטף\s+א'?$/i.test(course)) return "א'";
+  if(/^מדע\s+לטף\s+ב'?$/i.test(course)) return "ב'";
+
   const text=((r.group||'')+'\n'+(r.raw||'')).replace(/[״׳]/g,"'");
   if(/(?:^|\n)\s*גן(?:\s|$)/m.test(text)) return 'גן';
-  let m=text.match(/כיתה\s+([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)/);
+  const cls='אבגדהוזחט';
+  let m=text.match(new RegExp('כיתה\\s+(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)"));
   if(m) return m[1].replace(/\s+/g,'');
-  m=text.match(/(?:מצטייני\s*ישוב|מצטייני\s*יישוב|מצטיינים|חוגים)\s*(?:-|–|:)?\s*([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)/);
+  m=text.match(new RegExp('(?:מצטייני\\s*ישוב|מצטייני\\s*יישוב|מצטיינים|חוגים|מצוינות|אפיקים\\s*להצלחה)\\s*(?:-|–|:)?\\s*(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)"));
   if(m) return m[1].replace(/\s+/g,'');
   const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   for(const line of lines){
-    const standalone=line.match(/^([ב-ט]'?(?:\s*[-+]\s*[ב-ט]'?)?)$/);
+    const standalone=line.match(new RegExp('^(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)$"));
     if(standalone) return standalone[1].replace(/\s+/g,'');
-    const ending=line.match(/[-–]\s*([ב-ט]'?\s*[-+]\s*[ב-ט]'?)$/);
+    const ending=line.match(new RegExp('[-–]\\s*(['+cls+"]'?\\s*[-+]\\s*["+cls+"]'?)$"));
     if(ending) return ending[1].replace(/\s+/g,'');
   }
   return '—';
+}
+
+function marketingCourseName(r){
+  const course=String(r.course||'').trim();
+  if(!course || course==='ללא כותרת') return '';
+  if(/^(?:חריש|עופרים|מצוינות|מצוינות בוגרים|מצטיינים|מצטייני ישוב|מצטייני יישוב|חוגים|יהודים\s*[-–]?\s*ערבים)$/.test(course)) return '';
+  if(/^שמור ל/.test(course)) return '';
+  return course;
 }
 
 function isMarketingCourseRow(r){
   const pop=populationOf(r);
   if(pop==='אחר') return false;
   const raw=String(r.raw||'');
-  const course=String(r.course||'').trim();
-  if(!course || course==='ללא כותרת') return false;
   if(/שמור ל|השתלמות מוסדית|צוות מחוננים|מליאה 3 קבוצות|יום הולדת/.test(raw)) return false;
-  if(['חריש','עופרים','מצוינות','מצטיינים','מצטייני ישוב','מצטייני יישוב','חוגים'].includes(course)) return false;
-  return true;
+  return Boolean(marketingCourseName(r));
 }
 
-function marketingRows(){
+function marketingBaseRows(){
   const pop=document.getElementById('marketingPopulation')?.value||'';
   const q=(document.getElementById('marketingSearch')?.value||'').trim().toLowerCase();
   return uniqueSourceRecords(data).filter(isMarketingCourseRow).filter(r=>{
     const p=populationOf(r);
     if(pop && p!==pop) return false;
     if(q){
-      const hay=[r.course,marketingGrade(r),r.day,r.time,p,r.group].join(' ').toLowerCase();
+      const n=studentCount(r);
+      const remaining=n===null?'':24-n;
+      const hay=[marketingCourseName(r),marketingGrade(r),r.day,r.time,p,r.group,n??'',remaining].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
-  }).sort((a,b)=>{
-    const pa=populationOf(a).localeCompare(populationOf(b),'he');
-    if(pa) return pa;
-    const da=dayOrder.indexOf(a.day), db=dayOrder.indexOf(b.day);
-    if(da!==db) return da-db;
-    if(a.time!==b.time) return String(a.time).localeCompare(String(b.time));
-    return String(a.course||'').localeCompare(String(b.course||''),'he');
   });
 }
 
+function marketingFilterValue(r,key){
+  const n=studentCount(r);
+  if(key==='course') return marketingCourseName(r);
+  if(key==='grade') return marketingGrade(r);
+  if(key==='day') return r.day||'';
+  if(key==='time') return r.time||'';
+  if(key==='enrolled') return n===null?'__missing__':String(n);
+  if(key==='remaining') return n===null?'__missing__':String(24-n);
+  return '';
+}
+
+function marketingSortValue(r,key){
+  const n=studentCount(r);
+  if(key==='course') return marketingCourseName(r);
+  if(key==='grade') return marketingGrade(r);
+  if(key==='day') return dayOrder.indexOf(r.day);
+  if(key==='time') return r.time||'';
+  if(key==='enrolled') return n;
+  if(key==='remaining') return n===null?null:24-n;
+  return '';
+}
+
+function compareMarketingValues(a,b,key,dir=1){
+  const av=marketingSortValue(a,key), bv=marketingSortValue(b,key);
+  const aNull=av===null||av===undefined||av==='', bNull=bv===null||bv===undefined||bv==='';
+  if(aNull&&bNull) return 0;
+  if(aNull) return 1;
+  if(bNull) return -1;
+  const base=(typeof av==='number'&&typeof bv==='number')?av-bv:String(av).localeCompare(String(bv),'he',{numeric:true});
+  return base*dir;
+}
+
+function marketingRows(){
+  const rows=marketingBaseRows().filter(r=>{
+    for(const key of Object.keys(marketingColumnFilters)){
+      const wanted=marketingColumnFilters[key];
+      if(wanted && marketingFilterValue(r,key)!==wanted) return false;
+    }
+    return true;
+  });
+  const dir=marketingSort.dir==='desc'?-1:1;
+  return rows.sort((a,b)=>{
+    const primary=compareMarketingValues(a,b,marketingSort.key,dir);
+    if(primary) return primary;
+    const da=dayOrder.indexOf(a.day),db=dayOrder.indexOf(b.day);
+    if(da!==db) return da-db;
+    if(a.time!==b.time) return String(a.time).localeCompare(String(b.time));
+    return marketingCourseName(a).localeCompare(marketingCourseName(b),'he');
+  });
+}
+
+function marketingOptionHtml(value,label,current){
+  return `<option value="${esc(value)}"${String(current)===String(value)?' selected':''}>${esc(label)}</option>`;
+}
+
+function marketingFilterSelect(key,label,values,current,formatter=v=>v){
+  return `<select data-marketing-filter="${esc(key)}" aria-label="סינון ${esc(label)}"><option value="">הכול</option>${values.map(v=>marketingOptionHtml(v,formatter(v),current)).join('')}</select>`;
+}
+
+function marketingSortHeader(label,key){
+  const active=marketingSort.key===key;
+  const arrow=active?(marketingSort.dir==='asc'?'▲':'▼'):'↕';
+  return `<button type="button" class="marketing-sort-btn" data-marketing-sort="${esc(key)}"><span>${esc(label)}</span><span class="marketing-sort-arrow">${arrow}</span></button>`;
+}
+
+function marketingFilterOptions(){
+  const base=marketingBaseRows();
+  const uniq=(arr)=>[...new Set(arr.filter(v=>v!==null&&v!==undefined&&v!==''))];
+  const numeric=(key)=>uniq(base.map(r=>marketingFilterValue(r,key))).sort((a,b)=>{
+    if(a==='__missing__') return 1;if(b==='__missing__') return -1;return Number(a)-Number(b);
+  });
+  const course=uniq(base.map(r=>marketingCourseName(r))).sort((a,b)=>a.localeCompare(b,'he'));
+  const grade=uniq(base.map(r=>marketingGrade(r))).sort((a,b)=>a.localeCompare(b,'he',{numeric:true}));
+  const day=dayOrder.filter(d=>base.some(r=>r.day===d));
+  const time=uniq(base.map(r=>r.time)).sort();
+  return {course,grade,day,time,enrolled:numeric('enrolled'),remaining:numeric('remaining').sort((a,b)=>{
+    if(a==='__missing__') return 1;if(b==='__missing__') return -1;return Number(b)-Number(a);
+  })};
+}
+
 function marketingTable(rows){
-  if(!rows.length) return '<div class="empty">לא נמצאו חוגים מתאימים.</div>';
-  let h='<div class="table-wrap"><table><thead><tr><th>שם החוג</th><th>גיל / כיתה</th><th>יום</th><th>שעה</th><th>מספר תלמידים שנרשמו</th><th>קיבולת מלאה</th><th>מקום נותר</th></tr></thead><tbody>';
+  const opt=marketingFilterOptions();
+  const fmtNum=v=>v==='__missing__'?'ללא נתון':v;
+  let h='<div class="table-wrap"><table class="marketing-table"><thead><tr>'+
+    `<th>${marketingSortHeader('שם החוג','course')}</th>`+
+    `<th>${marketingSortHeader('גיל / כיתה','grade')}</th>`+
+    `<th>${marketingSortHeader('יום','day')}</th>`+
+    `<th>${marketingSortHeader('שעה','time')}</th>`+
+    `<th>${marketingSortHeader('מספר תלמידים שנרשמו','enrolled')}</th>`+
+    '<th>קיבולת מלאה</th>'+
+    `<th>${marketingSortHeader('מקום נותר','remaining')}</th>`+
+    '</tr><tr class="marketing-filter-row">'+
+    `<th>${marketingFilterSelect('course','שם החוג',opt.course,marketingColumnFilters.course)}</th>`+
+    `<th>${marketingFilterSelect('grade','גיל / כיתה',opt.grade,marketingColumnFilters.grade)}</th>`+
+    `<th>${marketingFilterSelect('day','יום',opt.day,marketingColumnFilters.day)}</th>`+
+    `<th>${marketingFilterSelect('time','שעה',opt.time,marketingColumnFilters.time)}</th>`+
+    `<th>${marketingFilterSelect('enrolled','מספר תלמידים שנרשמו',opt.enrolled,marketingColumnFilters.enrolled,fmtNum)}</th>`+
+    '<th class="marketing-filter-empty">ללא סינון</th>'+
+    `<th>${marketingFilterSelect('remaining','מקום נותר',opt.remaining,marketingColumnFilters.remaining,fmtNum)}</th>`+
+    '</tr></thead><tbody>';
+  if(!rows.length){
+    h+='<tr><td colspan="7"><div class="empty">לא נמצאו חוגים מתאימים למסננים שנבחרו. אפשר לשנות את המסננים ישירות בכותרות העמודות.</div></td></tr>';
+  }
   for(const r of rows){
     const n=studentCount(r);
     const remaining=n===null?null:24-n;
-    const cls=remaining!==null&&remaining<0?'capacity-warn':'capacity-ok';
-    h+=`<tr><td><strong>${esc(r.course)}</strong></td><td>${esc(marketingGrade(r))}</td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${n===null?'—':n}</td><td>24</td><td class="${cls}">${remaining===null?'—':remaining}</td></tr>`;
+    const rowClass=remaining!==null&&remaining>=12?'marketing-priority-high':remaining!==null&&remaining>=8?'marketing-priority-medium':'';
+    const remClass=remaining!==null&&remaining>=12?'high':remaining!==null&&remaining>=8?'medium':'';
+    const capCls=remaining!==null&&remaining<0?'capacity-warn':'capacity-ok';
+    h+=`<tr class="${rowClass}"><td><strong>${esc(marketingCourseName(r))}</strong></td><td>${esc(marketingGrade(r))}</td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${n===null?'—':n}</td><td>24</td><td class="${capCls}"><span class="marketing-remaining ${remClass}">${remaining===null?'—':remaining}</span></td></tr>`;
   }
   return h+'</tbody></table></div>';
+}
+
+function bindMarketingTableControls(){
+  document.querySelectorAll('[data-marketing-filter]').forEach(el=>{
+    el.addEventListener('change',()=>{
+      marketingColumnFilters[el.dataset.marketingFilter]=el.value;
+      renderMarketing();
+    });
+  });
+  document.querySelectorAll('[data-marketing-sort]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const key=btn.dataset.marketingSort;
+      if(marketingSort.key===key) marketingSort.dir=marketingSort.dir==='asc'?'desc':'asc';
+      else marketingSort={key,dir:key==='remaining'?'desc':'asc'};
+      renderMarketing();
+    });
+  });
 }
 
 function renderMarketing(){
@@ -324,9 +454,10 @@ function renderMarketing(){
   const known=rows.filter(r=>studentCount(r)!==null);
   const enrolled=known.reduce((s,r)=>s+studentCount(r),0);
   document.getElementById('marketingSummary').textContent=
-    `${rows.length} חוגים בטבלה · ${enrolled.toLocaleString('he-IL')} הרשמות בחוגים עם מספר מעודכן`+
+    `${rows.length} חוגים מוצגים · ${enrolled.toLocaleString('he-IL')} הרשמות בחוגים עם מספר מעודכן`+
     (rows.length-known.length?` · ${rows.length-known.length} חוגים ללא מספר תלמידים מעודכן`:'');
   document.getElementById('marketingTable').innerHTML=marketingTable(rows);
+  bindMarketingTableControls();
 }
 
 function exportMarketingCsv(){
@@ -334,7 +465,7 @@ function exportMarketingCsv(){
   const header=['שם החוג','גיל / כיתה','יום','שעה','מספר תלמידים שנרשמו','קיבולת מלאה','מקום נותר'];
   const csvRows=[header,...rows.map(r=>{
     const n=studentCount(r);
-    return [r.course,marketingGrade(r),r.day,r.time,n===null?'':n,24,n===null?'':24-n];
+    return [marketingCourseName(r),marketingGrade(r),r.day,r.time,n===null?'':n,24,n===null?'':24-n];
   })];
   const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
   const csv='\ufeff'+csvRows.map(row=>row.map(quote).join(',')).join('\r\n');
@@ -347,7 +478,7 @@ function exportMarketingCsv(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel=''){
+function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel='',showSliceLabels=false){
   const el=document.getElementById(containerId);
   const total=entries.reduce((s,x)=>s+x[1],0);
   if(!total){el.innerHTML='<div class="empty">אין נתונים להצגה.</div>';return;}
@@ -357,9 +488,27 @@ function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel=''){
     acc+=entry[1]/total*100;
     return `${CHART_COLORS[i%CHART_COLORS.length]} ${start.toFixed(2)}% ${acc.toFixed(2)}%`;
   }).join(',');
+
+  let labelAcc=0;
+  const sliceLabels=showSliceLabels?entries.map(entry=>{
+    const value=Number(entry[1])||0;
+    if(value<=0) return '';
+    const start=labelAcc;
+    const span=value/total*100;
+    labelAcc+=span;
+    const middle=start+span/2;
+    const angle=(middle*3.6-90)*Math.PI/180;
+    const radius=span<4?41:span<8?37:32;
+    const x=50+Math.cos(angle)*radius;
+    const y=50+Math.sin(angle)*radius;
+    return `<span class="pie-slice-label" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%">${value.toLocaleString('he-IL')}</span>`;
+  }).join(''):'';
+
   const chart=donut
     ? `<div class="donut-wrap"><div class="pie donut" style="background:conic-gradient(${segments})"></div><div class="donut-center"><strong>${total.toLocaleString('he-IL')}</strong><span>${esc(centerLabel)}</span></div></div>`
-    : `<div class="pie" style="background:conic-gradient(${segments})"></div>`;
+    : showSliceLabels
+      ? `<div class="pie-wrap"><div class="pie" style="background:conic-gradient(${segments})"></div>${sliceLabels}</div>`
+      : `<div class="pie" style="background:conic-gradient(${segments})"></div>`;
   const legend=`<div class="legend">${entries.map((entry,i)=>{const pct=total?Math.round(entry[1]/total*100):0;return `<div class="legend-row"><span class="legend-dot" style="background:${CHART_COLORS[i%CHART_COLORS.length]}"></span><span>${esc(entry[0])}</span><span class="legend-count">${entry[1].toLocaleString('he-IL')}${unitLabel?' '+esc(unitLabel):''}<span class="legend-pct">(${pct}%)</span></span></div>`;}).join('')}</div>`;
   el.innerHTML=chart+legend;
 }
@@ -376,7 +525,7 @@ function applyPayload(payload){
   refillSelect('teacherSelect',teachers,'בחר מורה');
   refillSelect('timeFilter',unique(data.map(x=>x.time)).sort(),'כל השעות');
   refillSelect('floorFilter',unique(data.map(x=>x.floor)),'כל הקומות');
-  refillSelect('marketingPopulation',unique(uniqueSourceRecords(data).map(populationOf).filter(x=>x!=='אחר')).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי האוכלוסייה');
+  refillSelect('marketingPopulation',unique(uniqueSourceRecords(data).filter(isMarketingCourseRow).map(populationOf).filter(x=>x!=='אחר')).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי האוכלוסייה');
   renderDashboard();renderMissing();renderTeacher();renderFull();renderMarketing();
   setStatus(`עודכן מהגיליון: ${payload.refreshedAt||'כעת'}`);
 }
@@ -474,7 +623,7 @@ function renderDashboard(){
   const sourceRows=uniqueSourceRecords(data);
   const populationRows=sourceRows.filter(r=>populationOf(r)!=='אחר');
   const populations=makePopulationCourseData(populationRows);
-  renderPie('populationChart',populations,false,'','חוגים');
+  renderPie('populationChart',populations,false,'','חוגים',true);
 
   const totalCourses=populations.reduce((sum,entry)=>sum+entry[1],0);
   document.getElementById('totalCoursesCount').textContent=totalCourses.toLocaleString('he-IL');
@@ -538,7 +687,7 @@ document.querySelectorAll('.tab[data-view]').forEach(b=>b.onclick=()=>{document.
 ['teacherSelect','teacherDay'].forEach(id=>document.getElementById(id).addEventListener('change',renderTeacher));
 ['dayFilter','timeFilter','statusFilter','floorFilter'].forEach(id=>document.getElementById(id).addEventListener('change',renderFull));
 document.getElementById('searchFilter').addEventListener('input',renderFull);
-document.getElementById('marketingPopulation').addEventListener('change',renderMarketing);
+document.getElementById('marketingPopulation').addEventListener('change',()=>{Object.keys(marketingColumnFilters).forEach(k=>marketingColumnFilters[k]='');renderMarketing();});
 document.getElementById('marketingSearch').addEventListener('input',renderMarketing);
 document.getElementById('exportMarketingCsv').addEventListener('click',exportMarketingCsv);
 const HOST=(location.hostname||'').toLowerCase();
