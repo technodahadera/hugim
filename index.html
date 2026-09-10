@@ -61,7 +61,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     <div class="summary-strip">
       <div class="total-students-card">
         <div class="total-num" id="totalCoursesCount">—</div>
-        <div class="total-copy"><strong>סך כל החוגים שנלקחו בכל הקטגוריות</strong><span id="totalCoursesNote">סכום ההרשמות לחוגים לפי המספר שמופיע בכל משבצת</span></div>
+        <div class="total-copy"><strong>סך כל החוגים בכל הקטגוריות</strong><span id="totalCoursesNote">סכום ההרשמות לחוגים לפי המספר שמופיע בכל משבצת</span></div>
       </div>
       <div class="total-students-card">
         <div class="total-num" id="estimatedStudentsCount">—</div>
@@ -74,7 +74,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <div class="goal-grid">
         <div class="goal-card">
           <div class="goal-head">
-            <div><div class="goal-title">יעד חוגים שנלקחו</div><div class="goal-numbers"><strong id="coursesGoalCurrent">—</strong> מתוך 1,800</div></div>
+            <div><div class="goal-title">יעד חוגים</div><div class="goal-numbers"><strong id="coursesGoalCurrent">—</strong> מתוך 1,800</div></div>
             <div class="goal-pct" id="coursesGoalPct">—</div>
           </div>
           <div class="goal-track"><div class="goal-fill" id="coursesGoalFill"></div></div>
@@ -93,7 +93,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     </div>
     <div class="dashboard-grid">
       <div class="panel">
-        <h2>חלוקת החוגים שנלקחו לפי סוג אוכלוסייה</h2>
+        <h2>חלוקת החוגים לפי סוג אוכלוסייה</h2>
         <div id="populationChart" class="chart-box"><div class="chart-loading">הגרף יוצג לאחר טעינת הנתונים</div></div>
       </div>
       <div class="panel">
@@ -646,7 +646,7 @@ function renderDashboard(){
   const estimatedStudents=Math.round(totalCourses/2);
   document.getElementById('estimatedStudentsCount').textContent='כ־'+estimatedStudents.toLocaleString('he-IL');
   document.getElementById('estimatedStudentsNote').textContent=
-    `* הערכה בלבד: ${totalCourses.toLocaleString('he-IL')} חוגים שנלקחו חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים. בפועל יש תלמידים שלוקחים חוג אחד או יותר משני חוגים.`;
+    `* הערכה בלבד: ${totalCourses.toLocaleString('he-IL')} חוגים חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים. בפועל יש תלמידים שלוקחים חוג אחד או יותר משני חוגים.`;
 
   updateGoalProgress('coursesGoal',totalCourses,1800,false);
   updateGoalProgress('studentsGoal',estimatedStudents,900,true);
