@@ -103,7 +103,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <div id="studentAnomalyCard" class="metric-card">
         <div class="metric-num" id="studentAnomalyCount">—</div>
         <div class="metric-title">כיתות עם חריגות במספר תלמידים</div>
-        <div class="metric-note">חוגי אחר הצהריים מסוג „חוגים” בלבד · פחות מ־11 או יותר מ־24 תלמידים</div>
+        <div class="metric-note">כל הכיתות הפעילות · פחות מ־11 או יותר מ־24 תלמידים</div>
         <div class="muted" id="studentAnomalyBreakdown">הפירוט יוצג לאחר טעינת הנתונים</div>
         <button class="link-btn" id="toggleStudentAnomalies" type="button">הצג את רשימת הכיתות החריגות</button>
       </div>
@@ -658,10 +658,10 @@ function renderDashboard(){
     'סה״כ כיתות'
   );
 
-  // חריגות במספר תלמידים: באוכלוסיית "חוגים" בלבד, פחות מ-11 או יותר מ-24.
-  const publicClubRows=activeSource.filter(x=>populationOf(x)==='חוגים'&&studentCount(x)!==null);
-  const under11=publicClubRows.filter(x=>studentCount(x)<11);
-  const over24=publicClubRows.filter(x=>studentCount(x)>24);
+  // חריגות במספר תלמידים: כל הכיתות הפעילות מכל סוגי האוכלוסייה שבהן קיים מספר תלמידים.
+  const classesWithStudentCount=activeSource.filter(x=>studentCount(x)!==null);
+  const under11=classesWithStudentCount.filter(x=>studentCount(x)<11);
+  const over24=classesWithStudentCount.filter(x=>studentCount(x)>24);
   const studentAnomalies=[...under11,...over24].sort((a,b)=>{
     const da=dayOrder.indexOf(a.day), db=dayOrder.indexOf(b.day);
     if(da!==db) return da-db;
