@@ -57,7 +57,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     <div class="summary-strip">
       <div class="total-students-card">
         <div class="total-num" id="totalCoursesCount">—</div>
-        <div class="total-copy"><strong>סך כל החוגים בכל הקטגוריות</strong><span id="totalCoursesNote">כל משבצת חוג בלשונית תשפז נספרת פעם אחת</span></div>
+        <div class="total-copy"><strong>סך כל החוגים שנלקחו בכל הקטגוריות</strong><span id="totalCoursesNote">סכום ההרשמות לחוגים לפי המספר שמופיע בכל משבצת</span></div>
       </div>
       <div class="total-students-card">
         <div class="total-num" id="estimatedStudentsCount">—</div>
@@ -66,7 +66,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     </div>
     <div class="dashboard-grid">
       <div class="panel">
-        <h2>חלוקת חוגים לפי סוג אוכלוסייה</h2>
+        <h2>חלוקת החוגים שנלקחו לפי סוג אוכלוסייה</h2>
         <div id="populationChart" class="chart-box"><div class="chart-loading">הגרף יוצג לאחר טעינת הנתונים</div></div>
       </div>
       <div class="panel">
@@ -196,7 +196,10 @@ function makePopulationCourseData(items){
   uniqueSourceRecords(items).forEach(r=>{
     const k=populationOf(r);
     if(k==='אחר') return;
-    totals[k]=(totals[k]||0)+1;
+    if(!(k in totals)) totals[k]=0;
+    const n=studentCount(r);
+    // "מספר חוגים" בדשבורד = מספר ההרשמות לקורסים: סכום מספר התלמידים בכל משבצת.
+    if(n!==null) totals[k]+=n;
   });
   return Object.entries(totals).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'he'));
 }
@@ -318,18 +321,19 @@ function renderDashboard(){
   const populations=makePopulationCourseData(populationRows);
   renderPie('populationChart',populations,false,'','חוגים');
 
-  const totalCourses=populationRows.length;
+  const totalCourses=populations.reduce((sum,entry)=>sum+entry[1],0);
   document.getElementById('totalCoursesCount').textContent=totalCourses.toLocaleString('he-IL');
-  document.getElementById('totalCoursesNote').textContent='כל משבצת חוג בלשונית תשפז נספרת פעם אחת';
 
   const rowsWithStudentCount=populationRows.filter(r=>studentCount(r)!==null);
-  const totalCourseEnrollments=rowsWithStudentCount.reduce((sum,r)=>sum+studentCount(r),0);
-  const estimatedStudents=Math.round(totalCourseEnrollments/2);
   const missingCountRows=populationRows.length-rowsWithStudentCount.length;
+  document.getElementById('totalCoursesNote').textContent=
+    'סכום ההרשמות לחוגים לפי המספר שמופיע בכל משבצת'+
+    (missingCountRows?` · ${missingCountRows} משבצות ללא מספר אינן נכללות בסכום`:'');
+
+  const estimatedStudents=Math.round(totalCourses/2);
   document.getElementById('estimatedStudentsCount').textContent='כ־'+estimatedStudents.toLocaleString('he-IL');
   document.getElementById('estimatedStudentsNote').textContent=
-    `* הערכה בלבד: סכום התלמידים במשבצות שבהן הוזן מספר (${totalCourseEnrollments.toLocaleString('he-IL')}) חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים`+
-    (missingCountRows?` · ${missingCountRows} חוגים ללא מספר תלמידים אינם נכללים בהערכה`:'');
+    `* הערכה בלבד: ${totalCourses.toLocaleString('he-IL')} חוגים שנלקחו חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים. בפועל יש תלמידים שלוקחים חוג אחד או יותר משני חוגים.`;
 
   const assigned=active.filter(x=>Array.isArray(x.teachers)&&x.teachers.length>0).length;
   const unassigned=active.length-assigned;
