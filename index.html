@@ -16,7 +16,7 @@ body{margin:0;font-family:"Rubik",Arial,"Noto Sans Hebrew",sans-serif;background
 body:before{content:"";display:block;height:7px;background:linear-gradient(90deg,var(--blue) 0 16.6%,var(--green) 16.6% 33.2%,var(--yellow) 33.2% 49.8%,var(--orange) 49.8% 66.4%,var(--pink) 66.4% 83%,var(--purple) 83%)}
 header{background:#fff;border-bottom:1px solid var(--line);padding:17px 28px;position:sticky;top:0;z-index:10;box-shadow:0 3px 14px rgba(0,0,0,.05)}
 .head{max-width:1500px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:17px;min-width:300px}.brand-mark{width:190px;max-width:34vw;height:62px;display:flex;align-items:center;justify-content:flex-start}.brand-logo{width:190px;max-width:34vw;height:62px;object-fit:contain;object-position:right center;display:none}.brand-fallback{font-size:30px;font-weight:900;color:var(--blue-dark);letter-spacing:-1px}.brand-copy{border-right:1px solid var(--line);padding-right:17px}
+.brand{display:flex;align-items:center;gap:17px;min-width:300px}.brand-mark{width:190px;max-width:34vw;height:62px;display:flex;align-items:center;justify-content:flex-start;flex:0 0 auto}.brand-logo{width:190px;max-width:34vw;height:62px;object-fit:contain;object-position:right center;display:block}.brand-fallback{display:none;font-size:30px;font-weight:900;color:var(--blue-dark);letter-spacing:-1px}.brand-copy{border-right:1px solid var(--line);padding-right:17px}
 h1{margin:0;font-size:25px;color:var(--ink);font-weight:800}.sub{color:var(--muted);font-size:13px;margin-top:5px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tab{border:1px solid #dfe5e8;background:#fff;color:var(--ink);padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:700;transition:.15s}.tab:hover{border-color:var(--blue);color:var(--blue-dark)}.tab.active{background:var(--ink);border-color:var(--ink);color:#fff}.tab.cloud{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff}.tab.cloud:hover{background:#177fae;color:#fff}.tab:disabled{opacity:.6;cursor:wait}
 main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.view.active{display:block}
@@ -40,7 +40,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 <header>
   <div class="head">
     <div class="brand">
-      <div class="brand-mark" id="brandMark"><span class="brand-fallback">טכנודע</span><img class="brand-logo" data-src="https://media.getmood.io/warehouse/dynamic/264256.svg" alt="טכנודע - המוזיאון הישראלי לרפואה ומדע, חדרה" /></div>
+      <div class="brand-mark" id="brandMark"><span class="brand-fallback">טכנודע</span><img class="brand-logo" src="https://media.getmood.io/warehouse/dynamic/264256.svg" data-src="https://media.getmood.io/warehouse/dynamic/264256.svg" alt="לוגו טכנודע" onerror="this.style.display='none';this.previousElementSibling.style.display='block'" /></div>
       <div class="brand-copy">
         <h1>מערכת ניהול חוגי אחר הצהריים – תשפ"ז</h1>
         <div class="sub">מחובר ישירות לגיליון "תשפז" · <span id="refreshStatus">טוען נתונים…</span></div>
