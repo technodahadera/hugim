@@ -23,7 +23,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 .dashboard-grid{display:grid;grid-template-columns:1.45fr 1fr .75fr;gap:14px;margin-bottom:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:19px;margin:14px 0;box-shadow:var(--shadow)}.dashboard-grid .panel{margin:0}.panel h2{margin:0 0 15px;font-size:20px;color:var(--ink)}.panel h3{margin:0 0 8px;color:var(--ink)}
 .chart-box{display:flex;align-items:center;gap:22px;min-height:230px}.pie{width:190px;height:190px;border-radius:50%;flex:0 0 auto;background:#e9edef;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}.donut{position:relative}.donut:after{content:"";position:absolute;inset:38px;background:#fff;border-radius:50%;box-shadow:0 0 0 1px #edf0f2}.donut-center{position:absolute;z-index:2;text-align:center;pointer-events:none}.donut-wrap{position:relative;display:grid;place-items:center;flex:0 0 auto}.donut-center strong{display:block;font-size:28px;color:var(--ink)}.donut-center span{font-size:12px;color:var(--muted)}
 .legend{display:grid;gap:8px;flex:1;min-width:180px}.legend-row{display:grid;grid-template-columns:13px 1fr auto;gap:8px;align-items:center;font-size:14px}.legend-dot{width:11px;height:11px;border-radius:3px}.legend-count{font-weight:800;color:var(--ink);white-space:nowrap}.legend-pct{color:var(--muted);font-size:12px;margin-inline-start:5px}.chart-loading{width:100%;padding:38px 10px;text-align:center;color:var(--muted)}
-.summary-strip{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:14px;margin-bottom:14px}.total-students-card{background:linear-gradient(135deg,#fff,#eef9fd);border:1px solid var(--line);border-radius:18px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px}.total-students-card .total-num{font-size:48px;font-weight:900;color:var(--blue-dark);line-height:1}.total-students-card .total-copy strong{display:block;font-size:18px;color:var(--ink)}.total-students-card .total-copy span{display:block;margin-top:5px;color:var(--muted);font-size:13px}.metric-card{height:100%;min-height:230px;background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.metric-card .metric-num{font-size:54px;font-weight:900;color:var(--pink);line-height:1}.metric-card .metric-title{font-weight:800;font-size:17px;margin-top:10px;color:var(--ink)}.metric-card .metric-note{font-size:13px;color:var(--muted);margin:6px 0 15px}.link-btn{border:0;background:transparent;color:var(--blue-dark);font-weight:800;cursor:pointer;padding:7px 10px;border-radius:8px}.link-btn:hover{background:#eef8fc}
+.summary-strip{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px;margin-bottom:14px}.total-students-card{background:linear-gradient(135deg,#fff,#eef9fd);border:1px solid var(--line);border-radius:18px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px}.total-students-card .total-num{font-size:48px;font-weight:900;color:var(--blue-dark);line-height:1}.total-students-card .total-copy strong{display:block;font-size:18px;color:var(--ink)}.total-students-card .total-copy span{display:block;margin-top:5px;color:var(--muted);font-size:13px}.metric-card{height:100%;min-height:230px;background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.metric-card .metric-num{font-size:54px;font-weight:900;color:var(--pink);line-height:1}.metric-card .metric-title{font-weight:800;font-size:17px;margin-top:10px;color:var(--ink)}.metric-card .metric-note{font-size:13px;color:var(--muted);margin:6px 0 15px}.link-btn{border:0;background:transparent;color:var(--blue-dark);font-weight:800;cursor:pointer;padding:7px 10px;border-radius:8px}.link-btn:hover{background:#eef8fc}
 .hidden{display:none!important}.below-list{margin-top:14px}.below-list .panel{border-right:4px solid var(--pink)}
 .day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.day-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.day-card h3{margin:0 0 8px}.bar{height:8px;background:#eef1f3;border-radius:99px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}.warnline{border-right:4px solid var(--pink);background:#fff5f8;padding:10px 12px;border-radius:8px;margin:7px 0}
 .filters{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:14px}select,input{width:100%;padding:11px;border:1px solid #cfd7dc;border-radius:10px;background:white;font:inherit;color:var(--text)}select:focus,input:focus{outline:2px solid #bfe6f7;border-color:var(--blue)}.btn{border:0;background:var(--blue-dark);color:white;padding:11px 15px;border-radius:10px;cursor:pointer;font-weight:700}
@@ -56,13 +56,17 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
   <section id="dashboard" class="view active">
     <div class="summary-strip">
       <div class="total-students-card">
-        <div class="total-num" id="totalStudentsCount">—</div>
-        <div class="total-copy"><strong>סך כל התלמידים בכל הקטגוריות</strong><span id="totalStudentsNote">הנתון יוצג לאחר טעינת המערכת</span></div>
+        <div class="total-num" id="totalCoursesCount">—</div>
+        <div class="total-copy"><strong>סך כל החוגים בכל הקטגוריות</strong><span id="totalCoursesNote">כל משבצת חוג בלשונית תשפז נספרת פעם אחת</span></div>
+      </div>
+      <div class="total-students-card">
+        <div class="total-num" id="estimatedStudentsCount">—</div>
+        <div class="total-copy"><strong>הערכת מספר תלמידים*</strong><span id="estimatedStudentsNote">הנתון יוצג לאחר טעינת המערכת</span></div>
       </div>
     </div>
     <div class="dashboard-grid">
       <div class="panel">
-        <h2>חלוקת תלמידים לפי סוג אוכלוסייה</h2>
+        <h2>חלוקת חוגים לפי סוג אוכלוסייה</h2>
         <div id="populationChart" class="chart-box"><div class="chart-loading">הגרף יוצג לאחר טעינת הנתונים</div></div>
       </div>
       <div class="panel">
@@ -176,22 +180,23 @@ function makePieData(items,labelFn){
   return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
 
-const STUDENT_DASHBOARD_EXCLUDED_POPULATIONS=new Set(['מצטייני יישוב']);
-
-function dashboardStudentCount(r){
-  const population=populationOf(r);
-  if(STUDENT_DASHBOARD_EXCLUDED_POPULATIONS.has(population)) return null;
-  return studentCount(r);
+function uniqueSourceRecords(items){
+  const seen=new Set();
+  return items.filter(r=>{
+    // כל תא בלשונית תשפז מייצג כיתה/שיבוץ אחד ונכנס לחישוב פעם אחת בלבד.
+    const key=r.source_cell || [r.day,r.time,r.floor,r.room,r.raw].join('|');
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
-function makePopulationStudentData(items){
+function makePopulationCourseData(items){
   const totals={};
-  items.forEach(r=>{
+  uniqueSourceRecords(items).forEach(r=>{
     const k=populationOf(r);
     if(k==='אחר') return;
-    if(!(k in totals)) totals[k]=0;
-    const n=dashboardStudentCount(r);
-    if(n!==null) totals[k]+=n;
+    totals[k]=(totals[k]||0)+1;
   });
   return Object.entries(totals).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'he'));
 }
@@ -308,26 +313,29 @@ function renderDashboard(){
   const missing=data.filter(x=>x.status==='חסר מורה');
   const review=data.filter(x=>x.status==='לבדיקה');
 
-  const populations=makePopulationStudentData(data);
-  renderPie('populationChart',populations,false,'','תלמידים');
+  const sourceRows=uniqueSourceRecords(data);
+  const populationRows=sourceRows.filter(r=>populationOf(r)!=='אחר');
+  const populations=makePopulationCourseData(populationRows);
+  renderPie('populationChart',populations,false,'','חוגים');
 
-  const rowsWithStudentCount=data.filter(r=>dashboardStudentCount(r)!==null);
-  const totalStudents=rowsWithStudentCount.reduce((sum,r)=>sum+dashboardStudentCount(r),0);
-  const rowsMissingStudentCount=data.filter(r=>{
-    const population=populationOf(r);
-    return population!=='אחר' && !STUDENT_DASHBOARD_EXCLUDED_POPULATIONS.has(population) && dashboardStudentCount(r)===null;
-  });
-  document.getElementById('totalStudentsCount').textContent=totalStudents.toLocaleString('he-IL');
-  const excludedNote='מצטייני יישוב מוצג כ־0 ואינו נכלל בסכום — טרם שובצו תלמידים';
-  document.getElementById('totalStudentsNote').textContent=rowsMissingStudentCount.length
-    ? `${excludedNote} · ${rowsMissingStudentCount.length} כיתות נוספות ללא מספר תלמידים אינן נכללות בסכום`
-    : excludedNote;
+  const totalCourses=populationRows.length;
+  document.getElementById('totalCoursesCount').textContent=totalCourses.toLocaleString('he-IL');
+  document.getElementById('totalCoursesNote').textContent='כל משבצת חוג בלשונית תשפז נספרת פעם אחת';
+
+  const rowsWithStudentCount=populationRows.filter(r=>studentCount(r)!==null);
+  const totalCourseEnrollments=rowsWithStudentCount.reduce((sum,r)=>sum+studentCount(r),0);
+  const estimatedStudents=Math.round(totalCourseEnrollments/2);
+  const missingCountRows=populationRows.length-rowsWithStudentCount.length;
+  document.getElementById('estimatedStudentsCount').textContent='כ־'+estimatedStudents.toLocaleString('he-IL');
+  document.getElementById('estimatedStudentsNote').textContent=
+    `* הערכה בלבד: סכום התלמידים במשבצות שבהן הוזן מספר (${totalCourseEnrollments.toLocaleString('he-IL')}) חלקי 2, בהנחה שכל תלמיד משתתף בממוצע בשני חוגים`+
+    (missingCountRows?` · ${missingCountRows} חוגים ללא מספר תלמידים אינם נכללים בהערכה`:'');
 
   const assigned=active.filter(x=>Array.isArray(x.teachers)&&x.teachers.length>0).length;
   const unassigned=active.length-assigned;
   renderPie('teacherChart',[['עם שיבוץ מורה',assigned],['ללא שיבוץ מורה',unassigned]],true,'כיתות פעילות');
 
-  const under11=active.filter(x=>populationOf(x)==='חוגים'&&studentCount(x)!==null&&studentCount(x)<11);
+  const under11=uniqueSourceRecords(active).filter(x=>populationOf(x)==='חוגים'&&studentCount(x)!==null&&studentCount(x)<11);
   document.getElementById('under11Count').textContent=under11.length;
   document.getElementById('under11Table').innerHTML=table(under11);
 
