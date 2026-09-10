@@ -272,14 +272,16 @@ function marketingGrade(r){
   // חוגים ששמם מגדיר ישירות את שכבת הגיל.
   if(/^מדע\s+לטף\s+א'?$/i.test(course)) return "א'";
   if(/^מדע\s+לטף\s+ב'?$/i.test(course)) return "ב'";
-  if(/^חידות\s+וחדרי\s+בריחה$/i.test(course)) return "ד'-ה'";
+  // גם "חדרי בריחה" וגם "חידות וחדרי בריחה" מיועדים לכיתות ד'-ה'.
+  if(/^(?:חידות\s*ו)?חדרי\s+בריחה$/i.test(course)) return "ד'-ה'";
 
   const text=((r.group||'')+'\n'+(r.raw||'')).replace(/[״׳]/g,"'");
   if(/(?:^|\n)\s*גן(?:\s|$)/m.test(text)) return 'גן';
   const cls='אבגדהוזחט';
   let m=text.match(new RegExp('כיתה\\s+(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)"));
   if(m) return m[1].replace(/\s+/g,'');
-  m=text.match(new RegExp('(?:מצטייני\\s*ישוב|מצטייני\\s*יישוב|מצטיינים|חוגים|מצוינות|אפיקים\\s*להצלחה)\\s*(?:-|–|:)?\\s*(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)"));
+  // חיפוש שכבה אחרי שם אוכלוסייה מוגבל לאותה שורה, כדי שלא לפרש את האות הראשונה של שם החוג ככיתה.
+  m=text.match(/^(?:מצטייני[ \t]*ישוב|מצטייני[ \t]*יישוב|מצטיינים|חוגים|מצוינות|אפיקים[ \t]*להצלחה)[ \t]*(?:-|–|:)?[ \t]*([אבגדהוזחט]'?(?:[ \t]*[-+][ \t]*[אבגדהוזחט]'?)?)[ \t]*$/m);
   if(m) return m[1].replace(/\s+/g,'');
   const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   for(const line of lines){
