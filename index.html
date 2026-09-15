@@ -103,7 +103,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <div id="studentAnomalyCard" class="metric-card">
         <div class="metric-num" id="studentAnomalyCount">—</div>
         <div class="metric-title">כיתות עם חריגות במספר תלמידים</div>
-        <div class="metric-note">כל הכיתות הפעילות · פחות מ־11 או יותר מ־24 תלמידים</div>
+        <div class="metric-note">כל הכיתות הפעילות · פחות מ־11 או מעל קיבולת החוג</div>
         <div class="muted" id="studentAnomalyBreakdown">הפירוט יוצג לאחר טעינת הנתונים</div>
         <button class="link-btn" id="toggleStudentAnomalies" type="button">הצג את רשימת הכיתות החריגות</button>
       </div>
@@ -114,7 +114,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <div id="under11Table"></div>
       </div>
       <div class="panel">
-        <h2>כיתות מעל 24 תלמידים</h2>
+        <h2>כיתות מעל קיבולת החוג</h2>
         <div id="over24Table"></div>
       </div>
     </div>
@@ -301,6 +301,18 @@ function marketingCourseName(r){
   return course;
 }
 
+function marketingCapacity(r){
+  const course=marketingCourseName(r)
+    .replace(/[״׳]/g,"'")
+    .replace(/\s+/g,' ')
+    .trim();
+  if(/^מדע בסיפור$/i.test(course)) return 18;
+  if(/^מדע לטף א'?$/i.test(course)) return 20;
+  if(/^מדע לטף ב'?$/i.test(course)) return 20;
+  if(/^(?:לגו רובוטי|מיקרוביט|FLL)$/i.test(course)) return 17;
+  return 24;
+}
+
 function isMarketingCourseRow(r){
   const pop=populationOf(r);
   if(pop==='אחר') return false;
@@ -317,7 +329,8 @@ function marketingBaseRows(){
     if(pop && p!==pop) return false;
     if(q){
       const n=studentCount(r);
-      const remaining=n===null?'':24-n;
+      const cap=marketingCapacity(r);
+      const remaining=n===null?'':cap-n;
       const hay=[marketingCourseName(r),marketingGrade(r),r.day,r.time,p,r.group,n??'',remaining].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
@@ -332,7 +345,7 @@ function marketingFilterValue(r,key){
   if(key==='day') return r.day||'';
   if(key==='time') return r.time||'';
   if(key==='enrolled') return n===null?'__missing__':String(n);
-  if(key==='remaining') return n===null?'__missing__':String(24-n);
+  if(key==='remaining') return n===null?'__missing__':String(marketingCapacity(r)-n);
   return '';
 }
 
@@ -343,7 +356,7 @@ function marketingSortValue(r,key){
   if(key==='day') return dayOrder.indexOf(r.day);
   if(key==='time') return r.time||'';
   if(key==='enrolled') return n;
-  if(key==='remaining') return n===null?null:24-n;
+  if(key==='remaining') return n===null?null:marketingCapacity(r)-n;
   return '';
 }
 
@@ -430,11 +443,12 @@ function marketingTable(rows){
   }
   for(const r of rows){
     const n=studentCount(r);
-    const remaining=n===null?null:24-n;
+    const cap=marketingCapacity(r);
+    const remaining=n===null?null:cap-n;
     const rowClass=remaining!==null&&remaining>=12?'marketing-priority-high':remaining!==null&&remaining>=8?'marketing-priority-medium':'';
     const remClass=remaining!==null&&remaining>=12?'high':remaining!==null&&remaining>=8?'medium':'';
     const capCls=remaining!==null&&remaining<0?'capacity-warn':'capacity-ok';
-    h+=`<tr class="${rowClass}"><td><strong>${esc(marketingCourseName(r))}</strong></td><td>${esc(marketingGrade(r))}</td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${n===null?'—':n}</td><td>24</td><td class="${capCls}"><span class="marketing-remaining ${remClass}">${remaining===null?'—':remaining}</span></td></tr>`;
+    h+=`<tr class="${rowClass}"><td><strong>${esc(marketingCourseName(r))}</strong></td><td>${esc(marketingGrade(r))}</td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${n===null?'—':n}</td><td>${cap}</td><td class="${capCls}"><span class="marketing-remaining ${remClass}">${remaining===null?'—':remaining}</span></td></tr>`;
   }
   return h+'</tbody></table></div>';
 }
@@ -472,7 +486,8 @@ function exportMarketingCsv(){
   const header=['שם החוג','גיל / כיתה','יום','שעה','מספר תלמידים שנרשמו','קיבולת מלאה','מקום נותר'];
   const csvRows=[header,...rows.map(r=>{
     const n=studentCount(r);
-    return [marketingCourseName(r),marketingGrade(r),r.day,r.time,n===null?'':n,24,n===null?'':24-n];
+    const cap=marketingCapacity(r);
+    return [marketingCourseName(r),marketingGrade(r),r.day,r.time,n===null?'':n,cap,n===null?'':cap-n];
   })];
   const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
   const csv='\ufeff'+csvRows.map(row=>row.map(quote).join(',')).join('\r\n');
@@ -630,7 +645,8 @@ function studentAnomalyTable(rows){
   let h='<div class="table-wrap"><table><thead><tr><th>חריגה</th><th>יום</th><th>שעה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
   for(const r of rows){
     const n=studentCount(r);
-    const anomaly=n<11?'מתחת ל־11':'מעל 24';
+    const cap=marketingCapacity(r);
+    const anomaly=n<11?'מתחת ל־11':`מעל קיבולת (${cap})`;
     h+=`<tr><td><strong>${anomaly}</strong></td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${n??'—'}</td><td>${badge(r.status)}</td></tr>`;
   }
   return h+'</tbody></table></div>';
@@ -678,7 +694,7 @@ function renderDashboard(){
   // חריגות במספר תלמידים: כל הכיתות הפעילות מכל סוגי האוכלוסייה שבהן קיים מספר תלמידים.
   const classesWithStudentCount=activeSource.filter(x=>studentCount(x)!==null);
   const under11=classesWithStudentCount.filter(x=>studentCount(x)<11);
-  const over24=classesWithStudentCount.filter(x=>studentCount(x)>24);
+  const over24=classesWithStudentCount.filter(x=>studentCount(x)>marketingCapacity(x));
   const studentAnomalies=[...under11,...over24].sort((a,b)=>{
     const da=dayOrder.indexOf(a.day), db=dayOrder.indexOf(b.day);
     if(da!==db) return da-db;
@@ -687,13 +703,13 @@ function renderDashboard(){
   });
   document.getElementById('studentAnomalyCount').textContent=studentAnomalies.length;
   document.getElementById('studentAnomalyBreakdown').textContent=
-    `${under11.length} מתחת ל־11 · ${over24.length} מעל 24`;
+    `${under11.length} מתחת ל־11 · ${over24.length} מעל קיבולת`;
   document.getElementById('under11Table').innerHTML=under11.length
     ? studentAnomalyTable(under11)
     : '<div class="empty">אין כרגע כיתות מתחת ל־11 תלמידים.</div>';
   document.getElementById('over24Table').innerHTML=over24.length
     ? studentAnomalyTable(over24)
-    : '<div class="empty">אין כרגע כיתות מעל 24 תלמידים.</div>';
+    : '<div class="empty">אין כרגע כיתות מעל קיבולת החוג.</div>';
 
   let max=Math.max(...dayOrder.map(d=>active.filter(x=>x.day===d).length),1);
   document.getElementById('dayGrid').innerHTML=dayOrder.map(d=>{
