@@ -193,6 +193,51 @@ function badge(s){let c=s==='מאויש'?'ok':s==='חסר מורה'?'missing':s=
 function setStatus(text,isError=false){const el=document.getElementById('refreshStatus');el.textContent=text;el.style.color=isError?'#c83b45':'';}
 function setLoading(on){const b=document.getElementById('refreshBtn');b.disabled=on;b.textContent=on?'טוען נתונים…':'טעינת נתונים מהענן';}
 function unique(arr){return [...new Set(arr.filter(Boolean))];}
+
+// איחוד וריאציות ושמות חלקיים של מורים לשם אחיד.
+const TEACHER_CANONICAL_NAMES=[
+  {name:'יובל וינרב',tokens:['יובל','וינרב']},
+  {name:'עפרי וייס ליפשיץ',tokens:['עפרי','וייס','ליפשיץ']},
+  {name:'תותי עינב וינהאוס',tokens:['תותי','עינב','וינהאוס']}
+];
+
+function cleanTeacherName(name){
+  return String(name??'')
+    .replace(/^\s*מורה\s*[:\-–]?\s*/,'')
+    .replace(/[״”]/g,'"')
+    .replace(/[׳’]/g,"'")
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function canonicalTeacherName(name){
+  const cleaned=cleanTeacherName(name);
+  if(!cleaned) return '';
+  const words=cleaned.split(/[\s,;/|+&]+/).filter(Boolean);
+  const wordSet=new Set(words);
+
+  for(const rule of TEACHER_CANONICAL_NAMES){
+    if(cleaned===rule.name) return rule.name;
+    // מזהה גם שם שמופיע רק בחלקו, למשל "יובל", "וינרב", "עפרי וייס" וכו'.
+    // התנאי שכל המילים שייכות לאותו שם מונע החלפה של שמות אחרים שמכילים טקסט נוסף.
+    if(words.length && words.every(w=>rule.tokens.includes(w)) && words.some(w=>rule.tokens.includes(w))){
+      return rule.name;
+    }
+    // תמיכה במקרה שבו שם מלא הגיע עם סדר מילים שונה.
+    if(rule.tokens.every(t=>wordSet.has(t))) return rule.name;
+  }
+  return cleaned;
+}
+
+function normalizeTeacherRecord(r){
+  const normalized={...r};
+  const sourceTeachers=Array.isArray(r?.teachers)?r.teachers:[];
+  normalized.teachers=unique(sourceTeachers.map(canonicalTeacherName));
+  if(normalized.teachers.length){
+    normalized.teacher_display=normalized.teachers.join(', ');
+  }
+  return normalized;
+}
 function studentCount(r){
   const direct=Number(r?.count);
   if(r?.count!==null&&r?.count!==undefined&&r?.count!==''&&Number.isFinite(direct)) return direct;
@@ -537,8 +582,8 @@ function renderPie(containerId,entries,donut=false,centerLabel='',unitLabel='',s
 
 function applyPayload(payload){
   if(payload&&payload.error)throw new Error(payload.message||'שגיאה לא ידועה');
-  data=payload.records||[];
-  teachers=payload.teachers||[];
+  data=(payload.records||[]).map(normalizeTeacherRecord);
+  teachers=unique([...(payload.teachers||[]).map(canonicalTeacherName),...data.flatMap(r=>Array.isArray(r.teachers)?r.teachers:[])]).sort((a,b)=>a.localeCompare(b,'he'));
   dayOrder=payload.days||dayOrder;
   refillFixedSelect('missingDay',dayOrder);
   refillSelect('missingCourse',unique(data.map(x=>x.course)).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי החוגים');
