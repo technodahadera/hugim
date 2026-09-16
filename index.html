@@ -196,9 +196,9 @@ function unique(arr){return [...new Set(arr.filter(Boolean))];}
 
 // איחוד וריאציות ושמות חלקיים של מורים לשם אחיד.
 const TEACHER_CANONICAL_NAMES=[
-  {name:'יובל וינרב',tokens:['יובל','וינרב']},
-  {name:'עפרי וייס ליפשיץ',tokens:['עפרי','וייס','ליפשיץ']},
-  {name:'תותי עינב וינהאוס',tokens:['תותי','עינב','וינהאוס']}
+  {name:'יובל וינרב',tokens:['יובל','וינרב'],aliases:['ינרב']},
+  {name:'עפרי וייס ליפשיץ',tokens:['עפרי','וייס','ליפשיץ'],aliases:['ייס ליפשיץ','ייס','וייס ליפשיץ']},
+  {name:'תותי עינב וינהאוס',tokens:['תותי','עינב','וינהאוס'],aliases:['ינהוס','וינהוס','עינב וינהוס']}
 ];
 
 function cleanTeacherName(name){
@@ -218,6 +218,7 @@ function canonicalTeacherName(name){
 
   for(const rule of TEACHER_CANONICAL_NAMES){
     if(cleaned===rule.name) return rule.name;
+    if((rule.aliases||[]).includes(cleaned)) return rule.name;
     // מזהה גם שם שמופיע רק בחלקו, למשל "יובל", "וינרב", "עפרי וייס" וכו'.
     // התנאי שכל המילים שייכות לאותו שם מונע החלפה של שמות אחרים שמכילים טקסט נוסף.
     if(words.length && words.every(w=>rule.tokens.includes(w)) && words.some(w=>rule.tokens.includes(w))){
