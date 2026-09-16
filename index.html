@@ -160,7 +160,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <select id="socialProgramSelect" aria-label="בחירת תוכנית חברתית">
           <option value="תוכנית יחד">תוכנית יחד</option>
           <option value="מצוינות">מצוינות</option>
-          <option value="עפים">עפים</option>
+          <option value="אפיקים">אפיקים</option>
           <option value="עופרים">עופרים</option>
         </select>
         <button class="btn" id="printSocialProgram" type="button">הדפס מערכת התוכנית</button>
@@ -289,7 +289,7 @@ function populationOf(r){
   return 'אחר';
 }
 
-const SOCIAL_PROGRAMS=['תוכנית יחד','מצוינות','עפים','עופרים'];
+const SOCIAL_PROGRAMS=['תוכנית יחד','מצוינות','אפיקים','עופרים'];
 
 function socialProgramOf(r){
   const raw=[r?.raw,r?.group,r?.course].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
@@ -297,7 +297,7 @@ function socialProgramOf(r){
   // תוכנית יחד: תומך גם בכתיב "יח\"ד" שמופיע בחלק מהנתונים.
   if(/תכנית\s*יח[\"״]?ד|תוכנית\s*יח[\"״]?ד|תכנית\s*יחד|תוכנית\s*יחד/.test(raw)) return 'תוכנית יחד';
   if(/עופרים/.test(raw)) return 'עופרים';
-  if(/(?:^|[\s,:;()\-–])עפים(?:$|[\s,:;()\-–])/.test(raw)) return 'עפים';
+  if(/אפיקים/.test(raw)) return 'אפיקים';
   // חשוב: מצוינות היא התוכנית החברתית רק ביום ג'. מצטיינים/מצטייני יישוב לא נכללים כאן.
   if(/מצוינות|מצויינות/.test(raw) && r?.day==="יום ג'") return 'מצוינות';
   return '';
