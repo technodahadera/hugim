@@ -407,10 +407,11 @@ function excellenceBandKey(r){
 
 function teacherTimeDisplay(r){
   const original=String(r?.time||'').trim();
-  // במערכות המורים של תוכנית מצוינות מציגים את שעת הרצועה האמיתית:
-  // רצועה ראשונה 14:00, רצועה שנייה 15:10. אם במקור נרשמה למשל 14:30,
-  // מתקנים רק את שעת ההתחלה ומשאירים כל מידע נוסף על שעת הסיום כפי שהוא.
-  if(socialProgramOf(r)==='מצוינות'){
+  const programText=[r?.raw,r?.group,r?.course].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+  // בתכנית מצוינות הרצועות קבועות באופן גורף, ללא תלות בשעה הישנה שנרשמה במקור:
+  // רצועה ראשונה 14:00, רצועה שנייה 15:10.
+  // הזיהוי נעשה ישירות לפי שם התכנית ולא דרך socialProgramOf, כדי שלא יהיה תלוי ביום בשבוע.
+  if(/מצוינות|מצויינות/.test(programText)){
     const band=excellenceBandKey(r);
     if(!original) return band;
     return original.replace(/\d{1,2}:\d{2}/,band);
@@ -1000,7 +1001,7 @@ function teacherTable(rows){
   if(!rows.length)return '<div class="empty">לא נמצאו שיבוצים מתאימים.</div>';
   let h='<div class="table-wrap"><table><thead><tr><th>יום</th><th>שעה</th><th>כיתה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
   for(const r of rows){
-    h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
+    h+=`<tr><td>${esc(r.day)}</td><td>${esc(teacherTimeDisplay(r))}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
   }
   return h+'</tbody></table></div>';
 }
