@@ -227,7 +227,7 @@ function unique(arr){return [...new Set(arr.filter(Boolean))];}
 // איחוד וריאציות ושמות חלקיים של מורים לשם אחיד.
 const TEACHER_CANONICAL_NAMES=[
   {name:'יובל וינרב',tokens:['יובל','וינרב'],aliases:['ינרב']},
-  {name:'עפרי וייס ליפשיץ',tokens:['עפרי','וייס','ליפשיץ'],aliases:['ייס ליפשיץ','ייס','וייס ליפשיץ']},
+  {name:'עופרי וייס ליפשיץ',tokens:['עופרי','עפרי','וייס','ליפשיץ'],aliases:['עפרי וייס ליפשיץ','עופרי וייס ליפשיץ','עפרי וייס','עופרי וייס','וייס ליפשיץ','ייס ליפשיץ','ייס']},
   {name:'תותי עינב וינהאוס',tokens:['תותי','עינב','וינהאוס'],aliases:['ינהאוס','ינהוס','וינהוס','עינב ינהאוס','עינב וינהוס']}
 ];
 
@@ -260,10 +260,28 @@ function canonicalTeacherName(name){
   return cleaned;
 }
 
+function isOfrimMadaLeToRow(r){
+  const text=[r?.course,r?.group,r?.raw]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/[״”"׳’']/g,'')
+    .replace(/\s+/g,' ')
+    .trim();
+  return r?.day==="יום ד'" && /מדע\s*לתו/.test(text);
+}
+
 function normalizeTeacherRecord(r){
   const normalized={...r};
   const sourceTeachers=Array.isArray(r?.teachers)?r.teachers:[];
   normalized.teachers=unique(sourceTeachers.map(canonicalTeacherName));
+
+  // עופרים: בקבצים קיימות שתי צורות כתיבה לשם עופרי/עפרי וייס ליפשיץ.
+  // בנוסף, "מדע לת״ו" ביום ד' הוא שיבוץ של עופרים; אם המורה לא זוהה במקור,
+  // משייכים אותו לעופרי כדי שהשיבוץ יופיע במערכת האישית שלה.
+  if(isOfrimMadaLeToRow(normalized) && normalized.teachers.length===0){
+    normalized.teachers=['עופרי וייס ליפשיץ'];
+  }
+
   if(normalized.teachers.length){
     normalized.teacher_display=normalized.teachers.join(', ');
   }
@@ -304,7 +322,7 @@ function socialProgramOf(r){
   if(!raw) return '';
   // תוכנית יחד: תומך גם בכתיב "יח\"ד" שמופיע בחלק מהנתונים.
   if(/תכנית\s*יח[\"״]?ד|תוכנית\s*יח[\"״]?ד|תכנית\s*יחד|תוכנית\s*יחד/.test(raw)) return 'תוכנית יחד';
-  if(/עופרים/.test(raw)) return 'עופרים';
+  if(/עופרים/.test(raw) || isOfrimMadaLeToRow(r)) return 'עופרים';
   if(/אפיקים/.test(raw)) return 'אפיקים';
   // חשוב: מצוינות היא התוכנית החברתית רק ביום ג'. מצטיינים/מצטייני יישוב לא נכללים כאן.
   if(/מצוינות|מצויינות/.test(raw) && r?.day==="יום ג'") return 'מצוינות';
@@ -374,7 +392,107 @@ function excellenceBandKey(r){
   return Math.abs(mins-first)<=Math.abs(mins-second)?'14:00':'15:10';
 }
 
+function afikimText(r){
+  return [r?.course,r?.group,r?.raw].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+}
+
+function afikimMondayTrack(r){
+  const text=afikimText(r);
+  if(/חוקרים\s*דיגיטליים/.test(text)) return 'חוקרים דיגיטליים';
+  if(/גרפיקה\s*(?:ו|ו-|\+|\/)?\s*סייבר|סייבר\s*(?:ו|ו-|\+|\/)?\s*גרפיקה/.test(text)) return 'גרפיקה וסייבר';
+  return '';
+}
+
+function afikimWednesdayTrack(r){
+  const grade=String(marketingGrade(r)||'')
+    .replace(/[״”׳’']/g,'')
+    .replace(/[–—]/g,'-')
+    .replace(/\s+/g,'');
+  if(/^ב[-+]ג$/.test(grade)) return "ב'-ג'";
+  if(/^ג[-+]ד$/.test(grade)) return "ג'-ד'";
+
+  const text=afikimText(r)
+    .replace(/[״”׳’']/g,'')
+    .replace(/[–—]/g,'-')
+    .replace(/\s+/g,' ');
+  if(/(?:כית(?:ה|ות)\s*)?ב\s*[-+]\s*ג/.test(text)) return "ב'-ג'";
+  if(/(?:כית(?:ה|ות)\s*)?ג\s*[-+]\s*ד/.test(text)) return "ג'-ד'";
+  return '';
+}
+
+function afikimSlotHtml(r,{fixedCourse='',fixedGrade=''}={}){
+  if(!r){
+    return '<div class="social-manager-slot"><div class="social-manager-course">לא נמצא שיבוץ במקור</div></div>';
+  }
+  const n=studentCount(r);
+  const course=fixedCourse||socialCourseLabel(r);
+  const grade=fixedGrade||marketingGrade(r);
+  const gradeHtml=grade&&grade!=='—'?`<div class="social-manager-grade">${esc(fixedGrade?'כיתות '+fixedGrade:`כיתה ${grade}`)}</div>`:'';
+  return `<div class="social-manager-slot"><div class="social-manager-course">${esc(course)}</div><div class="social-manager-teacher">${esc(r.teacher_display||'ללא מורה')}</div>${gradeHtml}<div class="social-manager-room">${esc(socialManagerLocation(r))}</div><div class="social-manager-count">${n===null?'מספר ילדים לא הוזן':esc(n)+' ילדים'}</div></div>`;
+}
+
+function takeAfikimRow(pool,predicate){
+  const idx=pool.findIndex(predicate);
+  if(idx<0) return null;
+  return pool.splice(idx,1)[0];
+}
+
+function afikimManagerView(rows){
+  if(!rows.length) return '<div class="social-manager-empty">לא נמצאו במקור הנתונים שיבוצים עבור התוכנית שנבחרה.</div>';
+  let h='<div class="social-manager">';
+  const handled=new Set();
+
+  const monday=rows.filter(r=>r.day==="יום ב'");
+  if(monday.length){
+    const pool=monday.slice();
+    let digital=takeAfikimRow(pool,r=>afikimMondayTrack(r)==='חוקרים דיגיטליים');
+    let graphics=takeAfikimRow(pool,r=>afikimMondayTrack(r)==='גרפיקה וסייבר');
+    if(!digital && pool.length) digital=pool.shift();
+    if(!graphics && pool.length) graphics=pool.shift();
+    [digital,graphics].filter(Boolean).forEach(r=>handled.add(r));
+    h+=`<section class="social-manager-day"><h3 class="social-manager-day-title">יום ב'</h3>`+
+      `<div class="social-manager-row"><div class="social-manager-time">13:45–15:00<span class="social-manager-band">2 רצועות מקבילות</span></div><div class="social-manager-slots">`+
+      afikimSlotHtml(digital,{fixedCourse:'חוקרים דיגיטליים'})+
+      afikimSlotHtml(graphics,{fixedCourse:'גרפיקה וסייבר'})+
+      `</div></div></section>`;
+  }
+
+  const wednesday=rows.filter(r=>r.day==="יום ד'");
+  if(wednesday.length){
+    const pool=wednesday.slice();
+    let bg=takeAfikimRow(pool,r=>afikimWednesdayTrack(r)==="ב'-ג'");
+    let gd=takeAfikimRow(pool,r=>afikimWednesdayTrack(r)==="ג'-ד'");
+    if(!bg && pool.length) bg=pool.shift();
+    if(!gd && pool.length) gd=pool.shift();
+    [bg,gd].filter(Boolean).forEach(r=>handled.add(r));
+    h+=`<section class="social-manager-day"><h3 class="social-manager-day-title">יום ד'</h3>`+
+      `<div class="social-manager-row"><div class="social-manager-time">14:45–16:15<span class="social-manager-band">2 רצועות מקבילות</span></div><div class="social-manager-slots">`+
+      afikimSlotHtml(bg,{fixedGrade:"ב'-ג'"})+
+      afikimSlotHtml(gd,{fixedGrade:"ג'-ד'"})+
+      `</div></div></section>`;
+  }
+
+  // אם קיימים במקור שיבוצי אפיקים נוספים, מציגים גם אותם ולא מאבדים מידע.
+  const extra=rows.filter(r=>!handled.has(r) && r.day!=="יום ב'" && r.day!=="יום ד'");
+  if(extra.length){
+    const byDay=new Map();
+    extra.forEach(r=>{const d=r.day||'ללא יום';if(!byDay.has(d))byDay.set(d,[]);byDay.get(d).push(r);});
+    for(const [day,dayRows] of byDay){
+      h+=`<section class="social-manager-day"><h3 class="social-manager-day-title">${esc(day)}</h3>`;
+      const byTime=new Map();
+      dayRows.forEach(r=>{const t=timeStartLabel(r.time);if(!byTime.has(t))byTime.set(t,[]);byTime.get(t).push(r);});
+      for(const [t,slots] of [...byTime.entries()].sort((a,b)=>timeToMinutes(a[0])-timeToMinutes(b[0]))){
+        h+=`<div class="social-manager-row"><div class="social-manager-time">${esc(t)}</div><div class="social-manager-slots">${slots.map(r=>afikimSlotHtml(r)).join('')}</div></div>`;
+      }
+      h+='</section>';
+    }
+  }
+
+  return h+'</div>';
+}
+
 function socialManagerView(rows,program){
+  if(program==='אפיקים') return afikimManagerView(rows);
   if(!rows.length) return '<div class="social-manager-empty">לא נמצאו במקור הנתונים שיבוצים עבור התוכנית שנבחרה.</div>';
   const byDay=new Map();
   for(const r of rows){
@@ -502,7 +620,7 @@ function marketingGrade(r){
   let m=text.match(new RegExp('כיתה\\s+(['+cls+"]'?(?:\\s*[-+]\\s*["+cls+"]'?)?)"));
   if(m) return m[1].replace(/\s+/g,'');
   // חיפוש שכבה אחרי שם אוכלוסייה מוגבל לאותה שורה, כדי שלא לפרש את האות הראשונה של שם החוג ככיתה.
-  m=text.match(/^(?:מצטייני[ \t]*ישוב|מצטייני[ \t]*יישוב|מצטיינים|חוגים|מצוינות|אפיקים[ \t]*להצלחה)[ \t]*(?:-|–|:)?[ \t]*([אבגדהוזחט]'?(?:[ \t]*[-+][ \t]*[אבגדהוזחט]'?)?)[ \t]*$/m);
+  m=text.match(/^(?:מצטייני[ \t]*ישוב|מצטייני[ \t]*יישוב|מצטיינים|חוגים|מצוינות|אפיקים[ \t]*להצלחה|עופרים)[ \t]*(?:-|–|:)?[ \t]*([אבגדהוזחט]'?(?:[ \t]*[-+][ \t]*[אבגדהוזחט]'?)?)[ \t]*$/m);
   if(m) return m[1].replace(/\s+/g,'');
   const lines=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   for(const line of lines){
