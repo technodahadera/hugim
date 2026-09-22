@@ -267,7 +267,9 @@ function isOfrimMadaLeToRow(r){
     .replace(/[״”"׳’']/g,'')
     .replace(/\s+/g,' ')
     .trim();
-  return r?.day==="יום ד'" && /מדע\s*לתו/.test(text);
+  // השיבוץ של "מדע לת״ו" בעופרים מתקיים ביום ד' ברצועה שמתחילה ב-15:10.
+  // בדיקת השעה מונעת שיוך בטעות של קורס בעל שם דומה מתוכנית אחרת.
+  return r?.day==="יום ד'" && timeToMinutes(r?.time)===15*60+10 && /מדע\s*לתו/.test(text);
 }
 
 function normalizeTeacherRecord(r){
@@ -309,7 +311,7 @@ function populationOf(r){
   if(/מצטיינים/.test(s)) return 'מצטיינים';
   if(/חוגים/.test(s)) return 'חוגים';
   if(/חריש/.test(s)) return 'חריש';
-  if(/עופרים/.test(s)) return 'עופרים';
+  if(/עופרים/.test(s) || isOfrimMadaLeToRow(r)) return 'עופרים';
   if(/ימין\s*אורד/.test(s)) return 'ימין אורד';
   if(/יהודים\s*[-–]?\s*ערבים/.test(s)) return 'יהודים–ערבים';
   return 'אחר';
@@ -327,6 +329,17 @@ function socialProgramOf(r){
   // חשוב: מצוינות היא התוכנית החברתית רק ביום ג'. מצטיינים/מצטייני יישוב לא נכללים כאן.
   if(/מצוינות|מצויינות/.test(raw) && r?.day==="יום ג'") return 'מצוינות';
   return '';
+}
+
+function groupProgramDisplay(r){
+  const group=String(r?.group||'').trim();
+  const program=socialProgramOf(r);
+  // עופרים היא תוכנית גם כאשר בשדה הקבוצה במקור לא נכתב במפורש "עופרים".
+  // אם קיים גם ערך קבוצה נוסף, שומרים אותו לצד שם התוכנית ולא מאבדים מידע.
+  if(program==='עופרים' && !/עופרים/.test(group)){
+    return group ? `עופרים · ${group}` : 'עופרים';
+  }
+  return group;
 }
 
 function socialProgramRows(program){
@@ -347,7 +360,7 @@ function socialProgramTable(rows){
   if(!rows.length) return '<div class="empty">לא נמצאו במקור הנתונים שיבוצים עבור התוכנית שנבחרה.</div>';
   let h='<div class="table-wrap"><table><thead><tr><th>יום</th><th>שעה</th><th>כיתה</th><th>קומה</th><th>חדר</th><th>חוג / פעילות</th><th>קבוצה / תוכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
   for(const r of rows){
-    h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
+    h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
   }
   return h+'</tbody></table></div>';
 }
@@ -966,7 +979,7 @@ async function refreshData(showLoading=true){
 function table(rows){
   if(!rows.length)return '<div class="empty">לא נמצאו שיבוצים מתאימים.</div>';
   let h='<div class="table-wrap"><table><thead><tr><th>יום</th><th>שעה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
-  for(const r of rows){h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;}
+  for(const r of rows){h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;}
   return h+'</tbody></table></div>';
 }
 
@@ -974,7 +987,7 @@ function teacherTable(rows){
   if(!rows.length)return '<div class="empty">לא נמצאו שיבוצים מתאימים.</div>';
   let h='<div class="table-wrap"><table><thead><tr><th>יום</th><th>שעה</th><th>כיתה</th><th>קומה</th><th>חדר</th><th>חוג</th><th>קבוצה/תכנית</th><th>מורה/ים</th><th>מספר תלמידים</th><th>סטטוס</th></tr></thead><tbody>';
   for(const r of rows){
-    h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
+    h+=`<tr><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td><strong>${esc(marketingGrade(r))}</strong></td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${studentCount(r)??'—'}</td><td>${badge(r.status)}</td></tr>`;
   }
   return h+'</tbody></table></div>';
 }
@@ -986,7 +999,7 @@ function studentAnomalyTable(rows){
     const n=studentCount(r);
     const cap=marketingCapacity(r);
     const anomaly=n<11?'מתחת ל־11':`מעל קיבולת (${cap})`;
-    h+=`<tr><td><strong>${anomaly}</strong></td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(r.group)}</td><td>${esc(r.teacher_display||'—')}</td><td>${n??'—'}</td><td>${badge(r.status)}</td></tr>`;
+    h+=`<tr><td><strong>${anomaly}</strong></td><td>${esc(r.day)}</td><td>${esc(r.time)}</td><td>${esc(r.floor)}</td><td>${esc(r.room)}</td><td><strong>${esc(r.course)}</strong></td><td>${esc(groupProgramDisplay(r))}</td><td>${esc(r.teacher_display||'—')}</td><td>${n??'—'}</td><td>${badge(r.status)}</td></tr>`;
   }
   return h+'</tbody></table></div>';
 }
