@@ -39,6 +39,10 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 @media(max-width:1150px){.dashboard-charts-grid,.dashboard-secondary-grid{grid-template-columns:1fr 1fr}.chart-box{flex-wrap:wrap}.pie,.pie-wrap{width:165px;height:165px}.day-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-charts-grid,.dashboard-secondary-grid{grid-template-columns:1fr}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:210px}.chart-box{min-height:auto}}
 @media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:175px;height:58px}.chart-box{display:block}.pie,.pie-wrap{margin:0 auto 18px}.legend{min-width:0}.marketing-filter-row th{top:40px}}
+
+.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:14px}.course-teams-summary{color:var(--muted);font-size:13px}.course-teams-grid{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:14px}.course-team-card{background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:16px;padding:17px 18px;box-shadow:var(--shadow);min-height:150px}.course-team-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}.course-team-title{font-size:19px;font-weight:900;color:var(--ink);line-height:1.25}.course-team-meta{font-size:12px;color:var(--muted);white-space:nowrap}.course-team-teachers{display:flex;flex-wrap:wrap;gap:8px}.course-team-teacher{border:1px solid #dbe6eb;background:#fff;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;transition:.15s}.course-team-teacher:hover{border-color:var(--blue);background:#eef9fd;transform:translateY(-1px)}.course-team-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
+@media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}.course-teams-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}}
+@media(max-width:600px){.course-teams-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -56,6 +60,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <button class="tab active" data-view="dashboard">לוח בקרה</button>
       <button class="tab" data-view="missing">חוסרי מורים</button>
       <button class="tab" data-view="teacher">מערכת מורה</button>
+      <button class="tab" data-view="courseTeams">צוותי חוגים</button>
       <button class="tab" data-view="social">תוכניות חברתיות</button>
       <button class="tab" data-view="schedule">מערכת מלאה</button>
       <button class="tab" data-view="marketing">לצרכי שיווק</button>
@@ -158,6 +163,18 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       </div>
       <div id="teacherSummary" class="muted"></div>
       <div id="teacherSchedule"></div>
+    </div>
+  </section>
+
+  <section id="courseTeams" class="view">
+    <div class="panel">
+      <h2>צוותי חוגים</h2>
+      <div class="marketing-note" style="margin-bottom:14px">הצוותים נוצרים אוטומטית מהשיבוצים הפעילים במערכת. כל מורה מופיע פעם אחת בכל סוג חוג שהוא מלמד.</div>
+      <div class="course-teams-toolbar">
+        <input id="courseTeamsSearch" placeholder="חיפוש לפי שם חוג או שם מורה" />
+        <div id="courseTeamsSummary" class="course-teams-summary"></div>
+      </div>
+      <div id="courseTeamsGrid" class="course-teams-grid"></div>
     </div>
   </section>
 
@@ -1007,7 +1024,7 @@ function applyPayload(payload){
   refillSelect('timeFilter',unique(data.map(x=>x.time)).sort(),'כל השעות');
   refillSelect('floorFilter',unique(data.map(x=>x.floor)),'כל הקומות');
   refillSelect('marketingPopulation',unique(uniqueSourceRecords(data).filter(isMarketingCourseRow).map(populationOf).filter(x=>x!=='אחר')).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי האוכלוסייה');
-  renderDashboard();renderMissing();renderTeacher();renderSocial();renderFull();renderMarketing();
+  renderDashboard();renderMissing();renderTeacher();renderCourseTeams();renderSocial();renderFull();renderMarketing();
   setStatus(studentStats.loaded
     ? `עודכן מהגיליונות: ${payload.refreshedAt||'כעת'}`
     : `עודכן גיליון תשפז · נתוני תלמידים אינם זמינים כרגע`);
@@ -1202,6 +1219,64 @@ function renderDashboard(){
   document.getElementById('topMissing').innerHTML=missing.slice(0,12).map(r=>`<div class="warnline"><strong>${esc(r.day)} · ${esc(r.time)} · ${esc(r.room)}</strong><br>${esc(r.course)} ${r.group?'— '+esc(r.group):''}</div>`).join('')+(missing.length>12?`<div class="muted">ועוד ${missing.length-12} שיבוצים — בלשונית "חוסרי מורים".</div>`:'');
 }
 
+function courseTeamTitle(course){
+  const c=String(course||'').trim();
+  if(!c) return 'חוג';
+  if(/^חוגי\s+/.test(c)) return c;
+  return `חוגי ${c}`;
+}
+
+function buildCourseTeams(){
+  const map=new Map();
+  const rows=uniqueSourceRecords(data).filter(r=>{
+    if(r.status==='שריון/תכנית אחרת') return false;
+    const course=marketingCourseName(r);
+    if(!course) return false;
+    const raw=String(r.raw||'');
+    if(/השתלמות מוסדית|צוות מחוננים|מליאה 3 קבוצות|יום הולדת/.test(raw)) return false;
+    return Array.isArray(r.teachers)&&r.teachers.length>0;
+  });
+  for(const r of rows){
+    const course=marketingCourseName(r);
+    if(!map.has(course)) map.set(course,{course,teachers:new Set(),slots:0});
+    const team=map.get(course);
+    team.slots+=1;
+    r.teachers.forEach(t=>{const name=canonicalTeacherName(t);if(name)team.teachers.add(name);});
+  }
+  return [...map.values()].map(x=>({course:x.course,teachers:[...x.teachers].sort((a,b)=>a.localeCompare(b,'he')),slots:x.slots}))
+    .sort((a,b)=>a.course.localeCompare(b.course,'he'));
+}
+
+function openTeacherFromTeam(name){
+  const select=document.getElementById('teacherSelect');
+  if(!select) return;
+  select.value=name;
+  document.querySelectorAll('.tab[data-view]').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  const tab=document.querySelector('.tab[data-view="teacher"]');
+  if(tab) tab.classList.add('active');
+  const view=document.getElementById('teacher');
+  if(view) view.classList.add('active');
+  renderTeacher();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderCourseTeams(){
+  const q=(document.getElementById('courseTeamsSearch')?.value||'').trim().toLowerCase();
+  const all=buildCourseTeams();
+  const teams=all.filter(team=>!q||[team.course,...team.teachers].join(' ').toLowerCase().includes(q));
+  const teacherSet=new Set(all.flatMap(x=>x.teachers));
+  const summary=document.getElementById('courseTeamsSummary');
+  if(summary) summary.textContent=`${all.length} סוגי חוגים · ${teacherSet.size} מורים בצוותי החוגים${q?` · ${teams.length} תוצאות בחיפוש`:''}`;
+  const grid=document.getElementById('courseTeamsGrid');
+  if(!grid) return;
+  if(!teams.length){grid.innerHTML='<div class="course-team-empty">לא נמצאו צוותי חוגים המתאימים לחיפוש.</div>';return;}
+  grid.innerHTML=teams.map(team=>{
+    const buttons=team.teachers.map(name=>`<button type="button" class="course-team-teacher" data-team-teacher="${esc(name)}" title="פתח מערכת מורה">${esc(name)}</button>`).join('');
+    return `<div class="course-team-card"><div class="course-team-head"><div class="course-team-title">${esc(courseTeamTitle(team.course))}</div><div class="course-team-meta">${team.teachers.length} מורים · ${team.slots} שיבוצים</div></div><div class="course-team-teachers">${buttons}</div></div>`;
+  }).join('');
+}
+
 function renderMissing(){let d=document.getElementById('missingDay').value,t=document.getElementById('missingType').value,c=document.getElementById('missingCourse').value,q=document.getElementById('missingSearch').value.trim().toLowerCase();let rows=data.filter(x=>(x.status==='חסר מורה'||x.status==='לבדיקה')&&(!d||x.day===d)&&(!t||x.status===t)&&(!c||x.course===c)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('missingTable').innerHTML=table(rows);}
 function resetMissing(){document.getElementById('missingDay').value='';document.getElementById('missingType').value='חסר מורה';document.getElementById('missingCourse').value='';document.getElementById('missingSearch').value='';renderMissing();}
 function renderTeacher(){let t=document.getElementById('teacherSelect').value,d=document.getElementById('teacherDay').value;let rows=data.filter(x=>Array.isArray(x.teachers)&&x.teachers.includes(t)&&(!d||x.day===d));document.getElementById('teacherSummary').textContent=t?`${rows.length} שיבוצים נמצאו עבור ${t}${d?' ב'+d:''}.`:'בחר מורה כדי להציג את המערכת שלו.';document.getElementById('teacherSchedule').innerHTML=t?teacherTable(rows):'';}
@@ -1210,6 +1285,8 @@ function renderFull(){let d=document.getElementById('dayFilter').value,t=documen
 document.querySelectorAll('.tab[data-view]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-view]').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active');});
 ['missingDay','missingType','missingCourse','missingSearch'].forEach(id=>document.getElementById(id).addEventListener(id.includes('Search')?'input':'change',renderMissing));
 ['teacherSelect','teacherDay'].forEach(id=>document.getElementById(id).addEventListener('change',renderTeacher));
+document.getElementById('courseTeamsSearch').addEventListener('input',renderCourseTeams);
+document.getElementById('courseTeamsGrid').addEventListener('click',e=>{const b=e.target.closest('[data-team-teacher]');if(b)openTeacherFromTeam(b.dataset.teamTeacher);});
 document.getElementById('socialProgramSelect').addEventListener('change',renderSocial);
 document.querySelectorAll('[data-social-view]').forEach(btn=>btn.addEventListener('click',()=>{
   socialViewMode=btn.dataset.socialView==='manager'?'manager':'table';
