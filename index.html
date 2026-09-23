@@ -40,9 +40,10 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 @media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-charts-grid,.dashboard-secondary-grid{grid-template-columns:1fr}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:210px}.chart-box{min-height:auto}}
 @media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:175px;height:58px}.chart-box{display:block}.pie,.pie-wrap{margin:0 auto 18px}.legend{min-width:0}.marketing-filter-row th{top:40px}}
 
-.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:14px}.course-teams-summary{color:var(--muted);font-size:13px}.course-teams-grid{display:grid;grid-template-columns:repeat(3,minmax(240px,1fr));gap:14px}.course-team-card{background:linear-gradient(145deg,#fff,#f8fbfc);border:1px solid var(--line);border-radius:16px;padding:17px 18px;box-shadow:var(--shadow);min-height:150px}.course-team-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}.course-team-title{font-size:19px;font-weight:900;color:var(--ink);line-height:1.25}.course-team-meta{font-size:12px;color:var(--muted);white-space:nowrap}.course-team-teachers{display:flex;flex-wrap:wrap;gap:8px}.course-team-teacher{border:1px solid #dbe6eb;background:#fff;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;transition:.15s}.course-team-teacher:hover{border-color:var(--blue);background:#eef9fd;transform:translateY(-1px)}.course-team-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
-@media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}.course-teams-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}}
-@media(max-width:600px){.course-teams-grid{grid-template-columns:1fr}}
+#courseTeams,#courseTeams *{font-family:Arial,sans-serif}.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:18px}.course-teams-summary{color:var(--muted);font-size:14px}.course-teams-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:16px}.course-team-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0;box-shadow:var(--shadow);overflow:hidden;min-height:280px}.course-team-title{margin:0;background:linear-gradient(135deg,#eef9fd,#fff);padding:17px 19px;font-size:23px;font-weight:900;color:var(--ink);border-bottom:1px solid var(--line)}.course-team-body{padding:17px 19px 19px}.course-team-section-title{font-size:13px;font-weight:900;color:var(--muted);margin:0 0 8px}.course-team-activities{margin:0 0 17px;padding-right:23px;line-height:1.7;color:var(--ink);font-size:14px}.course-team-activities li{padding-right:3px}.course-team-divider{height:1px;background:var(--line);margin:0 0 15px}.course-team-total{display:inline-block;background:#eef8fc;color:var(--blue-dark);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;margin-bottom:10px}.course-team-teachers{margin:0;padding-right:25px;display:grid;gap:7px}.course-team-teachers li{padding-right:3px;color:var(--text)}.course-team-teacher{border:0;background:transparent;color:var(--blue-dark);padding:2px 0;font-size:14px;font-weight:800;cursor:pointer;text-align:right;font-family:Arial,sans-serif}.course-team-teacher:hover{text-decoration:underline}.course-team-no-teachers{color:var(--muted);font-size:14px;padding:5px 0}.course-team-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
+@media(max-width:1050px){.course-teams-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}}
+@media(max-width:650px){.course-teams-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -169,7 +170,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
   <section id="courseTeams" class="view">
     <div class="panel">
       <h2>צוותי חוגים</h2>
-      <div class="marketing-note" style="margin-bottom:14px">הצוותים נוצרים אוטומטית מהשיבוצים הפעילים במערכת. כל מורה מופיע פעם אחת בכל סוג חוג שהוא מלמד.</div>
+      <div class="marketing-note" style="margin-bottom:14px">מחשבים, רפואה ורובוטיקה מוצגים כצוותים מאוחדים לפי הפעילויות שהוגדרו. יתר החוגים נשארים כצוותים עצמאיים, וכל צוות מציג רשימת מורים ממוספרת וסה״כ אנשי צוות.</div>
       <div class="course-teams-toolbar">
         <input id="courseTeamsSearch" placeholder="חיפוש לפי שם חוג או שם מורה" />
         <div id="courseTeamsSummary" class="course-teams-summary"></div>
@@ -1219,6 +1220,47 @@ function renderDashboard(){
   document.getElementById('topMissing').innerHTML=missing.slice(0,12).map(r=>`<div class="warnline"><strong>${esc(r.day)} · ${esc(r.time)} · ${esc(r.room)}</strong><br>${esc(r.course)} ${r.group?'— '+esc(r.group):''}</div>`).join('')+(missing.length>12?`<div class="muted">ועוד ${missing.length-12} שיבוצים — בלשונית "חוסרי מורים".</div>`:'');
 }
 
+const COURSE_TEAM_GROUPS=[
+  {key:'computers',title:'מחשבים',activities:['בינה מלאכותית','גיימינג','גרפיקה','חוקרים דיגיטליים','סייבר','נחשפים למחשבים']},
+  {key:'medicine',title:'רפואה',activities:['מתחילים','מתקדמים','בכירים']},
+  {key:'robotics',title:'רובוטיקה',activities:['FLL','מיקרוביט']}
+];
+const COURSE_TEAM_EXCLUDED_ACTIVITIES=['בינה בענן','אתגר חברתי','הכוח שבחומר','התכנסות מצוינות','כלכלה וחברה','מסע יצירתי','משחקים בראש גדול'];
+
+function normalizeTeamText(value){
+  return String(value||'')
+    .replace(/[״”]/g,'"')
+    .replace(/[׳’]/g,"'")
+    .replace(/\s+/g,' ')
+    .trim()
+    .toLowerCase();
+}
+
+function courseTeamText(r){
+  return normalizeTeamText([r?.course,r?.group,r?.raw].filter(Boolean).join(' '));
+}
+
+function isExcludedCourseTeamActivity(r){
+  const text=courseTeamText(r);
+  return COURSE_TEAM_EXCLUDED_ACTIVITIES.some(name=>text.includes(normalizeTeamText(name)));
+}
+
+function courseTeamGroupForRow(r){
+  if(isExcludedCourseTeamActivity(r)) return '';
+  const text=courseTeamText(r);
+  if(!text) return '';
+
+  // רובוטיקה: רק FLL ומיקרוביט מאוחדים תחת צוות רובוטיקה.
+  if(/(?:^|\s|[-–—:])(fll)(?:\s|$|[-–—:])/i.test(text) || /מיקרו\s*ביט|מיקרוביט/.test(text)) return 'robotics';
+
+  // רפואה: מתחילים / מתקדמים / בכירים בלבד.
+  if(/רפואה/.test(text) && /מתחילים|מתקדמים|בכירים/.test(text)) return 'medicine';
+
+  // מחשבים: הפעילויות שהוגדרו מאוחדות תחת צוות מחשבים.
+  if(/בינה\s*מלאכותית|גיימינג|גרפיקה|חוקרים\s*דיגיטליים|סייבר|נחשפים\s*למחשבים/.test(text)) return 'computers';
+  return '';
+}
+
 function courseTeamTitle(course){
   const c=String(course||'').trim();
   if(!c) return 'חוג';
@@ -1227,24 +1269,47 @@ function courseTeamTitle(course){
 }
 
 function buildCourseTeams(){
-  const map=new Map();
+  const grouped=new Map(COURSE_TEAM_GROUPS.map(g=>[g.key,{...g,kind:'group',teachers:new Set()}]));
+  const individual=new Map();
   const rows=uniqueSourceRecords(data).filter(r=>{
     if(r.status==='שריון/תכנית אחרת') return false;
-    const course=marketingCourseName(r);
-    if(!course) return false;
+    if(!Array.isArray(r.teachers)||!r.teachers.length) return false;
     const raw=String(r.raw||'');
     if(/השתלמות מוסדית|צוות מחוננים|מליאה 3 קבוצות|יום הולדת/.test(raw)) return false;
-    return Array.isArray(r.teachers)&&r.teachers.length>0;
+    return true;
   });
+
   for(const r of rows){
+    if(isExcludedCourseTeamActivity(r)) continue;
+
+    const groupKey=courseTeamGroupForRow(r);
+    if(groupKey && grouped.has(groupKey)){
+      r.teachers.forEach(t=>{
+        const name=canonicalTeacherName(t);
+        if(name) grouped.get(groupKey).teachers.add(name);
+      });
+      continue;
+    }
+
+    // כל חוג אחר נשמר כצוות עצמאי, כפי שהיה בגרסה הקודמת.
     const course=marketingCourseName(r);
-    if(!map.has(course)) map.set(course,{course,teachers:new Set(),slots:0});
-    const team=map.get(course);
+    if(!course) continue;
+    if(!individual.has(course)) individual.set(course,{kind:'course',course,title:courseTeamTitle(course),teachers:new Set(),slots:0});
+    const team=individual.get(course);
     team.slots+=1;
-    r.teachers.forEach(t=>{const name=canonicalTeacherName(t);if(name)team.teachers.add(name);});
+    r.teachers.forEach(t=>{
+      const name=canonicalTeacherName(t);
+      if(name) team.teachers.add(name);
+    });
   }
-  return [...map.values()].map(x=>({course:x.course,teachers:[...x.teachers].sort((a,b)=>a.localeCompare(b,'he')),slots:x.slots}))
-    .sort((a,b)=>a.course.localeCompare(b.course,'he'));
+
+  const fixed=COURSE_TEAM_GROUPS.map(def=>{
+    const g=grouped.get(def.key);
+    return {...def,kind:'group',teachers:[...g.teachers].sort((a,b)=>a.localeCompare(b,'he'))};
+  });
+  const rest=[...individual.values()].map(x=>({...x,teachers:[...x.teachers].sort((a,b)=>a.localeCompare(b,'he'))}))
+    .sort((a,b)=>a.title.localeCompare(b.title,'he'));
+  return [...fixed,...rest];
 }
 
 function openTeacherFromTeam(name){
@@ -1264,19 +1329,48 @@ function openTeacherFromTeam(name){
 function renderCourseTeams(){
   const q=(document.getElementById('courseTeamsSearch')?.value||'').trim().toLowerCase();
   const all=buildCourseTeams();
-  const teams=all.filter(team=>!q||[team.course,...team.teachers].join(' ').toLowerCase().includes(q));
+  const teams=all.filter(team=>{
+    if(!q) return true;
+    const hay=team.kind==='group'
+      ? [team.title,...team.activities,...team.teachers]
+      : [team.title,team.course,...team.teachers];
+    return hay.join(' ').toLowerCase().includes(q);
+  });
   const teacherSet=new Set(all.flatMap(x=>x.teachers));
   const summary=document.getElementById('courseTeamsSummary');
-  if(summary) summary.textContent=`${all.length} סוגי חוגים · ${teacherSet.size} מורים בצוותי החוגים${q?` · ${teams.length} תוצאות בחיפוש`:''}`;
+  if(summary) summary.textContent=`${all.length} צוותי חוגים · ${teacherSet.size} אנשי צוות ייחודיים${q?` · ${teams.length} צוותים מתאימים לחיפוש`:''}`;
   const grid=document.getElementById('courseTeamsGrid');
   if(!grid) return;
   if(!teams.length){grid.innerHTML='<div class="course-team-empty">לא נמצאו צוותי חוגים המתאימים לחיפוש.</div>';return;}
+
   grid.innerHTML=teams.map(team=>{
-    const buttons=team.teachers.map(name=>`<button type="button" class="course-team-teacher" data-team-teacher="${esc(name)}" title="פתח מערכת מורה">${esc(name)}</button>`).join('');
-    return `<div class="course-team-card"><div class="course-team-head"><div class="course-team-title">${esc(courseTeamTitle(team.course))}</div><div class="course-team-meta">${team.teachers.length} מורים · ${team.slots} שיבוצים</div></div><div class="course-team-teachers">${buttons}</div></div>`;
+    const teachers=team.teachers.length
+      ? `<ol class="course-team-teachers">${team.teachers.map(name=>`<li><button type="button" class="course-team-teacher" data-team-teacher="${esc(name)}" title="פתח מערכת מורה">${esc(name)}</button></li>`).join('')}</ol>`
+      : '<div class="course-team-no-teachers">לא נמצאו כרגע מורים משובצים בצוות.</div>';
+
+    if(team.kind==='group'){
+      const activities=team.activities.map(x=>`<li>${esc(x)}</li>`).join('');
+      return `<article class="course-team-card">
+        <h3 class="course-team-title">${esc(team.title)}</h3>
+        <div class="course-team-body">
+          <div class="course-team-section-title">פעילויות בצוות</div>
+          <ol class="course-team-activities">${activities}</ol>
+          <div class="course-team-divider"></div>
+          <div class="course-team-total">סה״כ ${team.teachers.length} אנשי צוות</div>
+          ${teachers}
+        </div>
+      </article>`;
+    }
+
+    return `<article class="course-team-card">
+      <h3 class="course-team-title">${esc(team.title)}</h3>
+      <div class="course-team-body">
+        <div class="course-team-total">סה״כ ${team.teachers.length} אנשי צוות</div>
+        ${teachers}
+      </div>
+    </article>`;
   }).join('');
 }
-
 function renderMissing(){let d=document.getElementById('missingDay').value,t=document.getElementById('missingType').value,c=document.getElementById('missingCourse').value,q=document.getElementById('missingSearch').value.trim().toLowerCase();let rows=data.filter(x=>(x.status==='חסר מורה'||x.status==='לבדיקה')&&(!d||x.day===d)&&(!t||x.status===t)&&(!c||x.course===c)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('missingTable').innerHTML=table(rows);}
 function resetMissing(){document.getElementById('missingDay').value='';document.getElementById('missingType').value='חסר מורה';document.getElementById('missingCourse').value='';document.getElementById('missingSearch').value='';renderMissing();}
 function renderTeacher(){let t=document.getElementById('teacherSelect').value,d=document.getElementById('teacherDay').value;let rows=data.filter(x=>Array.isArray(x.teachers)&&x.teachers.includes(t)&&(!d||x.day===d));document.getElementById('teacherSummary').textContent=t?`${rows.length} שיבוצים נמצאו עבור ${t}${d?' ב'+d:''}.`:'בחר מורה כדי להציג את המערכת שלו.';document.getElementById('teacherSchedule').innerHTML=t?teacherTable(rows):'';}
