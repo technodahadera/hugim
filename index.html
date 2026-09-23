@@ -170,7 +170,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
   <section id="courseTeams" class="view">
     <div class="panel">
       <h2>צוותי חוגים</h2>
-      <div class="marketing-note" style="margin-bottom:14px">מחשבים, רפואה ורובוטיקה מוצגים כצוותים מאוחדים לפי הפעילויות שהוגדרו. יתר החוגים נשארים כצוותים עצמאיים, וכל צוות מציג רשימת מורים ממוספרת וסה״כ אנשי צוות.</div>
+      <div class="marketing-note" style="margin-bottom:14px">חוגי מחשבים, רפואה כללי וחוגי רובוטיקה מוצגים כצוותים מאוחדים לפי הפעילויות שהוגדרו. יתר החוגים נשארים כצוותים עצמאיים, וכל צוות מציג רשימת מורים ממוספרת וסה״כ אנשי צוות.</div>
       <div class="course-teams-toolbar">
         <input id="courseTeamsSearch" placeholder="חיפוש לפי שם חוג או שם מורה" />
         <div id="courseTeamsSummary" class="course-teams-summary"></div>
@@ -1221,11 +1221,11 @@ function renderDashboard(){
 }
 
 const COURSE_TEAM_GROUPS=[
-  {key:'computers',title:'מחשבים',activities:['בינה מלאכותית','גיימינג','גרפיקה','חוקרים דיגיטליים','סייבר','נחשפים למחשבים']},
-  {key:'medicine',title:'רפואה',activities:['מתחילים','מתקדמים','בכירים']},
-  {key:'robotics',title:'רובוטיקה',activities:['FLL','מיקרוביט']}
+  {key:'computers',title:'חוגי מחשבים',activities:['בינה מלאכותית','גיימינג','גרפיקס','חוקרים דיגיטליים','סייבר','נחשפים למחשבים']},
+  {key:'medicine',title:'רפואה כללי',activities:['מתחילים','מתקדמים','בכירים']},
+  {key:'robotics',title:'חוגי רובוטיקה',activities:['FLL','מיקרוביט','לגו רובוטי']}
 ];
-const COURSE_TEAM_EXCLUDED_ACTIVITIES=['בינה בענן','אתגר חברתי','הכוח שבחומר','התכנסות מצוינות','כלכלה וחברה','מסע יצירתי','משחקים בראש גדול'];
+const COURSE_TEAM_EXCLUDED_ACTIVITIES=['בינה בענן','אתגר חברתי','הכוח שבחומר','התכנסות','התכנסות מצוינות','כלכלה וחברה','מסע יצירתי','משחקים בראש גדול'];
 
 function normalizeTeamText(value){
   return String(value||'')
@@ -1250,14 +1250,14 @@ function courseTeamGroupForRow(r){
   const text=courseTeamText(r);
   if(!text) return '';
 
-  // רובוטיקה: רק FLL ומיקרוביט מאוחדים תחת צוות רובוטיקה.
-  if(/(?:^|\s|[-–—:])(fll)(?:\s|$|[-–—:])/i.test(text) || /מיקרו\s*ביט|מיקרוביט/.test(text)) return 'robotics';
+  // רובוטיקה: FLL, מיקרוביט ולגו רובוטי מאוחדים תחת חוגי רובוטיקה.
+  if(/(?:^|\s|[-–—:])(fll)(?:\s|$|[-–—:])/i.test(text) || /מיקרו\s*ביט|מיקרוביט|לגו\s*רובוטי/.test(text)) return 'robotics';
 
-  // רפואה: מתחילים / מתקדמים / בכירים בלבד.
-  if(/רפואה/.test(text) && /מתחילים|מתקדמים|בכירים/.test(text)) return 'medicine';
+  // רפואה: כל חוג או תת-תחום שמסומן כרפואה מאוחד תחת רפואה כללי.
+  if(/רפואה/.test(text)) return 'medicine';
 
-  // מחשבים: הפעילויות שהוגדרו מאוחדות תחת צוות מחשבים.
-  if(/בינה\s*מלאכותית|גיימינג|גרפיקה|חוקרים\s*דיגיטליים|סייבר|נחשפים\s*למחשבים/.test(text)) return 'computers';
+  // מחשבים: הפעילויות שהוגדרו, כולל גרפיקה/גרפיקס, מאוחדות תחת חוגי מחשבים.
+  if(/בינה\s*מלאכותית|גיימינג|גרפיק(?:ה|ס)|חוקרים\s*דיגיטליים|סייבר|נחשפים\s*למחשבים/.test(text)) return 'computers';
   return '';
 }
 
