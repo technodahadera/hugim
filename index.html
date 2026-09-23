@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>מערכת ניהול חוגים תשפ"ז | טכנודע</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#44484d;--text:#263238;--muted:#6f7880;--line:#e4e8eb;--card:#fff;--bg:#f7f8f9;
@@ -12,7 +15,7 @@
   --orangebg:#fff6e9;--shadow:0 8px 26px rgba(38,50,56,.08)
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:"Rubik",Arial,"Noto Sans Hebrew",sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:"Rubik",sans-serif;background:var(--bg);color:var(--text)}html,body,body *{font-family:"Rubik",sans-serif!important}
 body:before{content:"";display:block;height:7px;background:linear-gradient(90deg,var(--blue) 0 16.6%,var(--green) 16.6% 33.2%,var(--yellow) 33.2% 49.8%,var(--orange) 49.8% 66.4%,var(--pink) 66.4% 83%,var(--purple) 83%)}
 header{background:#fff;border-bottom:1px solid var(--line);padding:17px 28px;position:sticky;top:0;z-index:10;box-shadow:0 3px 14px rgba(0,0,0,.05)}
 .head{max-width:1500px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
@@ -32,7 +35,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 .social-manager{display:grid;gap:18px}.social-manager-day{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}.social-manager-day-title{margin:0;background:linear-gradient(135deg,#eef9fd,#fff);padding:14px 18px;font-size:20px;color:var(--ink);border-bottom:1px solid var(--line)}.social-manager-row{display:grid;grid-template-columns:132px minmax(0,1fr);direction:rtl;border-bottom:1px solid #edf0f2;min-height:92px}.social-manager-row:last-child{border-bottom:0}.social-manager-time{grid-column:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 8px;font-size:16px;line-height:1.2;text-align:center;font-weight:900;color:var(--blue-dark);background:#f8fbfc;border-left:1px solid var(--line);white-space:nowrap;overflow:visible}.social-manager-slots{grid-column:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;padding:10px;direction:rtl}.social-manager-slot{background:#fff;border:1px solid #dfe6ea;border-radius:12px;padding:12px 13px;min-height:70px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 8px rgba(38,50,56,.05)}.social-manager-course{font-size:15px;font-weight:900;color:var(--ink);line-height:1.25}.social-manager-teacher{font-size:13px;color:#4f5960;margin-top:6px;line-height:1.25}.social-manager-room{font-size:12px;color:var(--blue-dark);margin-top:5px;font-weight:800;line-height:1.25}.social-manager-grade{font-size:12px;color:var(--ink);margin-top:5px;font-weight:800;line-height:1.25}.social-manager-count{font-size:12px;color:var(--muted);margin-top:5px;font-weight:700}.social-manager-band{display:block;font-size:10px;color:var(--muted);font-weight:800;margin-top:5px;white-space:normal;line-height:1.15}.social-manager-empty{padding:26px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
 @media(max-width:900px){.social-program-grid{grid-template-columns:repeat(2,1fr)}.social-manager-slots{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
 @media(max-width:600px){.social-program-grid{grid-template-columns:1fr}.social-toolbar{grid-template-columns:1fr}.social-manager-row{grid-template-columns:112px minmax(0,1fr)}.social-manager-time{font-size:14px;padding:10px 6px}.social-manager-slots{grid-template-columns:1fr}}
-.goal-panel{background:linear-gradient(135deg,#fff,#f5fbfe);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);margin:0 0 16px}.goal-panel h2{margin:0 0 5px;font-size:20px;color:var(--ink)}.goal-sub{color:var(--muted);font-size:13px;margin-bottom:16px}.goal-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:14px}.goal-card{background:#fff;border:1px solid #e5eaed;border-radius:15px;padding:16px 17px}.goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.goal-title{font-weight:800;color:var(--ink)}.goal-numbers{margin-top:4px;color:var(--muted);font-size:13px}.goal-pct{font-size:28px;font-weight:900;color:var(--blue-dark);line-height:1}.goal-track{height:14px;border-radius:999px;background:#edf1f3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}.goal-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .45s ease}.goal-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;font-size:13px;color:var(--muted)}.goal-meta strong{color:var(--ink)}
+.goal-panel{background:linear-gradient(135deg,#fff,#f5fbfe);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);margin:0 0 16px}.goal-panel h2{margin:0 0 5px;font-size:20px;color:var(--ink)}.goal-sub{color:var(--muted);font-size:13px;margin-bottom:16px}.goal-grid{display:grid;grid-template-columns:minmax(280px,1fr);gap:14px}.goal-card{background:#fff;border:1px solid #e5eaed;border-radius:15px;padding:16px 17px}.goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}.goal-title{font-weight:800;color:var(--ink)}.goal-numbers{margin-top:4px;color:var(--muted);font-size:13px}.goal-pct{font-size:28px;font-weight:900;color:var(--blue-dark);line-height:1}.goal-track{height:14px;border-radius:999px;background:#edf1f3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}.goal-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .45s ease}.goal-meta{display:flex;justify-content:space-between;gap:12px;margin-top:9px;font-size:13px;color:var(--muted)}.goal-meta strong{color:var(--ink)}
 .marketing-toolbar{display:grid;grid-template-columns:minmax(220px,320px) 1fr auto;gap:10px;align-items:center;margin-bottom:14px}.capacity-ok{font-weight:700;color:#39751a}.capacity-warn{font-weight:800;color:var(--red)}.marketing-note{color:var(--muted);font-size:13px}.marketing-summary{margin:10px 0 14px;color:var(--muted);font-size:13px}.marketing-table th{vertical-align:top}.marketing-sort-btn{width:100%;border:0;background:transparent;color:inherit;font:inherit;font-weight:800;text-align:right;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px}.marketing-sort-arrow{font-size:11px;opacity:.75}.marketing-filter-row th{top:41px;background:#5a6065;padding:6px;z-index:3}.marketing-filter-row select{padding:7px 8px;border-radius:7px;border:1px solid #858b90;font-size:12px;min-width:105px}.marketing-filter-empty{color:#d8dde0;text-align:center}.marketing-priority-high td{background:#fff4f6}.marketing-priority-medium td{background:#fff9ed}.marketing-priority-high:hover td,.marketing-priority-medium:hover td{background:#f8fbfc}.marketing-remaining{font-weight:900}.marketing-remaining.high{color:var(--pink)}.marketing-remaining.medium{color:#a76814}
 .filters{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:14px}select,input{width:100%;padding:11px;border:1px solid #cfd7dc;border-radius:10px;background:white;font:inherit;color:var(--text)}select:focus,input:focus{outline:2px solid #bfe6f7;border-color:var(--blue)}.btn{border:0;background:var(--blue-dark);color:white;padding:11px 15px;border-radius:10px;cursor:pointer;font-weight:700}
 .table-wrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px;background:white}th{position:sticky;top:0;background:var(--ink);color:white;text-align:right;padding:11px;z-index:2}td{padding:10px 11px;border-bottom:1px solid #edf0f2;vertical-align:top}tr:hover td{background:#f8fbfc}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.ok{color:#39751a;background:var(--greenbg)}.missing{color:var(--red);background:var(--redbg)}.review{color:#96611d;background:var(--orangebg)}.other{color:#586169;background:#f1f3f4}.muted{color:var(--muted);font-size:13px}.empty{padding:28px;text-align:center;color:var(--muted)}
@@ -40,7 +43,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 @media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-charts-grid,.dashboard-secondary-grid{grid-template-columns:1fr}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:210px}.chart-box{min-height:auto}}
 @media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:175px;height:58px}.chart-box{display:block}.pie,.pie-wrap{margin:0 auto 18px}.legend{min-width:0}.marketing-filter-row th{top:40px}}
 
-#courseTeams,#courseTeams *{font-family:Arial,sans-serif}.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:18px}.course-teams-summary{color:var(--muted);font-size:14px}.course-teams-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:16px}.course-team-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0;box-shadow:var(--shadow);overflow:hidden;min-height:280px}.course-team-title{margin:0;background:linear-gradient(135deg,#eef9fd,#fff);padding:17px 19px;font-size:23px;font-weight:900;color:var(--ink);border-bottom:1px solid var(--line)}.course-team-body{padding:17px 19px 19px}.course-team-section-title{font-size:13px;font-weight:900;color:var(--muted);margin:0 0 8px}.course-team-activities{margin:0 0 17px;padding-right:23px;line-height:1.7;color:var(--ink);font-size:14px}.course-team-activities li{padding-right:3px}.course-team-divider{height:1px;background:var(--line);margin:0 0 15px}.course-team-total{display:inline-block;background:#eef8fc;color:var(--blue-dark);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;margin-bottom:10px}.course-team-teachers{margin:0;padding-right:25px;display:grid;gap:7px}.course-team-teachers li{padding-right:3px;color:var(--text)}.course-team-teacher{border:0;background:transparent;color:var(--blue-dark);padding:2px 0;font-size:14px;font-weight:800;cursor:pointer;text-align:right;font-family:Arial,sans-serif}.course-team-teacher:hover{text-decoration:underline}.course-team-no-teachers{color:var(--muted);font-size:14px;padding:5px 0}.course-team-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
+#courseTeams,#courseTeams *{font-family:"Rubik",sans-serif!important}.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:18px}.course-teams-summary{color:var(--muted);font-size:14px}.course-teams-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:16px}.course-team-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0;box-shadow:var(--shadow);overflow:hidden;min-height:280px}.course-team-title{margin:0;background:linear-gradient(135deg,#eef9fd,#fff);padding:17px 19px;font-size:23px;font-weight:900;color:var(--ink);border-bottom:1px solid var(--line)}.course-team-body{padding:17px 19px 19px}.course-team-section-title{font-size:13px;font-weight:900;color:var(--muted);margin:0 0 8px}.course-team-activities{margin:0 0 17px;padding-right:23px;line-height:1.7;color:var(--ink);font-size:14px}.course-team-activities li{padding-right:3px}.course-team-divider{height:1px;background:var(--line);margin:0 0 15px}.course-team-total{display:inline-block;background:#eef8fc;color:var(--blue-dark);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;margin-bottom:10px}.course-team-teachers{margin:0;padding-right:25px;display:grid;gap:7px}.course-team-teachers li{padding-right:3px;color:var(--text)}.course-team-teacher{border:0;background:transparent;color:var(--blue-dark);padding:2px 0;font-size:14px;font-weight:800;cursor:pointer;text-align:right;font-family:"Rubik",sans-serif!important}.course-team-teacher:hover{text-decoration:underline}.course-team-no-teachers{color:var(--muted);font-size:14px;padding:5px 0}.course-team-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
 @media(max-width:1050px){.course-teams-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}}
 @media(max-width:650px){.course-teams-grid{grid-template-columns:1fr}}
@@ -82,23 +85,15 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     </div>
     <div class="goal-panel">
       <h2>התקדמות לעבר היעד השנתי</h2>
-      <div class="goal-sub">מבוסס על הנתונים המעודכנים בלשוניות „תשפז” ו„תלמידים”</div>
+      <div class="goal-sub">יעד שנתי יחיד המבוסס על הנתונים המעודכנים בגיליון „תלמידים”</div>
       <div class="goal-grid">
         <div class="goal-card">
           <div class="goal-head">
-            <div><div class="goal-title">יעד חוגים</div><div class="goal-numbers"><strong id="coursesGoalCurrent">—</strong> מתוך 1,800</div></div>
-            <div class="goal-pct" id="coursesGoalPct">—</div>
-          </div>
-          <div class="goal-track"><div class="goal-fill" id="coursesGoalFill"></div></div>
-          <div class="goal-meta"><span id="coursesGoalRemaining">—</span><span>יעד: <strong>1,800 חוגים</strong></span></div>
-        </div>
-        <div class="goal-card">
-          <div class="goal-head">
-            <div><div class="goal-title">יעד תלמידים</div><div class="goal-numbers"><strong id="studentsGoalCurrent">—</strong> מתוך 900</div></div>
+            <div><div class="goal-title">יעד תלמידים</div><div class="goal-numbers"><strong id="studentsGoalCurrent">—</strong> מתוך 1,560</div></div>
             <div class="goal-pct" id="studentsGoalPct">—</div>
           </div>
           <div class="goal-track"><div class="goal-fill" id="studentsGoalFill"></div></div>
-          <div class="goal-meta"><span id="studentsGoalRemaining">—</span><span>יעד: <strong>900 תלמידים</strong></span></div>
+          <div class="goal-meta"><span id="studentsGoalRemaining">—</span><span>יעד: <strong>1,560 תלמידים</strong></span></div>
         </div>
       </div>
       <div class="marketing-note" style="margin-top:10px">מספר התלמידים נספר לפי תלמידים פעילים וייחודיים בגיליון „תלמידים”, באוכלוסיות שמופיעות במערכת החוגים.</div>
@@ -1177,8 +1172,7 @@ function renderDashboard(){
     document.getElementById('studentPopulationChart').innerHTML='<div class="chart-loading">לא ניתן לטעון כרגע את נתוני התלמידים</div>';
   }
 
-  updateGoalProgress('coursesGoal',totalCourses,1800,false);
-  updateGoalProgress('studentsGoal',exactStudents??0,900,false);
+  updateGoalProgress('studentsGoal',exactStudents??0,1560,false);
 
   // מצב שיבוץ מורים: חלוקה פשוטה של כלל הכיתות הפעילות לכיתות עם מורה וללא מורה.
   const activeSource=uniqueSourceRecords(active);
@@ -1225,7 +1219,7 @@ const COURSE_TEAM_GROUPS=[
   {key:'medicine',title:'רפואה כללי',activities:['מתחילים','מתקדמים','בכירים']},
   {key:'robotics',title:'חוגי רובוטיקה',activities:['FLL','מיקרוביט','לגו רובוטי']}
 ];
-const COURSE_TEAM_EXCLUDED_ACTIVITIES=['בינה בענן','אתגר חברתי','הכוח שבחומר','התכנסות','התכנסות מצוינות','כלכלה וחברה','מסע יצירתי','משחקים בראש גדול'];
+const COURSE_TEAM_EXCLUDED_ACTIVITIES=['בינה בענן','אתגר חברתי','האתגר החברתי','חוגי האתגר החברתי','הכוח שבחומר','התכנסות','התכנסות מצוינות','כלכלה וחברה','מסע יצירתי','משחקים בראש גדול'];
 
 function normalizeTeamText(value){
   return String(value||'')
