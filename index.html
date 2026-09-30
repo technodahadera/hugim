@@ -43,7 +43,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 @media(max-width:900px){.summary-strip{grid-template-columns:1fr}.goal-grid{grid-template-columns:1fr}.marketing-toolbar{grid-template-columns:1fr}.dashboard-charts-grid,.dashboard-secondary-grid{grid-template-columns:1fr}.filters{grid-template-columns:repeat(2,1fr)}.brand-copy{border-right:0;padding-right:0}.brand{width:100%}.brand-logo{width:210px}.chart-box{min-height:auto}}
 @media(max-width:600px){h1{font-size:20px}.filters{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}header{position:static;padding:14px}.brand{align-items:flex-start}.brand-logo{width:175px;height:58px}.chart-box{display:block}.pie,.pie-wrap{margin:0 auto 18px}.legend{min-width:0}.marketing-filter-row th{top:40px}}
 
-#courseTeams,#courseTeams *{font-family:"Rubik",sans-serif!important}.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:18px}.course-teams-summary{color:var(--muted);font-size:14px}.course-teams-grid{display:grid;grid-template-columns:1fr;gap:18px}.course-team-table-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.course-team-table-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 18px;background:linear-gradient(135deg,#eef9fd,#fff);border-bottom:1px solid var(--line)}.course-team-table-head h3{margin:0;font-size:21px;font-weight:900;color:var(--ink)}.course-team-total{display:inline-flex;align-items:center;background:#fff;color:var(--blue-dark);border:1px solid #dcebf2;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;white-space:nowrap}.course-team-table-wrap{margin:0;border:0;border-radius:0;max-height:none;overflow:auto}.course-team-table{min-width:720px}.course-team-table th:nth-child(1){width:29%}.course-team-table th:nth-child(2){width:21%}.course-team-table th:nth-child(3){width:50%}.course-team-teacher{border:0;background:transparent;color:var(--blue-dark);padding:2px 0;font-size:14px;font-weight:800;cursor:pointer;text-align:right;font-family:"Rubik",sans-serif!important}.course-team-teacher:hover{text-decoration:underline}.course-team-day{font-weight:800;color:var(--ink);white-space:nowrap}.course-team-course{font-weight:700;color:var(--text)}.course-team-empty{padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
+#courseTeams,#courseTeams *{font-family:"Rubik",sans-serif!important}.course-teams-toolbar{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:12px;align-items:center;margin-bottom:18px}.course-teams-summary{color:var(--muted);font-size:14px}.course-teams-grid{display:grid;grid-template-columns:1fr;gap:18px}.course-team-table-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.course-team-table-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 18px;background:linear-gradient(135deg,#eef9fd,#fff);border-bottom:1px solid var(--line)}.course-team-table-head h3{margin:0;font-size:21px;font-weight:900;color:var(--ink)}.course-team-total{display:inline-flex;align-items:center;background:#fff;color:var(--blue-dark);border:1px solid #dcebf2;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;white-space:nowrap}.course-team-table-wrap{margin:0;border:0;border-radius:0;max-height:none;overflow:auto}.course-team-table{min-width:820px}.course-team-table th:nth-child(1){width:26%}.course-team-table th:nth-child(2){width:16%}.course-team-table th:nth-child(3){width:42%}.course-team-table th:nth-child(4){width:16%}.course-team-teacher-cell{vertical-align:middle;background:#fbfdfe;border-left:1px solid #edf0f2}.course-team-teacher{border:0;background:transparent;color:var(--blue-dark);padding:2px 0;font-size:15px;font-weight:900;cursor:pointer;text-align:right;font-family:"Rubik",sans-serif!important}.course-team-teacher:hover{text-decoration:underline}.course-team-day{font-weight:800;color:var(--ink);white-space:nowrap}.course-team-course{font-weight:700;color:var(--text)}.course-team-time{font-weight:900;color:var(--blue-dark);white-space:nowrap}.course-team-teacher-cell .muted{display:block;margin-top:5px;font-size:11px}.course-team-empty{padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:14px}
 @media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}.course-team-table-head{align-items:flex-start;flex-direction:column}}
 
 /* תלמידים */
@@ -312,7 +312,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
   <section id="courseTeams" class="view">
     <div class="panel">
       <h2>צוותי חוגים</h2>
-      <div class="marketing-note" style="margin-bottom:14px">חוגי מחשבים, רפואה וחוגי רובוטיקה מוצגים כצוותים מאוחדים. בכל צוות מוצגת טבלה של שם המורה, יום הלימוד והחוג המדויק שהוא מלמד באותו יום.</div>
+      <div class="marketing-note" style="margin-bottom:14px">חוגי מחשבים, רפואה וחוגי רובוטיקה מוצגים כצוותים מאוחדים. כל מורה מופיע פעם אחת, ולצדו כל ימי ההוראה, החוג המדויק והשעה בכל יום.</div>
       <div class="course-teams-toolbar">
         <input id="courseTeamsSearch" placeholder="חיפוש לפי צוות, מורה, יום או חוג" />
         <div id="courseTeamsSummary" class="course-teams-summary"></div>
@@ -1723,14 +1723,13 @@ function decorateExportableTables(root=document){
 
 function courseTeamsAsTable(){
   const table=document.createElement('table');
-  table.innerHTML='<thead><tr><th>צוות / חוג</th><th>שם המורה</th><th>יום</th><th>החוג המדויק</th></tr></thead><tbody></tbody>';
+  table.innerHTML='<thead><tr><th>צוות / חוג</th><th>שם המורה</th><th>יום</th><th>החוג המדויק</th><th>שעה</th></tr></thead><tbody></tbody>';
   const body=table.tBodies[0];
   document.querySelectorAll('#courseTeamsGrid .course-team-table-card').forEach(card=>{
     const teamTitle=card.querySelector('.course-team-table-head h3')?.textContent?.trim()||'';
-    card.querySelectorAll('tbody tr').forEach(src=>{
-      const cells=[...src.cells].map(td=>td.textContent.trim());
+    card.querySelectorAll('tbody tr[data-team-teacher]').forEach(src=>{
       const tr=document.createElement('tr');
-      [teamTitle,...cells].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
+      [teamTitle,src.dataset.teamTeacher||'',src.dataset.teamDay||'',src.dataset.teamCourse||'',src.dataset.teamTime||''].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
       body.appendChild(tr);
     });
   });
@@ -2040,8 +2039,8 @@ function teamExactCourse(r){
 function addCourseTeamEntry(team,teacher,row){
   if(!team.entries) team.entries=[];
   if(!team.entryKeys) team.entryKeys=new Set();
-  const entry={teacher,day:String(row?.day||'—').trim()||'—',course:teamExactCourse(row)};
-  const key=[entry.teacher,entry.day,entry.course].join('|');
+  const entry={teacher,day:String(row?.day||'—').trim()||'—',course:teamExactCourse(row),time:String(row?.time||'—').trim()||'—'};
+  const key=[entry.teacher,entry.day,entry.course,entry.time].join('|');
   if(team.entryKeys.has(key)) return;
   team.entryKeys.add(key);
   team.entries.push(entry);
@@ -2054,7 +2053,9 @@ function sortCourseTeamEntries(entries){
     const da=dayOrder.indexOf(a.day),db=dayOrder.indexOf(b.day);
     const dayA=da<0?999:da,dayB=db<0?999:db;
     if(dayA!==dayB) return dayA-dayB;
-    return a.course.localeCompare(b.course,'he');
+    const byCourse=a.course.localeCompare(b.course,'he');
+    if(byCourse) return byCourse;
+    return String(a.time||'').localeCompare(String(b.time||''),'he');
   });
 }
 
@@ -2127,7 +2128,7 @@ function renderCourseTeams(){
     if(!q) return team;
     const teamMatch=[team.title,...(team.activities||[])].join(' ').toLowerCase().includes(q);
     if(teamMatch) return team;
-    const matchingEntries=(team.entries||[]).filter(entry=>[entry.teacher,entry.day,entry.course].join(' ').toLowerCase().includes(q));
+    const matchingEntries=(team.entries||[]).filter(entry=>[entry.teacher,entry.day,entry.course,entry.time].join(' ').toLowerCase().includes(q));
     return matchingEntries.length?{...team,entries:matchingEntries}:null;
   }).filter(Boolean);
   const teacherSet=new Set(all.flatMap(x=>x.teachers));
@@ -2140,13 +2141,19 @@ function renderCourseTeams(){
   grid.innerHTML=teams.map(team=>{
     const entries=team.entries||[];
     const visibleTeachers=new Set(entries.map(x=>x.teacher));
+    const teacherGroups=new Map();
+    entries.forEach(entry=>{
+      if(!teacherGroups.has(entry.teacher)) teacherGroups.set(entry.teacher,[]);
+      teacherGroups.get(entry.teacher).push(entry);
+    });
     const rows=entries.length
-      ? entries.map(entry=>`<tr>
-          <td><button type="button" class="course-team-teacher" data-team-teacher="${esc(entry.teacher)}" title="פתח מערכת מורה">${esc(entry.teacher)}</button></td>
+      ? [...teacherGroups.entries()].map(([teacher,teacherEntries])=>teacherEntries.map((entry,index)=>`<tr data-team-teacher="${esc(teacher)}" data-team-day="${esc(entry.day)}" data-team-course="${esc(entry.course)}" data-team-time="${esc(entry.time)}">
+          ${index===0?`<td class="course-team-teacher-cell" rowspan="${teacherEntries.length}"><button type="button" class="course-team-teacher" data-team-teacher="${esc(teacher)}" title="פתח מערכת מורה">${esc(teacher)}</button>${teacherEntries.length>1?`<span class="muted">${teacherEntries.length} שיבוצים</span>`:''}</td>`:''}
           <td class="course-team-day">${esc(entry.day)}</td>
           <td class="course-team-course">${esc(entry.course)}</td>
-        </tr>`).join('')
-      : '<tr><td colspan="3" class="empty">לא נמצאו כרגע שיבוצים פעילים לצוות זה.</td></tr>';
+          <td class="course-team-time">${esc(entry.time)}</td>
+        </tr>`).join('')).join('')
+      : '<tr><td colspan="4" class="empty">לא נמצאו כרגע שיבוצים פעילים לצוות זה.</td></tr>';
     return `<section class="course-team-table-card">
       <div class="course-team-table-head">
         <h3>${esc(team.title)}</h3>
@@ -2154,7 +2161,7 @@ function renderCourseTeams(){
       </div>
       <div class="table-wrap course-team-table-wrap">
         <table class="course-team-table">
-          <thead><tr><th>שם המורה</th><th>יום</th><th>החוג המדויק ביום זה</th></tr></thead>
+          <thead><tr><th>שם המורה</th><th>יום</th><th>החוג המדויק ביום זה</th><th>שעה</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
