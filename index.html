@@ -960,9 +960,6 @@ function marketingGrade(r){
   // חוגים ששמם מגדיר ישירות את שכבת הגיל.
   if(/^מדע\s+לטף\s+א'?$/i.test(course)) return "א'";
   if(/^מדע\s+לטף\s+ב'?$/i.test(course)) return "ב'";
-  // גם "חדרי בריחה" וגם "חידות וחדרי בריחה" מיועדים לכיתות ד'-ה'.
-  if(/^(?:חידות\s*ו)?חדרי\s+בריחה$/i.test(course)) return "ד'-ה'";
-
   const text=((r.group||'')+'\n'+(r.raw||'')).replace(/[״׳]/g,"'");
   if(/(?:^|\n)\s*גן(?:\s|$)/m.test(text)) return 'גן';
   const cls='אבגדהוזחט';
@@ -978,6 +975,11 @@ function marketingGrade(r){
     const ending=line.match(new RegExp('[-–]\\s*(['+cls+"]'?\\s*[-+]\\s*["+cls+"]'?)$"));
     if(ending) return ending[1].replace(/\s+/g,'');
   }
+  // יש להבחין בין שני חוגים שונים:
+  // "חדרי בריחה" שייך לכיתה ו', ואילו "חידות וחדרי בריחה" נשאר לכיתות ד'-ה'.
+  // כיתה שמופיעה במפורש במקור עדיין קודמת לברירות המחדל האלה.
+  if(/^חידות\s*ו\s*חדרי\s+בריחה$/i.test(course)) return "ד'-ה'";
+  if(/^חדרי\s+בריחה$/i.test(course)) return "ו'";
   return '—';
 }
 
