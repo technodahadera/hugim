@@ -771,9 +771,9 @@ function socialCourseLabel(r){
 function socialManagerLocation(r){
   const room=String(r?.room||'').trim();
   const floor=String(r?.floor||'').trim();
-  if(room && floor) return `${room} · קומה ${floor}`;
+  if(room && floor) return `${room} · קומה: ${floor}`;
   if(room) return `${room}`;
-  if(floor) return `קומה ${floor}`;
+  if(floor) return `קומה: ${floor}`;
   return 'מיקום לא הוזן';
 }
 
@@ -918,7 +918,7 @@ function renderSocial(){
   document.getElementById('socialProgramHeading').textContent='מערכת השעות של: '+selected;
   document.getElementById('socialProgramSummary').textContent=
     rows.length
-      ? `${rows.length} שיבוצים נמצאו${withCount?` · ${totalStudents.toLocaleString('he-IL')} תלמידים בסך הכול לפי ${withCount} שיבוצים עם מספר מעודכן`:''}`
+      ? `${rows.length} שיבוצים נמצאו${withCount?` · ${totalStudents.toLocaleString('he-IL')} חוגים בסך הכול לפי ${withCount} שיבוצים עם מספר מעודכן`:''}`
       : 'לא נמצאו שיבוצים עבור תוכנית זו בנתונים שנטענו.';
   document.getElementById('socialProgramSchedule').innerHTML=socialManagerView(rows,selected);
   document.querySelectorAll('[data-social-program]').forEach(btn=>btn.addEventListener('click',()=>{
