@@ -550,6 +550,27 @@ function canonicalTeacherName(name){
   return cleaned;
 }
 
+// מחלץ את כל שמות המורים גם ישירות מטקסט השיבוץ.
+// הדבר חשוב בשיבוצים שבהם רשומים שני מורים באותו תא, למשל:
+// "מורה: טללית קונפורטי + ענת אספורטס".
+function teachersFromRecordText(r){
+  const sources=[r?.raw,r?.teacher_display].filter(Boolean).map(v=>String(v));
+  const names=[];
+  for(const source of sources){
+    const matches=[...source.matchAll(/מורה(?:\/ים)?\s*[:\-–]?\s*([^\r\n]+)/g)];
+    const chunks=matches.length?matches.map(m=>m[1]):(source===String(r?.teacher_display||'')?[source]:[]);
+    for(let chunk of chunks){
+      // הסרת מידע נפוץ שעלול להופיע אחרי רשימת המורים באותה שורה.
+      chunk=chunk.replace(/\s+(?:מספר\s+)?(?:תלמידים|ילדים)\s*[:\-–]?\s*\d+.*$/,'').trim();
+      chunk.split(/\s*(?:\+|&|,|;|\|)\s*/).forEach(part=>{
+        const name=canonicalTeacherName(part);
+        if(name) names.push(name);
+      });
+    }
+  }
+  return unique(names);
+}
+
 function isOfrimMadaLeToRow(r){
   const text=[r?.course,r?.group,r?.raw]
     .filter(Boolean)
@@ -565,7 +586,11 @@ function isOfrimMadaLeToRow(r){
 function normalizeTeacherRecord(r){
   const normalized={...r};
   const sourceTeachers=Array.isArray(r?.teachers)?r.teachers:[];
-  normalized.teachers=unique(sourceTeachers.map(canonicalTeacherName));
+  const textTeachers=teachersFromRecordText(r);
+  normalized.teachers=unique([
+    ...sourceTeachers.map(canonicalTeacherName),
+    ...textTeachers
+  ]);
 
   // עופרים: בקבצים קיימות שתי צורות כתיבה לשם עופרי/עפרי וייס ליפשיץ.
   // בנוסף, "מדע לת״ו" ביום ד' הוא שיבוץ של עופרים; אם המורה לא זוהה במקור,
@@ -575,7 +600,7 @@ function normalizeTeacherRecord(r){
   }
 
   if(normalized.teachers.length){
-    normalized.teacher_display=normalized.teachers.join(', ');
+    normalized.teacher_display=normalized.teachers.join(' + ');
   }
   return normalized;
 }
