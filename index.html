@@ -47,6 +47,12 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 @media(max-width:1050px){.course-teams-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.course-teams-toolbar{grid-template-columns:1fr}}
 @media(max-width:650px){.course-teams-grid{grid-template-columns:1fr}}
+
+/* תלמידים */
+.students-overview{display:grid;grid-template-columns:minmax(0,1.7fr) repeat(2,minmax(170px,.55fr));gap:14px;margin-bottom:16px}.students-intro{background:linear-gradient(135deg,#eef9fd,#fff);border:1px solid var(--line);border-radius:18px;padding:21px 22px;box-shadow:var(--shadow)}.students-intro h2{margin:0 0 7px;font-size:24px;color:var(--ink)}.students-intro p{margin:0;color:var(--muted);line-height:1.6}.student-kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;text-align:center}.student-kpi strong{font-size:38px;line-height:1;color:var(--blue-dark)}.student-kpi span{margin-top:8px;color:var(--muted);font-size:13px;font-weight:700}.students-filters{display:grid;grid-template-columns:minmax(250px,1.6fr) repeat(3,minmax(150px,1fr)) auto;gap:10px;margin-bottom:12px}.limitations-filters{display:grid;grid-template-columns:minmax(220px,1.4fr) repeat(5,minmax(135px,1fr));gap:10px;margin-bottom:14px}.student-summary-line{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:8px 0 14px;color:var(--muted);font-size:13px}.student-note{background:#fff8e9;border:1px solid #f4ddaa;border-radius:12px;padding:10px 12px;color:#76551f;font-size:13px;line-height:1.5}.student-course-list{display:flex;flex-wrap:wrap;gap:5px}.student-course-chip{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#eef8fc;color:var(--blue-dark);font-size:12px;font-weight:800}.limitation-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#fff0f1;color:var(--red);font-weight:800;font-size:12px}.limitations-metrics{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:10px;margin-bottom:14px}.limitations-metric{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff}.limitations-metric strong{display:block;font-size:28px;color:var(--ink)}.limitations-metric span{display:block;margin-top:4px;color:var(--muted);font-size:12px}.students-table table{min-width:1050px}.limitations-table table{min-width:1180px}
+@media(max-width:1050px){.students-overview{grid-template-columns:1fr 1fr}.students-intro{grid-column:1/-1}.students-filters{grid-template-columns:1fr 1fr}.students-filters .student-clear{grid-column:1/-1}.limitations-filters{grid-template-columns:repeat(2,1fr)}.limitations-metrics{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:650px){.students-overview,.students-filters,.limitations-filters,.limitations-metrics{grid-template-columns:1fr}.students-intro,.students-filters .student-clear{grid-column:auto}}
+
 </style>
 </head>
 <body>
@@ -64,6 +70,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <button class="tab active" data-view="dashboard">לוח בקרה</button>
       <button class="tab" data-view="missing">חוסרי מורים</button>
       <button class="tab" data-view="teacher">מערכת מורה</button>
+      <button class="tab" data-view="students">תלמידים</button>
       <button class="tab" data-view="courseTeams">צוותי חוגים</button>
       <button class="tab" data-view="social">תוכניות חברתיות</button>
       <button class="tab" data-view="schedule">מערכת מלאה</button>
@@ -162,6 +169,51 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
     </div>
   </section>
 
+
+  <section id="students" class="view">
+    <div class="students-overview">
+      <div class="students-intro">
+        <h2>תלמידים</h2>
+        <p>איתור תלמידים ורישומיהם לחוגים, ובקרה מרוכזת על אלרגיות ומגבלות. הנתונים משולבים מהגיליונות „תלמידים” ו„רישום לחוג” בקובץ המקור „מערכת חוגים תשפ״ז”.</p>
+      </div>
+      <div class="student-kpi"><strong id="studentsActiveCount">—</strong><span>תלמידים פעילים במאגר</span></div>
+      <div class="student-kpi"><strong id="studentsLimitationsCount">—</strong><span>תלמידים עם מגבלה / אלרגיה</span></div>
+    </div>
+
+    <div class="panel">
+      <h2>איתור וחיפוש תלמידים</h2>
+      <div class="students-filters">
+        <input id="studentSearch" placeholder="חיפוש לפי שם, כיתה, קורס / חוג או מורה" />
+        <select id="studentClassFilter"><option value="">כל הכיתות</option></select>
+        <select id="studentCourseFilter"><option value="">כל החוגים</option></select>
+        <select id="studentTeacherFilter"><option value="">כל המורים</option></select>
+        <button class="btn student-clear" id="clearStudentFilters" type="button">נקה סינון</button>
+      </div>
+      <div id="studentSearchSummary" class="student-summary-line"></div>
+      <div id="studentsResults" class="students-table"></div>
+    </div>
+
+    <div class="panel">
+      <h2>מעקב אחר תלמידים עם אלרגיות ומגבלות</h2>
+      <div class="student-note" style="margin-bottom:14px">אפשר לסנן עד לרמת חוג, שעה ומורה — למשל לבחור חוג מסוים, שעת פעילות ומורה ולקבל מיד את רשימת התלמידים שלה שיש להם מגבלה.</div>
+      <div class="limitations-filters">
+        <input id="limitationSearch" placeholder="חיפוש תלמיד או סוג מגבלה" />
+        <select id="limitationGrade"><option value="">כל השכבות</option></select>
+        <select id="limitationClass"><option value="">כל הכיתות</option></select>
+        <select id="limitationCourse"><option value="">כל החוגים</option></select>
+        <select id="limitationTime"><option value="">כל השעות</option></select>
+        <select id="limitationTeacher"><option value="">כל המורים</option></select>
+      </div>
+      <div class="limitations-metrics">
+        <div class="limitations-metric"><strong id="limitedFilteredStudents">—</strong><span>תלמידים עם מגבלה בסינון הנוכחי</span></div>
+        <div class="limitations-metric"><strong id="limitedFilteredCourses">—</strong><span>חוגים שבהם נמצאו תלמידים עם מגבלה</span></div>
+        <div class="limitations-metric"><strong id="limitedFilteredSessions">—</strong><span>רישומי חוג רלוונטיים</span></div>
+      </div>
+      <div id="limitationsSummary" class="student-summary-line"></div>
+      <div id="limitationsTable" class="limitations-table"></div>
+    </div>
+  </section>
+
   <section id="courseTeams" class="view">
     <div class="panel">
       <h2>צוותי חוגים</h2>
@@ -231,12 +283,14 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpHQSanfG_8H30TcorbudN6eZvfGur3s1x5vlrTQ_8Gl1s7vE5ngzDTu4jCDqEv5py6g/exec';
 const SOURCE_SPREADSHEET_ID = '1wJhENZhS3tNvEtUiJ84SXXEN6sivP5AIuBSrE7jqgcM';
 const STUDENT_SHEET_NAME = 'תלמידים ';
+const REGISTRATION_SHEET_NAME = 'רישום לחוג';
 
 let data=[];
 let teachers=[];
 let dayOrder=["יום א'","יום ב'","יום ג'","יום ד'","יום ה'"];
 let refreshInFlight=false;
 let studentStats={loaded:false,total:0,entries:[],refreshedAt:'',error:''};
+let studentDirectory={loaded:false,students:[],registrations:[],refreshedAt:'',error:''};
 
 const CHART_COLORS=['#56b5e5','#8cc63f','#f8c600','#f7941d','#e52b61','#8753a6','#27a9a1','#6f7880','#c83b45','#a6cfef'];
 
@@ -948,38 +1002,100 @@ function gvizCellText(cell){
   return String(value??'').trim();
 }
 
-function buildStudentStatsFromGviz(response){
+function normalizedStudentKey(value){
+  return String(value||'')
+    .replace(/[״”]/g,'"')
+    .replace(/[׳’]/g,"'")
+    .replace(/\s+/g,' ')
+    .trim()
+    .toLocaleLowerCase('he');
+}
+
+function normalizeLimitationText(value){
+  const s=String(value||'').replace(/\s+/g,' ').trim();
+  if(!s) return '';
+  if(/^(אין|ללא|לא|לא ידוע|ללא מגבלה|ללא מגבלות|אין מגבלה|אין מגבלות|none|-+)$/i.test(s)) return '';
+  return s;
+}
+
+function combineLimitations(...values){
+  const out=[];
+  values.flat().forEach(v=>{
+    const s=normalizeLimitationText(v);
+    if(s && !out.includes(s)) out.push(s);
+  });
+  return out;
+}
+
+function buildStudentSourceFromGviz(response){
   if(!response || response.status==='error' || !response.table || !Array.isArray(response.table.rows)){
     throw new Error('לא התקבלו נתונים תקינים מגיליון תלמידים.');
   }
+  const students=[];
   const byStudentId=new Map();
   response.table.rows.forEach(row=>{
     const cells=row?.c||[];
-    const studentId=gvizCellText(cells[0]);
-    const population=normalizeStudentPopulationName(gvizCellText(cells[1]));
-    const status=gvizCellText(cells[2]);
-    if(!studentId || !population || status!=='פעיל') return;
-    // תעודת זהות היא המפתח שמבטיח שכל תלמיד נספר פעם אחת בלבד.
-    byStudentId.set(studentId,population);
+    const name=gvizCellText(cells[0]);
+    const studentId=gvizCellText(cells[1]);
+    const populationRaw=gvizCellText(cells[2]);
+    const grade=gvizCellText(cells[3]);
+    const className=gvizCellText(cells[4]);
+    const limitationOther=normalizeLimitationText(gvizCellText(cells[5]));
+    const limitations=normalizeLimitationText(gvizCellText(cells[6]));
+    const status=gvizCellText(cells[7]);
+    if(!name || status!=='פעיל') return;
+    const population=normalizeStudentPopulationName(populationRaw) || populationRaw;
+    students.push({name,studentId,population,grade,className,limitations:combineLimitations(limitationOther,limitations)});
+    if(studentId){
+      const chartPopulation=normalizeStudentPopulationName(populationRaw);
+      if(chartPopulation) byStudentId.set(studentId,chartPopulation);
+    }
   });
   const totals={};
   byStudentId.forEach(population=>{totals[population]=(totals[population]||0)+1;});
   const entries=Object.entries(totals).sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'he'));
   return {
-    loaded:true,
-    total:entries.reduce((sum,entry)=>sum+entry[1],0),
-    entries,
-    refreshedAt:new Date().toLocaleString('he-IL'),
-    error:''
+    students,
+    stats:{
+      loaded:true,
+      total:entries.reduce((sum,entry)=>sum+entry[1],0),
+      entries,
+      refreshedAt:new Date().toLocaleString('he-IL'),
+      error:''
+    }
   };
 }
 
-function loadStudentSheetJsonp(timeoutMs=18000){
+function buildRegistrationsFromGviz(response){
+  if(!response || response.status==='error' || !response.table || !Array.isArray(response.table.rows)){
+    throw new Error('לא התקבלו נתונים תקינים מגיליון רישום לחוג.');
+  }
+  const registrations=[];
+  response.table.rows.forEach(row=>{
+    const cells=row?.c||[];
+    const name=gvizCellText(cells[0]);
+    const population=gvizCellText(cells[1]);
+    const className=gvizCellText(cells[2]);
+    const grade=gvizCellText(cells[3]);
+    const course=gvizCellText(cells[4]);
+    const teacher=canonicalTeacherName(gvizCellText(cells[5]));
+    const day=gvizCellText(cells[6]);
+    const time=gvizCellText(cells[7]);
+    const status=gvizCellText(cells[8]);
+    const limitationOther=normalizeLimitationText(gvizCellText(cells[9]));
+    const limitations=normalizeLimitationText(gvizCellText(cells[10]));
+    if(!name || status!=='פעיל') return;
+    registrations.push({name,population,className,grade,course,teacher,day,time,status,limitations:combineLimitations(limitationOther,limitations)});
+  });
+  return registrations;
+}
+
+function loadGvizJsonp(sheetName,tq,builder,errorLabel,timeoutMs=18000){
   return new Promise((resolve,reject)=>{
-    const callback='__students_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+    const callback='__gviz_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);
     const script=document.createElement('script');
     let finished=false;
-    const timer=setTimeout(()=>cleanup(new Error('גיליון תלמידים לא החזיר תשובה בזמן.')),timeoutMs);
+    const timer=setTimeout(()=>cleanup(new Error(errorLabel+' לא החזיר תשובה בזמן.')),timeoutMs);
     function cleanup(error,payload){
       if(finished)return;
       finished=true;
@@ -989,19 +1105,191 @@ function loadStudentSheetJsonp(timeoutMs=18000){
       error?reject(error):resolve(payload);
     }
     window[callback]=(response)=>{
-      try{cleanup(null,buildStudentStatsFromGviz(response));}
+      try{cleanup(null,builder(response));}
       catch(err){cleanup(err);}
     };
-    script.onerror=()=>cleanup(new Error('לא ניתן לקרוא את גיליון תלמידים.'));
-    const tq='select B,D,Z';
+    script.onerror=()=>cleanup(new Error('לא ניתן לקרוא את '+errorLabel+'.'));
     const tqx='out:json;responseHandler:'+callback;
     script.src='https://docs.google.com/spreadsheets/d/'+encodeURIComponent(SOURCE_SPREADSHEET_ID)+'/gviz/tq'
-      +'?sheet='+encodeURIComponent(STUDENT_SHEET_NAME)
+      +'?sheet='+encodeURIComponent(sheetName)
       +'&headers=1&tq='+encodeURIComponent(tq)
       +'&tqx='+encodeURIComponent(tqx)
       +'&ts='+Date.now();
     document.head.appendChild(script);
   });
+}
+
+function loadStudentSheetJsonp(timeoutMs=18000){
+  return loadGvizJsonp(
+    STUDENT_SHEET_NAME,
+    'select A,B,D,E,T,U,V,Z',
+    buildStudentSourceFromGviz,
+    'גיליון תלמידים',
+    timeoutMs
+  );
+}
+
+function loadRegistrationSheetJsonp(timeoutMs=18000){
+  return loadGvizJsonp(
+    REGISTRATION_SHEET_NAME,
+    'select A,C,D,E,H,I,J,L,N,P,Q',
+    buildRegistrationsFromGviz,
+    'גיליון רישום לחוג',
+    timeoutMs
+  );
+}
+
+function buildStudentViewModels(){
+  const map=new Map();
+  const ensure=(name)=>{
+    const key=normalizedStudentKey(name);
+    if(!key) return null;
+    if(!map.has(key)) map.set(key,{key,name:String(name||'').trim(),population:'',grade:'',className:'',limitations:[],registrations:[]});
+    return map.get(key);
+  };
+  (studentDirectory.students||[]).forEach(s=>{
+    const target=ensure(s.name); if(!target)return;
+    target.name=s.name||target.name;
+    target.population=s.population||target.population;
+    target.grade=s.grade||target.grade;
+    target.className=s.className||target.className;
+    target.limitations=combineLimitations(target.limitations,s.limitations||[]);
+  });
+  (studentDirectory.registrations||[]).forEach(r=>{
+    const target=ensure(r.name); if(!target)return;
+    target.population=target.population||r.population;
+    target.grade=target.grade||r.grade;
+    target.className=target.className||r.className;
+    target.limitations=combineLimitations(target.limitations,r.limitations||[]);
+    target.registrations.push(r);
+  });
+  return [...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'he'));
+}
+
+function registrationMatches(r,{course='',teacher='',time='',className='',grade=''}={}){
+  return (!course||r.course===course)&&(!teacher||r.teacher===teacher)&&(!time||r.time===time)&&(!className||r.className===className)&&(!grade||r.grade===grade);
+}
+
+function populateStudentFilters(){
+  const students=buildStudentViewModels();
+  const regs=studentDirectory.registrations||[];
+  refillSelect('studentClassFilter',unique(students.flatMap(s=>[s.className,...s.registrations.map(r=>r.className)])).sort((a,b)=>a.localeCompare(b,'he',{numeric:true})),'כל הכיתות');
+  refillSelect('studentCourseFilter',unique(regs.map(r=>r.course)).sort((a,b)=>a.localeCompare(b,'he')),'כל החוגים');
+  refillSelect('studentTeacherFilter',unique(regs.map(r=>r.teacher)).sort((a,b)=>a.localeCompare(b,'he')),'כל המורים');
+  refillSelect('limitationGrade',unique(students.flatMap(s=>[s.grade,...s.registrations.map(r=>r.grade)])).sort((a,b)=>a.localeCompare(b,'he',{numeric:true})),'כל השכבות');
+  refillSelect('limitationClass',unique(students.flatMap(s=>[s.className,...s.registrations.map(r=>r.className)])).sort((a,b)=>a.localeCompare(b,'he',{numeric:true})),'כל הכיתות');
+  refillSelect('limitationCourse',unique(regs.map(r=>r.course)).sort((a,b)=>a.localeCompare(b,'he')),'כל החוגים');
+  refillSelect('limitationTime',unique(regs.map(r=>r.time)).sort((a,b)=>a.localeCompare(b,'he',{numeric:true})),'כל השעות');
+  refillSelect('limitationTeacher',unique(regs.map(r=>r.teacher)).sort((a,b)=>a.localeCompare(b,'he')),'כל המורים');
+}
+
+function renderStudentsSearch(){
+  const out=document.getElementById('studentsResults');
+  const summary=document.getElementById('studentSearchSummary');
+  if(!studentDirectory.loaded){
+    summary.textContent='נתוני התלמידים המפורטים אינם זמינים כרגע.';
+    out.innerHTML='<div class="empty">יש לטעון נתונים מהענן כדי להציג את מאגר התלמידים.</div>';
+    return;
+  }
+  const q=normalizedStudentKey(document.getElementById('studentSearch').value);
+  const className=document.getElementById('studentClassFilter').value;
+  const course=document.getElementById('studentCourseFilter').value;
+  const teacher=document.getElementById('studentTeacherFilter').value;
+  const rows=buildStudentViewModels().filter(s=>{
+    const relevantRegs=s.registrations.filter(r=>registrationMatches(r,{course,teacher}));
+    if((course||teacher)&&!relevantRegs.length) return false;
+    if(className){
+      const classMatch=s.className===className || s.registrations.some(r=>r.className===className);
+      if(!classMatch) return false;
+    }
+    if(q){
+      const hay=[s.name,s.grade,s.className,s.population,s.limitations.join(' '),...s.registrations.flatMap(r=>[r.course,r.teacher,r.className,r.grade,r.day,r.time])].join(' ');
+      if(!normalizedStudentKey(hay).includes(q)) return false;
+    }
+    return true;
+  });
+  const shown=rows.slice(0,400);
+  summary.innerHTML=`<span>נמצאו <strong>${rows.length.toLocaleString('he-IL')}</strong> תלמידים${rows.length>shown.length?` · מוצגים ${shown.length.toLocaleString('he-IL')} הראשונים`:''}</span><span>החיפוש כולל שם, כיתה, שכבה, חוג ומורה.</span>`;
+  if(!shown.length){out.innerHTML='<div class="empty">לא נמצאו תלמידים התואמים לסינון.</div>';return;}
+  let h='<div class="table-wrap"><table><thead><tr><th>תלמיד/ה</th><th>שכבה</th><th>כיתה בטכנודע</th><th>סוג אוכלוסייה</th><th>חוגים רשומים</th><th>מורים</th><th>מגבלה</th></tr></thead><tbody>';
+  shown.forEach(s=>{
+    const regs=s.registrations.filter(r=>registrationMatches(r,{course,teacher}));
+    const effectiveRegs=(course||teacher)?regs:s.registrations;
+    const courses=unique(effectiveRegs.map(r=>r.course)).filter(Boolean);
+    const teacherNames=unique(effectiveRegs.map(r=>r.teacher)).filter(Boolean);
+    h+=`<tr><td><strong>${esc(s.name)}</strong></td><td>${esc(s.grade||'—')}</td><td>${esc(s.className||unique(effectiveRegs.map(r=>r.className))[0]||'—')}</td><td>${esc(s.population||'—')}</td><td><div class="student-course-list">${courses.length?courses.map(c=>`<span class="student-course-chip">${esc(c)}</span>`).join(''):'—'}</div></td><td>${teacherNames.length?teacherNames.map(esc).join('<br>'):'—'}</td><td>${s.limitations.length?'<span class="limitation-badge">יש מגבלה</span>':'—'}</td></tr>`;
+  });
+  h+='</tbody></table></div>';
+  out.innerHTML=h;
+}
+
+function limitationRows(){
+  const rows=[];
+  buildStudentViewModels().forEach(s=>{
+    const masterLimits=s.limitations||[];
+    if(!masterLimits.length && !s.registrations.some(r=>(r.limitations||[]).length)) return;
+    if(s.registrations.length){
+      s.registrations.forEach(r=>{
+        const limitations=combineLimitations(masterLimits,r.limitations||[]);
+        if(!limitations.length) return;
+        rows.push({key:s.key,name:s.name,grade:r.grade||s.grade,className:r.className||s.className,population:s.population||r.population,course:r.course,teacher:r.teacher,day:r.day,time:r.time,limitations});
+      });
+    }else if(masterLimits.length){
+      rows.push({key:s.key,name:s.name,grade:s.grade,className:s.className,population:s.population,course:'',teacher:'',day:'',time:'',limitations:masterLimits});
+    }
+  });
+  return rows;
+}
+
+function renderLimitations(){
+  const tableEl=document.getElementById('limitationsTable');
+  const summary=document.getElementById('limitationsSummary');
+  if(!studentDirectory.loaded){
+    document.getElementById('limitedFilteredStudents').textContent='—';
+    document.getElementById('limitedFilteredCourses').textContent='—';
+    document.getElementById('limitedFilteredSessions').textContent='—';
+    summary.textContent='נתוני המגבלות אינם זמינים כרגע.';
+    tableEl.innerHTML='<div class="empty">יש לטעון נתונים מהענן כדי להציג מגבלות ואלרגיות.</div>';
+    return;
+  }
+  const q=normalizedStudentKey(document.getElementById('limitationSearch').value);
+  const grade=document.getElementById('limitationGrade').value;
+  const className=document.getElementById('limitationClass').value;
+  const course=document.getElementById('limitationCourse').value;
+  const time=document.getElementById('limitationTime').value;
+  const teacher=document.getElementById('limitationTeacher').value;
+  const rows=limitationRows().filter(r=>{
+    if(grade&&r.grade!==grade)return false;
+    if(className&&r.className!==className)return false;
+    if(course&&r.course!==course)return false;
+    if(time&&r.time!==time)return false;
+    if(teacher&&r.teacher!==teacher)return false;
+    if(q&&!normalizedStudentKey([r.name,r.grade,r.className,r.course,r.teacher,r.day,r.time,r.limitations.join(' ')].join(' ')).includes(q))return false;
+    return true;
+  }).sort((a,b)=>String(a.className||'').localeCompare(String(b.className||''),'he',{numeric:true})||a.name.localeCompare(b.name,'he')||String(a.time||'').localeCompare(String(b.time||''),'he',{numeric:true}));
+  const uniqueStudentsCount=new Set(rows.map(r=>r.key)).size;
+  const courses=unique(rows.map(r=>r.course));
+  const sessionCount=rows.filter(r=>r.course).length;
+  document.getElementById('limitedFilteredStudents').textContent=uniqueStudentsCount.toLocaleString('he-IL');
+  document.getElementById('limitedFilteredCourses').textContent=courses.length.toLocaleString('he-IL');
+  document.getElementById('limitedFilteredSessions').textContent=sessionCount.toLocaleString('he-IL');
+  summary.innerHTML=`<span>נמצאו <strong>${uniqueStudentsCount.toLocaleString('he-IL')}</strong> תלמידים ייחודיים עם מגבלה בסינון הנוכחי.</span><span>${rows.length.toLocaleString('he-IL')} שורות פעילות להצגה.</span>`;
+  if(!rows.length){tableEl.innerHTML='<div class="empty">לא נמצאו תלמידים עם מגבלות התואמים לסינון.</div>';return;}
+  let h='<div class="table-wrap"><table><thead><tr><th>תלמיד/ה</th><th>שכבה</th><th>כיתה</th><th>מגבלות / אלרגיות</th><th>חוג</th><th>מורה</th><th>יום</th><th>שעה</th></tr></thead><tbody>';
+  rows.forEach(r=>{
+    h+=`<tr><td><strong>${esc(r.name)}</strong></td><td>${esc(r.grade||'—')}</td><td>${esc(r.className||'—')}</td><td>${r.limitations.map(x=>`<span class="limitation-badge">${esc(x)}</span>`).join(' ')}</td><td>${esc(r.course||'—')}</td><td>${esc(r.teacher||'—')}</td><td>${esc(r.day||'—')}</td><td>${esc(r.time||'—')}</td></tr>`;
+  });
+  h+='</tbody></table></div>';
+  tableEl.innerHTML=h;
+}
+
+function renderStudents(){
+  const models=buildStudentViewModels();
+  const limited=new Set(models.filter(s=>s.limitations.length || s.registrations.some(r=>(r.limitations||[]).length)).map(s=>s.key));
+  document.getElementById('studentsActiveCount').textContent=studentDirectory.loaded?models.length.toLocaleString('he-IL'):'—';
+  document.getElementById('studentsLimitationsCount').textContent=studentDirectory.loaded?limited.size.toLocaleString('he-IL'):'—';
+  renderStudentsSearch();
+  renderLimitations();
 }
 
 function applyPayload(payload){
@@ -1010,6 +1298,9 @@ function applyPayload(payload){
   studentStats=payload.studentStats&&payload.studentStats.loaded
     ? payload.studentStats
     : {loaded:false,total:0,entries:[],refreshedAt:'',error:payload.studentStats?.error||''};
+  studentDirectory=payload.studentDirectory&&payload.studentDirectory.loaded
+    ? payload.studentDirectory
+    : {loaded:false,students:payload.studentDirectory?.students||[],registrations:payload.studentDirectory?.registrations||[],refreshedAt:payload.studentDirectory?.refreshedAt||'',error:payload.studentDirectory?.error||''};
   teachers=unique([...(payload.teachers||[]).map(canonicalTeacherName),...data.flatMap(r=>Array.isArray(r.teachers)?r.teachers:[])]).sort((a,b)=>a.localeCompare(b,'he'));
   dayOrder=payload.days||dayOrder;
   refillFixedSelect('missingDay',dayOrder);
@@ -1020,13 +1311,14 @@ function applyPayload(payload){
   refillSelect('timeFilter',unique(data.map(x=>x.time)).sort(),'כל השעות');
   refillSelect('floorFilter',unique(data.map(x=>x.floor)),'כל הקומות');
   refillSelect('marketingPopulation',unique(uniqueSourceRecords(data).filter(isMarketingCourseRow).map(populationOf).filter(x=>x!=='אחר')).sort((a,b)=>a.localeCompare(b,'he')),'כל סוגי האוכלוסייה');
-  renderDashboard();renderMissing();renderTeacher();renderCourseTeams();renderSocial();renderFull();renderMarketing();
+  populateStudentFilters();
+  renderDashboard();renderMissing();renderTeacher();renderStudents();renderCourseTeams();renderSocial();renderFull();renderMarketing();
   setStatus(studentStats.loaded
     ? `עודכן מהגיליונות: ${payload.refreshedAt||'כעת'}`
     : `עודכן גיליון תשפז · נתוני תלמידים אינם זמינים כרגע`);
 }
 
-const DATA_CACHE_KEY='technoda_chugim_tashpaz_payload_v3_students';
+const DATA_CACHE_KEY='technoda_chugim_tashpaz_payload_v4_student_directory';
 
 function saveCachedPayload(payload){
   try{
@@ -1083,20 +1375,40 @@ async function refreshData(showLoading=true){
       payload=await loadJsonp(22000);
     }
 
-    let freshStudentStats;
+    let freshStudentSource=null;
+    let studentSourceError='';
     try{
-      freshStudentStats=await loadStudentSheetJsonp(18000);
+      freshStudentSource=await loadStudentSheetJsonp(18000);
     }catch(firstStudentErr){
       try{
-        freshStudentStats=await loadStudentSheetJsonp(22000);
+        freshStudentSource=await loadStudentSheetJsonp(22000);
       }catch(secondStudentErr){
-        freshStudentStats=studentStats.loaded
-          ? studentStats
-          : {loaded:false,total:0,entries:[],refreshedAt:'',error:secondStudentErr?.message||String(secondStudentErr)};
+        studentSourceError=secondStudentErr?.message||String(secondStudentErr);
       }
     }
 
-    payload.studentStats=freshStudentStats;
+    let freshRegistrations=null;
+    let registrationError='';
+    try{
+      freshRegistrations=await loadRegistrationSheetJsonp(18000);
+    }catch(firstRegistrationErr){
+      try{
+        freshRegistrations=await loadRegistrationSheetJsonp(22000);
+      }catch(secondRegistrationErr){
+        registrationError=secondRegistrationErr?.message||String(secondRegistrationErr);
+      }
+    }
+
+    payload.studentStats=freshStudentSource?.stats || (studentStats.loaded?studentStats:{loaded:false,total:0,entries:[],refreshedAt:'',error:studentSourceError});
+    const directoryStudents=freshStudentSource?.students || studentDirectory.students || [];
+    const directoryRegistrations=freshRegistrations || studentDirectory.registrations || [];
+    payload.studentDirectory={
+      loaded:directoryStudents.length>0 && directoryRegistrations.length>0,
+      students:directoryStudents,
+      registrations:directoryRegistrations,
+      refreshedAt:new Date().toLocaleString('he-IL'),
+      error:[studentSourceError,registrationError].filter(Boolean).join(' · ')
+    };
     applyPayload(payload);
     saveCachedPayload(payload);
   }catch(err){
@@ -1386,6 +1698,17 @@ document.getElementById('searchFilter').addEventListener('input',renderFull);
 document.getElementById('marketingPopulation').addEventListener('change',()=>{Object.keys(marketingColumnFilters).forEach(k=>marketingColumnFilters[k]='');renderMarketing();});
 document.getElementById('marketingSearch').addEventListener('input',renderMarketing);
 document.getElementById('exportMarketingCsv').addEventListener('click',exportMarketingCsv);
+['studentClassFilter','studentCourseFilter','studentTeacherFilter'].forEach(id=>document.getElementById(id).addEventListener('change',renderStudentsSearch));
+document.getElementById('studentSearch').addEventListener('input',renderStudentsSearch);
+document.getElementById('clearStudentFilters').addEventListener('click',()=>{
+  document.getElementById('studentSearch').value='';
+  document.getElementById('studentClassFilter').value='';
+  document.getElementById('studentCourseFilter').value='';
+  document.getElementById('studentTeacherFilter').value='';
+  renderStudentsSearch();
+});
+['limitationGrade','limitationClass','limitationCourse','limitationTime','limitationTeacher'].forEach(id=>document.getElementById(id).addEventListener('change',renderLimitations));
+document.getElementById('limitationSearch').addEventListener('input',renderLimitations);
 const HOST=(location.hostname||'').toLowerCase();
 const IS_CHATGPT_PREVIEW=!HOST || /chatgpt|openai|sandbox|preview|oaiusercontent/.test(HOST) || location.protocol==='file:';
 const ALLOW_NETWORK=/^https?:$/.test(location.protocol) && !IS_CHATGPT_PREVIEW;
@@ -1414,6 +1737,7 @@ document.getElementById('toggleStudentAnomalies').addEventListener('click',()=>{
 });
 
 // טעינה אחת בלבד בעת הכניסה לאתר שפורסם. בתוך Preview של ChatGPT אין חיבור לרשת.
+renderStudents();
 loadProductionAssets();
 if(ALLOW_NETWORK){
   const hasCachedData=loadCachedPayload();
