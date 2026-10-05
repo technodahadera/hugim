@@ -485,7 +485,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpHQSanfG_8H30TcorbudN6eZvfGur3s1x5vlrTQ_8Gl1s7vE5ngzDTu4jCDqEv5py6g/exec';
 const SOURCE_SPREADSHEET_ID = '1wJhENZhS3tNvEtUiJ84SXXEN6sivP5AIuBSrE7jqgcM';
 const STUDENT_SHEET_NAME = 'תלמידים ';
-const REGISTRATION_SHEET_NAME = 'רישום לחוג';
+const REGISTRATION_SHEET_NAME = 'רישום לחוגים';
 const ATTENDANCE_SHEET_NAME = 'נוכחות';
 
 let data=[];
@@ -1339,7 +1339,7 @@ function buildStudentSourceFromGviz(response){
 
 function buildRegistrationsFromGviz(response){
   if(!response || response.status==='error' || !response.table || !Array.isArray(response.table.rows)){
-    throw new Error('לא התקבלו נתונים תקינים מגיליון רישום לחוג.');
+    throw new Error('לא התקבלו נתונים תקינים מגיליון רישום לחוגים.');
   }
   const registrations=[];
   response.table.rows.forEach(row=>{
@@ -1451,7 +1451,7 @@ function loadRegistrationSheetJsonp(timeoutMs=18000){
     REGISTRATION_SHEET_NAME,
     'select A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q',
     buildRegistrationsFromGviz,
-    'גיליון רישום לחוג',
+    'גיליון רישום לחוגים',
     timeoutMs
   );
 }
@@ -2388,6 +2388,18 @@ async function refreshData(showLoading=true){
       }
     }
 
+    let freshRegistrations=null;
+    let registrationError='';
+    try{
+      freshRegistrations=await loadRegistrationSheetJsonp(18000);
+    }catch(firstRegistrationErr){
+      try{
+        freshRegistrations=await loadRegistrationSheetJsonp(22000);
+      }catch(secondRegistrationErr){
+        registrationError=secondRegistrationErr?.message||String(secondRegistrationErr);
+      }
+    }
+
     let freshAttendance=null;
     let attendanceError='';
     try{
@@ -2403,14 +2415,17 @@ async function refreshData(showLoading=true){
     payload.studentStats=freshStudentSource?.stats || (studentStats.loaded?studentStats:{loaded:false,total:0,entries:[],refreshedAt:'',error:studentSourceError});
     const directoryStudents=freshStudentSource?.students || studentDirectory.students || [];
     const attendanceRows=freshAttendance || attendanceDirectory.rows || [];
-    const attendanceRegistrations=attendanceRows.length?registrationsFromAttendanceRows(attendanceRows):[];
-    const directoryRegistrations=attendanceRegistrations.length?attendanceRegistrations:(studentDirectory.registrations||[]);
+    // מקור החוגים של התלמידים: גיליון "רישום לחוגים".
+    // נתוני הנוכחות נשארים מקור נפרד לנוכחות בלבד ואינם קובעים עוד באילו חוגים התלמיד רשום.
+    const directoryRegistrations=Array.isArray(freshRegistrations)
+      ? freshRegistrations
+      : (studentDirectory.registrations||[]);
     payload.studentDirectory={
       loaded:directoryStudents.length>0,
       students:directoryStudents,
       registrations:directoryRegistrations,
       refreshedAt:new Date().toLocaleString('he-IL'),
-      error:[studentSourceError,attendanceError].filter(Boolean).join(' · ')
+      error:[studentSourceError,registrationError].filter(Boolean).join(' · ')
     };
     payload.attendanceDirectory={loaded:attendanceRows.length>0,rows:attendanceRows,refreshedAt:new Date().toLocaleString('he-IL'),error:attendanceError};
     applyPayload(payload);
