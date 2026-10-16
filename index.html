@@ -68,6 +68,9 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 
 
 .attendance-metric.clickable{cursor:pointer;transition:.16s;position:relative}.attendance-metric.clickable:hover{transform:translateY(-2px);border-color:#b8c4ca;box-shadow:0 10px 28px rgba(38,50,56,.14)}.attendance-metric.clickable:focus{outline:3px solid #bfe6f7;outline-offset:2px}.attendance-metric.clickable:after{content:"לחץ לפירוט";display:block;font-size:10px;color:var(--blue-dark);font-weight:800;margin-top:7px}.attendance-pending-intro{background:#f8fafb;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:12px}.attendance-pending-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;padding:5px 9px;border-radius:999px;background:#f1f3f4;color:#596268;font-weight:900}.student-current-location{border:1px solid #bee2f1;background:linear-gradient(135deg,#eef9fd,#fff);border-radius:16px;padding:16px;margin-bottom:20px}.student-current-location h3{border:0!important;padding:0!important;margin:0 0 10px!important;color:var(--blue-dark)!important}.student-current-grid{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:9px}.student-current-card{background:#fff;border:1px solid #dce9ee;border-radius:12px;padding:12px}.student-current-card strong{display:block;font-size:16px;color:var(--ink);margin-bottom:7px}.student-current-card span{display:block;color:var(--muted);font-size:12px;line-height:1.55}.student-current-empty{color:var(--muted);font-size:13px}.student-current-time{font-size:12px;color:var(--muted);margin-bottom:10px}@media(max-width:700px){.student-current-grid{grid-template-columns:1fr}}
+
+/* רשימות חירום */
+.emergency-controls{display:grid;grid-template-columns:190px minmax(230px,1fr) auto auto;gap:10px;align-items:end;margin:18px 0}.emergency-controls label{font-weight:700;font-size:13px}.emergency-controls select,.emergency-controls input{margin-top:6px}.emergency-day-heading{font-size:22px;margin:25px 0 12px;border-bottom:3px solid var(--blue);padding-bottom:8px}.emergency-list{border:1px solid var(--line);border-radius:12px;margin:12px 0 18px;overflow:hidden;background:white;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:13px 16px;background:#eef8fc;border-bottom:1px solid #cce4f0}.emergency-list-head h3{margin:0 0 5px;font-size:19px}.emergency-list-head p{margin:0;font-size:13px}.emergency-list ol{margin:12px 40px 16px 12px;padding:0;columns:2;column-gap:35px}.emergency-list li{padding:5px 3px;break-inside:avoid;font-size:14px}.emergency-count{font-weight:800;color:var(--blue-dark)}@media(max-width:800px){.emergency-controls{grid-template-columns:1fr}.emergency-list ol{columns:1}}
 </style>
 </head>
 <body>
@@ -206,6 +209,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <button class="student-subtab active" type="button" data-student-subview="search">איתור וחיפוש תלמידים</button>
       <button class="student-subtab" type="button" data-student-subview="limitations">מעקב אחר תלמידים עם אלרגיות ומגבלות</button>
       <button class="student-subtab" type="button" data-student-subview="attendance">נוכחות</button>
+      <button class="student-subtab" type="button" data-student-subview="emergency">רשימות חירום</button>
     </nav>
 
     <div id="studentSubSearch" class="student-subview active">
@@ -303,6 +307,21 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
       <div id="limitationsTable" class="limitations-table"></div>
     </div>
 
+    </div>
+
+    <div id="studentSubEmergency" class="student-subview">
+      <div class="panel">
+        <h2>רשימות חירום לפי קורסים</h2>
+        <p class="muted">הרשימות מבוססות על הרישומים הפעילים בגיליון „רישום לחוגים”. כל קבוצה כוללת קורס, מורה, מתחם ושעת פעילות; התלמידים מסודרים לפי א׳–ב׳.</p>
+        <div class="emergency-controls">
+          <label>יום פעילות<select id="emergencyDay"><option value="all">כל הימים</option></select></label>
+          <label>חיפוש קורס / מורה / מתחם<input id="emergencySearch" placeholder="הקלידו לחיפוש"></label>
+          <button class="btn" id="emergencyPrint" type="button">הדפסת הרשימות המוצגות</button>
+          <button class="list-action-btn" id="emergencyPrintAll" type="button">הדפסת כל הימים</button>
+        </div>
+        <div id="emergencySummary" class="muted"></div>
+        <div id="emergencyLists"></div>
+      </div>
     </div>
 
     <div id="studentSubAttendance" class="student-subview">
@@ -1900,11 +1919,12 @@ function renderAttendance(){
   h+='</tbody></table></div>';tableEl.innerHTML=h;
 }
 function setStudentSubpage(name){
-  const allowed=['search','limitations','attendance'];if(!allowed.includes(name))name='search';
+  const allowed=['search','limitations','attendance','emergency'];if(!allowed.includes(name))name='search';
   document.querySelectorAll('[data-student-subview]').forEach(btn=>btn.classList.toggle('active',btn.dataset.studentSubview===name));
   document.querySelectorAll('.student-subview').forEach(v=>v.classList.remove('active'));
-  const id=name==='search'?'studentSubSearch':name==='limitations'?'studentSubLimitations':'studentSubAttendance';document.getElementById(id)?.classList.add('active');
+  const id=name==='search'?'studentSubSearch':name==='limitations'?'studentSubLimitations':name==='emergency'?'studentSubEmergency':'studentSubAttendance';document.getElementById(id)?.classList.add('active');
   if(name==='attendance')renderAttendance();
+  if(name==='emergency')renderEmergencyLists();
   window.scrollTo({top:document.getElementById('students')?.offsetTop||0,behavior:'smooth'});
 }
 
@@ -2279,6 +2299,50 @@ function courseTeamsAsTable(){
   return table;
 }
 
+
+function emergencyGroups(){
+  const groups=new Map();
+  (studentDirectory.registrations||[]).forEach(r=>{
+    if(r.status && r.status!=='פעיל')return;
+    const day=String(r.day||'לא צוין יום').trim(),course=String(r.course||'לא צוין קורס').trim();
+    const teacher=String(r.teacher||'לא צוין מורה').trim(),venue=String(r.venue||'לא צוין מתחם').trim(),time=String(r.time||'').trim();
+    const name=String(r.name||'').trim();if(!name)return;
+    const key=JSON.stringify([day,course,teacher,venue,time]);
+    if(!groups.has(key))groups.set(key,{day,course,teacher,venue,time,students:new Map()});
+    groups.get(key).students.set(normalizedStudentKey(name),name);
+  });
+  return [...groups.values()].sort((a,b)=>limitationDayRank(a.day)-limitationDayRank(b.day)||a.day.localeCompare(b.day,'he')||a.time.localeCompare(b.time,'he',{numeric:true})||a.course.localeCompare(b.course,'he')||a.teacher.localeCompare(b.teacher,'he'));
+}
+function emergencyMarkup(groups){
+  let lastDay='';let html='';
+  groups.forEach(g=>{
+    if(g.day!==lastDay){lastDay=g.day;html+=`<h2 class="emergency-day-heading">${esc(g.day)}</h2>`;}
+    const names=[...g.students.values()].sort((a,b)=>a.localeCompare(b,'he',{sensitivity:'base'}));
+    html+=`<article class="emergency-list"><div class="emergency-list-head"><h3>${esc(g.course)}</h3><p><strong>מורה:</strong> ${esc(g.teacher)} &nbsp; | &nbsp; <strong>מתחם:</strong> ${esc(g.venue)} ${g.time?' &nbsp; | &nbsp; <strong>שעה:</strong> '+esc(g.time):''} &nbsp; | &nbsp; <span class="emergency-count">${names.length} תלמידים</span></p></div><ol>${names.map(n=>`<li>${esc(n)}</li>`).join('')}</ol></article>`;
+  });
+  return html;
+}
+function renderEmergencyLists(){
+  const daySelect=document.getElementById('emergencyDay'),out=document.getElementById('emergencyLists'),summary=document.getElementById('emergencySummary');if(!out)return;
+  const groups=emergencyGroups(),selected=daySelect.value;
+  const days=[...new Set(groups.map(g=>g.day))].sort((a,b)=>limitationDayRank(a)-limitationDayRank(b)||a.localeCompare(b,'he'));
+  daySelect.innerHTML='<option value="all">כל הימים</option>'+days.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  daySelect.value=days.includes(selected)?selected:'all';
+  const q=normalizedStudentKey(document.getElementById('emergencySearch').value);
+  const shown=groups.filter(g=>(daySelect.value==='all'||g.day===daySelect.value)&&(!q||normalizedStudentKey([g.course,g.teacher,g.venue,g.time].join(' ')).includes(q)));
+  summary.textContent=`${shown.length} רשימות · ${shown.reduce((n,g)=>n+g.students.size,0)} שיבוצי תלמידים${studentDirectory.error?' · שימו לב: '+studentDirectory.error:''}`;
+  out.innerHTML=shown.length?emergencyMarkup(shown):'<div class="empty">אין רשימות להצגה. בדקו שנתוני הרישום נטענו ושהסינון מתאים.</div>';
+}
+function printEmergencyLists(all=false){
+  const groups=emergencyGroups();const day=document.getElementById('emergencyDay').value;
+  const q=normalizedStudentKey(document.getElementById('emergencySearch').value);
+  const shown=all?groups:groups.filter(g=>(day==='all'||g.day===day)&&(!q||normalizedStudentKey([g.course,g.teacher,g.venue,g.time].join(' ')).includes(q)));
+  if(!shown.length){alert('אין רשימות להדפסה.');return;}
+  const win=window.open('','_blank');if(!win){alert('יש לאפשר חלונות קופצים לצורך הדפסה.');return;}
+  win.document.write(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>רשימות חירום - טכנודע</title><style>@page{size:A4;margin:13mm}body{font-family:Arial,sans-serif;color:#17232a}.emergency-day-heading{font-size:21px;border-bottom:2px solid #333;padding-bottom:7px;break-before:page}.emergency-day-heading:first-child{break-before:auto}.emergency-list{border:1px solid #aaa;margin:12px 0 16px;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:9px 12px;border-bottom:1px solid #aaa}.emergency-list-head h3{font-size:17px;margin:0 0 6px}.emergency-list-head p{font-size:11px;margin:0}.emergency-list ol{columns:2;margin:10px 36px 12px 8px;padding:0}.emergency-list li{font-size:12px;line-height:1.6;break-inside:avoid}.emergency-count{font-weight:bold}</style></head><body>${emergencyMarkup(shown)}</body></html>`);
+  win.document.close();win.focus();setTimeout(()=>win.print(),350);
+}
+
 function renderStudents(){
   const models=buildStudentViewModels();
   const limited=new Set(models.filter(s=>s.limitations.length || s.registrations.some(r=>(r.limitations||[]).length)).map(s=>s.key));
@@ -2287,6 +2351,7 @@ function renderStudents(){
   renderStudentsSearch();
   renderLimitations();
   renderAttendance();
+  renderEmergencyLists();
 }
 
 function applyPayload(payload){
@@ -2870,6 +2935,10 @@ document.addEventListener('keydown',e=>{
 });
 document.getElementById('limitationSearch').addEventListener('input',renderLimitations);
 document.querySelectorAll('[data-student-subview]').forEach(btn=>btn.addEventListener('click',()=>setStudentSubpage(btn.dataset.studentSubview)));
+document.getElementById('emergencyDay').addEventListener('change',renderEmergencyLists);
+document.getElementById('emergencySearch').addEventListener('input',renderEmergencyLists);
+document.getElementById('emergencyPrint').addEventListener('click',()=>printEmergencyLists(false));
+document.getElementById('emergencyPrintAll').addEventListener('click',()=>printEmergencyLists(true));
 document.getElementById('attendanceSearch').addEventListener('input',renderAttendance);
 document.getElementById('attendanceDateMode').addEventListener('change',()=>{updateAttendanceDateControls();renderAttendance();});
 ['attendanceSingleDate','attendanceDateFrom','attendanceDateTo'].forEach(id=>document.getElementById(id).addEventListener('change',renderAttendance));
