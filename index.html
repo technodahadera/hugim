@@ -319,6 +319,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
           <details class="emergency-multi" id="emergencyTimeFilter"><summary>שעות הקורס: הכול</summary><div class="emergency-multi-menu"><div class="emergency-multi-actions"><button type="button" data-emergency-clear="time">נקה בחירה</button></div><div id="emergencyTimeOptions"></div></div></details>
           <label>חיפוש קורס / מורה / מתחם<input id="emergencySearch" placeholder="הקלידו לחיפוש"></label>
           <button class="btn" id="emergencyPrint" type="button">הדפסת הרשימות המוצגות</button>
+          <button class="btn" id="emergencyExcel" type="button">הורדת הרשימות המסוננות לאקסל</button>
 
         </div>
         <div id="emergencySummary" class="muted"></div>
@@ -2364,6 +2365,47 @@ function renderEmergencyLists(){
   summary.textContent=`${shown.length} רשימות · ${shown.reduce((n,g)=>n+g.students.size,0)} שיבוצי תלמידים${studentDirectory.error?' · שימו לב: '+studentDirectory.error:''}`;
   out.innerHTML=shown.length?emergencyMarkup(shown):'<div class="empty">אין רשימות להצגה. בדקו שנתוני הרישום נטענו ושהסינון מתאים.</div>';
 }
+async function exportEmergencyExcel(){
+  // Use exactly the same filtered groups and student rows as the visible emergency lists.
+  const shown=filteredEmergencyGroups(false);
+  if(!shown.length){alert('אין רשימות מסוננות לייצוא.');return;}
+  const button=document.getElementById('emergencyExcel');
+  button.disabled=true;const oldLabel=button.textContent;button.textContent='מכין קובץ Excel…';
+  try{
+    await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',()=>!!window.XLSX?.utils?.aoa_to_sheet);
+    const wb=XLSX.utils.book_new();
+    const days=[...new Set(shown.map(g=>g.day))];
+    const usedNames=new Set();
+    days.forEach(day=>{
+      const groups=shown.filter(g=>g.day===day);
+      const rows=[];
+      groups.forEach(g=>{
+        const students=[...g.students.values()].sort((a,b)=>a.name.localeCompare(b.name,'he',{sensitivity:'base'}));
+        const populations=[...new Set(students.map(st=>st.population))].sort((a,b)=>a.localeCompare(b,'he'));
+        rows.push([g.course]);
+        rows.push(['יום',g.day,'תכנית',populations.join(', '),'מורה',g.teacher,'מתחם',g.venue,'שעה',g.time||'לא צוינה']);
+        rows.push(['מס׳','שם פרטי ומשפחה','זכר / נקבה','יישוב','כתובת','טלפון אבא','טלפון אמא']);
+        students.forEach((st,i)=>rows.push([i+1,st.name,st.gender||'',st.city||'',st.address||'',st.father||'',st.mother||'']));
+        rows.push([]);
+      });
+      const ws=XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols']=[{wch:8},{wch:28},{wch:18},{wch:20},{wch:35},{wch:19},{wch:19},{wch:20},{wch:15},{wch:20}];
+      ws['!sheetViews']=[{rightToLeft:true}];
+      // Phone numbers are strings so leading zeros survive Excel import.
+      for(const addr of Object.keys(ws)){
+        if(addr[0]==='!')continue;
+        const cell=ws[addr];
+        if(typeof cell.v==='string' && /^[=+@-]/.test(cell.v))cell.v="'"+cell.v;
+      }
+      let name=day.replace(/[\\/?*\[\]:]/g,' ').trim().slice(0,31)||'יום';
+      const base=name;let n=2;while(usedNames.has(name)){name=(base.slice(0,27)+' '+n++).slice(0,31);}usedNames.add(name);
+      XLSX.utils.book_append_sheet(wb,ws,name);
+    });
+    XLSX.writeFile(wb,safeFileName('רשימות חירום מסוננות - טכנודע')+'.xlsx',{bookType:'xlsx'});
+  }catch(err){console.error(err);alert('לא ניתן ליצור את קובץ האקסל. יש לוודא שיש חיבור לאינטרנט לטעינת ספריית Excel ולנסות שוב.');}
+  finally{button.disabled=false;button.textContent=oldLabel;}
+}
+
 function printEmergencyLists(){
   // Print precisely the same filtered groups and students as the visible view.
   const shown=filteredEmergencyGroups(false);
@@ -2974,6 +3016,7 @@ document.querySelectorAll('.emergency-multi-menu').forEach(menu=>menu.addEventLi
 document.querySelectorAll('[data-emergency-clear]').forEach(btn=>btn.addEventListener('click',()=>{emergencySelections[btn.dataset.emergencyClear].clear();renderEmergencyLists();}));
 document.getElementById('emergencySearch').addEventListener('input',renderEmergencyLists);
 document.getElementById('emergencyPrint').addEventListener('click',()=>printEmergencyLists(false));
+document.getElementById('emergencyExcel').addEventListener('click',exportEmergencyExcel);
 
 document.getElementById('attendanceSearch').addEventListener('input',renderAttendance);
 document.getElementById('attendanceDateMode').addEventListener('change',()=>{updateAttendanceDateControls();renderAttendance();});
