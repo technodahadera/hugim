@@ -70,7 +70,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
 .attendance-metric.clickable{cursor:pointer;transition:.16s;position:relative}.attendance-metric.clickable:hover{transform:translateY(-2px);border-color:#b8c4ca;box-shadow:0 10px 28px rgba(38,50,56,.14)}.attendance-metric.clickable:focus{outline:3px solid #bfe6f7;outline-offset:2px}.attendance-metric.clickable:after{content:"לחץ לפירוט";display:block;font-size:10px;color:var(--blue-dark);font-weight:800;margin-top:7px}.attendance-pending-intro{background:#f8fafb;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:12px}.attendance-pending-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;padding:5px 9px;border-radius:999px;background:#f1f3f4;color:#596268;font-weight:900}.student-current-location{border:1px solid #bee2f1;background:linear-gradient(135deg,#eef9fd,#fff);border-radius:16px;padding:16px;margin-bottom:20px}.student-current-location h3{border:0!important;padding:0!important;margin:0 0 10px!important;color:var(--blue-dark)!important}.student-current-grid{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:9px}.student-current-card{background:#fff;border:1px solid #dce9ee;border-radius:12px;padding:12px}.student-current-card strong{display:block;font-size:16px;color:var(--ink);margin-bottom:7px}.student-current-card span{display:block;color:var(--muted);font-size:12px;line-height:1.55}.student-current-empty{color:var(--muted);font-size:13px}.student-current-time{font-size:12px;color:var(--muted);margin-bottom:10px}@media(max-width:700px){.student-current-grid{grid-template-columns:1fr}}
 
 /* רשימות חירום */
-.emergency-controls{display:grid;grid-template-columns:190px minmax(230px,1fr) auto auto;gap:10px;align-items:end;margin:18px 0}.emergency-controls label{font-weight:700;font-size:13px}.emergency-controls select,.emergency-controls input{margin-top:6px}.emergency-day-heading{font-size:22px;margin:25px 0 12px;border-bottom:3px solid var(--blue);padding-bottom:8px}.emergency-list{border:1px solid var(--line);border-radius:12px;margin:12px 0 18px;overflow:hidden;background:white;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:13px 16px;background:#eef8fc;border-bottom:1px solid #cce4f0}.emergency-list-head h3{margin:0 0 5px;font-size:19px}.emergency-list-head p{margin:0;font-size:13px}.emergency-table-wrap{overflow-x:auto}.emergency-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}.emergency-table th,.emergency-table td{border:1px solid #ccd8df;padding:8px 6px;text-align:right;vertical-align:top}.emergency-table th{background:#e5f2f8;font-weight:800}.emergency-table tbody tr:nth-child(even){background:#f7fbfd}.emergency-table td:first-child{width:36px;text-align:center}.emergency-count{font-weight:800;color:var(--blue-dark)}@media(max-width:800px){.emergency-controls{grid-template-columns:1fr}.emergency-list ol{columns:1}}
+.emergency-controls{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr)) minmax(190px,1.3fr) auto auto;gap:10px;align-items:end;margin:18px 0}.emergency-controls label{font-weight:700;font-size:13px}.emergency-controls select,.emergency-controls input{margin-top:6px}.emergency-day-heading{font-size:22px;margin:25px 0 12px;border-bottom:3px solid var(--blue);padding-bottom:8px}.emergency-list{border:1px solid var(--line);border-radius:12px;margin:12px 0 18px;overflow:hidden;background:white;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:13px 16px;background:#eef8fc;border-bottom:1px solid #cce4f0}.emergency-list-head h3{margin:0 0 5px;font-size:19px}.emergency-list-head p{margin:0;font-size:13px}.emergency-table-wrap{overflow-x:auto}.emergency-table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}.emergency-table th,.emergency-table td{border:1px solid #ccd8df;padding:8px 6px;text-align:right;vertical-align:top}.emergency-table th{background:#e5f2f8;font-weight:800}.emergency-table tbody tr:nth-child(even){background:#f7fbfd}.emergency-table td:first-child{width:36px;text-align:center}.emergency-count{font-weight:800;color:var(--blue-dark)}.emergency-multi{position:relative;align-self:end;min-width:0}.emergency-multi>summary{cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:9px;padding:11px;background:white;font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.emergency-multi>summary:after{content:' ▾'}.emergency-multi-menu{position:absolute;z-index:40;top:100%;right:0;min-width:230px;max-height:320px;overflow:auto;background:white;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 25px #0002;padding:10px}.emergency-multi-menu label{display:flex;align-items:center;gap:8px;padding:6px;cursor:pointer;font-weight:500}.emergency-multi-menu input{width:auto;margin:0}.emergency-multi-actions{display:flex;justify-content:flex-end;margin-bottom:5px}.emergency-multi-actions button{background:transparent;border:0;color:var(--blue);cursor:pointer;font:inherit}@media(max-width:1050px){.emergency-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:800px){.emergency-controls{grid-template-columns:1fr}.emergency-list ol{columns:1}}
 </style>
 </head>
 <body>
@@ -315,6 +315,8 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <p class="muted">הרשימות מבוססות על הרישומים הפעילים בגיליון „רישום לחוגים”. כל קבוצה כוללת קורס, מורה, מתחם ושעת פעילות; התלמידים מסודרים לפי א׳–ב׳ בטבלה הכוללת מין, יישוב, כתובת וטלפונים של ההורים.</p>
         <div class="emergency-controls">
           <label>יום פעילות<select id="emergencyDay"><option value="all">כל הימים</option></select></label>
+          <details class="emergency-multi" id="emergencyPopulationFilter"><summary>סוגי אוכלוסייה: הכול</summary><div class="emergency-multi-menu"><div class="emergency-multi-actions"><button type="button" data-emergency-clear="population">נקה בחירה</button></div><div id="emergencyPopulationOptions"></div></div></details>
+          <details class="emergency-multi" id="emergencyTimeFilter"><summary>שעות הקורס: הכול</summary><div class="emergency-multi-menu"><div class="emergency-multi-actions"><button type="button" data-emergency-clear="time">נקה בחירה</button></div><div id="emergencyTimeOptions"></div></div></details>
           <label>חיפוש קורס / מורה / מתחם<input id="emergencySearch" placeholder="הקלידו לחיפוש"></label>
           <button class="btn" id="emergencyPrint" type="button">הדפסת הרשימות המוצגות</button>
           <button class="list-action-btn" id="emergencyPrintAll" type="button">הדפסת כל הימים</button>
@@ -2306,7 +2308,7 @@ function emergencyStudentDetails(name,registration){
   const d={...(registration.details||{}),...(master?.details||{})};
   const pick=(...keys)=>keys.map(k=>String(d[k]||'').trim()).find(Boolean)||'';
   const street=pick('רחוב'),number=pick('מספר'),neighborhood=pick('שכונה');
-  return {name,gender:pick('מין'),city:pick('יישוב'),address:[street,number].filter(Boolean).join(' ')+(neighborhood?' ('+neighborhood+')':''),father:pick('מספר נייד אבא'),mother:pick('מספר נייד אמא')};
+  return {name,population:String(master?.population||registration.population||'').trim()||'לא צוין',gender:pick('מין'),city:pick('יישוב'),address:[street,number].filter(Boolean).join(' ')+(neighborhood?' ('+neighborhood+')':''),father:pick('מספר נייד אבא'),mother:pick('מספר נייד אמא')};
 }
 function emergencyGroups(){
   const groups=new Map();
@@ -2331,21 +2333,38 @@ function emergencyMarkup(groups){
   });
   return html;
 }
+const emergencySelections={population:new Set(),time:new Set()};
+function emergencyFilterOptions(groups){
+  const populations=[...new Set(groups.flatMap(g=>[...g.students.values()].map(st=>st.population)))].sort((a,b)=>a.localeCompare(b,'he'));
+  const times=[...new Set(groups.map(g=>g.time||'לא צוינה שעה'))].sort((a,b)=>a.localeCompare(b,'he',{numeric:true}));
+  for(const [type,values,elementId,detailsId,title] of [['population',populations,'emergencyPopulationOptions','emergencyPopulationFilter','סוגי אוכלוסייה'],['time',times,'emergencyTimeOptions','emergencyTimeFilter','שעות הקורס']]){
+    const selected=emergencySelections[type];for(const val of [...selected])if(!values.includes(val))selected.delete(val);
+    const box=document.getElementById(elementId);
+    box.innerHTML=values.map((val,i)=>`<label><input type="checkbox" data-emergency-type="${type}" value="${esc(val)}" ${selected.has(val)?'checked':''}><span>${esc(val)}</span></label>`).join('')||'<span class="muted">אין אפשרויות</span>';
+    document.querySelector('#'+detailsId+' > summary').textContent=selected.size?`${title}: ${selected.size} נבחרו`:title+': הכול';
+  }
+}
+function filteredEmergencyGroups(all=false){
+  const day=document.getElementById('emergencyDay').value;
+  const q=normalizedStudentKey(document.getElementById('emergencySearch').value);
+  return emergencyGroups().filter(g=>(all||day==='all'||g.day===day)&&(!q||normalizedStudentKey([g.course,g.teacher,g.venue,g.time].join(' ')).includes(q))&&(!emergencySelections.time.size||emergencySelections.time.has(g.time||'לא צוינה שעה'))).map(g=>{
+    const students=new Map([...g.students].filter(([,st])=>!emergencySelections.population.size||emergencySelections.population.has(st.population)));
+    return {...g,students};
+  }).filter(g=>g.students.size);
+}
 function renderEmergencyLists(){
   const daySelect=document.getElementById('emergencyDay'),out=document.getElementById('emergencyLists'),summary=document.getElementById('emergencySummary');if(!out)return;
   const groups=emergencyGroups(),selected=daySelect.value;
   const days=[...new Set(groups.map(g=>g.day))].sort((a,b)=>limitationDayRank(a)-limitationDayRank(b)||a.localeCompare(b,'he'));
   daySelect.innerHTML='<option value="all">כל הימים</option>'+days.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   daySelect.value=days.includes(selected)?selected:'all';
-  const q=normalizedStudentKey(document.getElementById('emergencySearch').value);
-  const shown=groups.filter(g=>(daySelect.value==='all'||g.day===daySelect.value)&&(!q||normalizedStudentKey([g.course,g.teacher,g.venue,g.time].join(' ')).includes(q)));
+  emergencyFilterOptions(groups);
+  const shown=filteredEmergencyGroups();
   summary.textContent=`${shown.length} רשימות · ${shown.reduce((n,g)=>n+g.students.size,0)} שיבוצי תלמידים${studentDirectory.error?' · שימו לב: '+studentDirectory.error:''}`;
   out.innerHTML=shown.length?emergencyMarkup(shown):'<div class="empty">אין רשימות להצגה. בדקו שנתוני הרישום נטענו ושהסינון מתאים.</div>';
 }
 function printEmergencyLists(all=false){
-  const groups=emergencyGroups();const day=document.getElementById('emergencyDay').value;
-  const q=normalizedStudentKey(document.getElementById('emergencySearch').value);
-  const shown=all?groups:groups.filter(g=>(day==='all'||g.day===day)&&(!q||normalizedStudentKey([g.course,g.teacher,g.venue,g.time].join(' ')).includes(q)));
+  const shown=filteredEmergencyGroups(all);
   if(!shown.length){alert('אין רשימות להדפסה.');return;}
   const win=window.open('','_blank');if(!win){alert('יש לאפשר חלונות קופצים לצורך הדפסה.');return;}
   win.document.write(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>רשימות חירום - טכנודע</title><style>@page{size:A4 landscape;margin:10mm}body{font-family:Rubik,Arial,sans-serif;color:#17232a}.emergency-day-heading{font-size:19px;border-bottom:2px solid #333;padding-bottom:6px;break-before:page}.emergency-day-heading:first-child{break-before:auto}.emergency-list{margin:9px 0 15px;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:5px 0}.emergency-list-head h3{font-size:15px;margin:0 0 4px}.emergency-list-head p{font-size:10px;margin:0 0 5px}.emergency-table{width:100%;border-collapse:collapse;table-layout:fixed}.emergency-table th,.emergency-table td{border:1px solid #888;padding:5px 4px;text-align:right;font-size:10px;overflow-wrap:anywhere}.emergency-table th{background:#eee}.emergency-table th:first-child{width:25px}.emergency-table th:nth-child(2){width:18%}.emergency-table th:nth-child(3){width:9%}.emergency-table th:nth-child(4){width:12%}.emergency-table th:nth-child(5){width:21%}.emergency-table tr{break-inside:avoid}.emergency-count{font-weight:bold}</style></head><body>${emergencyMarkup(shown)}</body></html>`);
@@ -2945,6 +2964,12 @@ document.addEventListener('keydown',e=>{
 document.getElementById('limitationSearch').addEventListener('input',renderLimitations);
 document.querySelectorAll('[data-student-subview]').forEach(btn=>btn.addEventListener('click',()=>setStudentSubpage(btn.dataset.studentSubview)));
 document.getElementById('emergencyDay').addEventListener('change',renderEmergencyLists);
+document.querySelectorAll('.emergency-multi-menu').forEach(menu=>menu.addEventListener('change',e=>{
+  const input=e.target.closest('input[data-emergency-type]');if(!input)return;
+  const set=emergencySelections[input.dataset.emergencyType];if(input.checked)set.add(input.value);else set.delete(input.value);
+  renderEmergencyLists();
+}));
+document.querySelectorAll('[data-emergency-clear]').forEach(btn=>btn.addEventListener('click',()=>{emergencySelections[btn.dataset.emergencyClear].clear();renderEmergencyLists();}));
 document.getElementById('emergencySearch').addEventListener('input',renderEmergencyLists);
 document.getElementById('emergencyPrint').addEventListener('click',()=>printEmergencyLists(false));
 document.getElementById('emergencyPrintAll').addEventListener('click',()=>printEmergencyLists(true));
