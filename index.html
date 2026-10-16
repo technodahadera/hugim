@@ -319,7 +319,7 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
           <details class="emergency-multi" id="emergencyTimeFilter"><summary>שעות הקורס: הכול</summary><div class="emergency-multi-menu"><div class="emergency-multi-actions"><button type="button" data-emergency-clear="time">נקה בחירה</button></div><div id="emergencyTimeOptions"></div></div></details>
           <label>חיפוש קורס / מורה / מתחם<input id="emergencySearch" placeholder="הקלידו לחיפוש"></label>
           <button class="btn" id="emergencyPrint" type="button">הדפסת הרשימות המוצגות</button>
-          <button class="list-action-btn" id="emergencyPrintAll" type="button">הדפסת כל הימים</button>
+
         </div>
         <div id="emergencySummary" class="muted"></div>
         <div id="emergencyLists"></div>
@@ -2329,7 +2329,8 @@ function emergencyMarkup(groups){
   groups.forEach(g=>{
     if(g.day!==lastDay){lastDay=g.day;html+=`<h2 class="emergency-day-heading">${esc(g.day)}</h2>`;}
     const students=[...g.students.values()].sort((a,b)=>a.name.localeCompare(b.name,'he',{sensitivity:'base'}));
-    html+=`<article class="emergency-list"><div class="emergency-list-head"><h3>${esc(g.course)}</h3><p><strong>מורה:</strong> ${esc(g.teacher)} &nbsp; | &nbsp; <strong>מתחם:</strong> ${esc(g.venue)} ${g.time?' &nbsp; | &nbsp; <strong>שעה:</strong> '+esc(g.time):''} &nbsp; | &nbsp; <span class="emergency-count">${students.length} תלמידים</span></p></div><div class="emergency-table-wrap"><table class="emergency-table"><thead><tr><th>מס׳</th><th>שם פרטי ומשפחה</th><th>זכר / נקבה</th><th>יישוב</th><th>כתובת</th><th>טלפון אבא</th><th>טלפון אמא</th></tr></thead><tbody>${students.map((st,i)=>`<tr><td>${i+1}</td><td>${esc(st.name)}</td><td>${display(st.gender)}</td><td>${display(st.city)}</td><td>${display(st.address)}</td><td dir="ltr">${display(st.father)}</td><td dir="ltr">${display(st.mother)}</td></tr>`).join('')}</tbody></table></div></article>`;
+    const populations=[...new Set(students.map(st=>st.population))].sort((a,b)=>a.localeCompare(b,'he'));
+    html+=`<article class="emergency-list"><div class="emergency-list-head"><h3>${esc(g.course)}</h3><p><strong>תכנית:</strong> ${esc(populations.join(', '))} &nbsp; | &nbsp; <strong>מורה:</strong> ${esc(g.teacher)} &nbsp; | &nbsp; <strong>מתחם:</strong> ${esc(g.venue)} ${g.time?' &nbsp; | &nbsp; <strong>שעה:</strong> '+esc(g.time):''} &nbsp; | &nbsp; <span class="emergency-count">${students.length} תלמידים</span></p></div><div class="emergency-table-wrap"><table class="emergency-table"><thead><tr><th>מס׳</th><th>שם פרטי ומשפחה</th><th>זכר / נקבה</th><th>יישוב</th><th>כתובת</th><th>טלפון אבא</th><th>טלפון אמא</th></tr></thead><tbody>${students.map((st,i)=>`<tr><td>${i+1}</td><td>${esc(st.name)}</td><td>${display(st.gender)}</td><td>${display(st.city)}</td><td>${display(st.address)}</td><td dir="ltr">${display(st.father)}</td><td dir="ltr">${display(st.mother)}</td></tr>`).join('')}</tbody></table></div></article>`;
   });
   return html;
 }
@@ -2363,8 +2364,9 @@ function renderEmergencyLists(){
   summary.textContent=`${shown.length} רשימות · ${shown.reduce((n,g)=>n+g.students.size,0)} שיבוצי תלמידים${studentDirectory.error?' · שימו לב: '+studentDirectory.error:''}`;
   out.innerHTML=shown.length?emergencyMarkup(shown):'<div class="empty">אין רשימות להצגה. בדקו שנתוני הרישום נטענו ושהסינון מתאים.</div>';
 }
-function printEmergencyLists(all=false){
-  const shown=filteredEmergencyGroups(all);
+function printEmergencyLists(){
+  // Print precisely the same filtered groups and students as the visible view.
+  const shown=filteredEmergencyGroups(false);
   if(!shown.length){alert('אין רשימות להדפסה.');return;}
   const win=window.open('','_blank');if(!win){alert('יש לאפשר חלונות קופצים לצורך הדפסה.');return;}
   win.document.write(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>רשימות חירום - טכנודע</title><style>@page{size:A4 landscape;margin:10mm}body{font-family:Rubik,Arial,sans-serif;color:#17232a}.emergency-day-heading{font-size:19px;border-bottom:2px solid #333;padding-bottom:6px;break-before:page}.emergency-day-heading:first-child{break-before:auto}.emergency-list{margin:9px 0 15px;break-inside:avoid-page;page-break-inside:avoid}.emergency-list-head{padding:5px 0}.emergency-list-head h3{font-size:15px;margin:0 0 4px}.emergency-list-head p{font-size:10px;margin:0 0 5px}.emergency-table{width:100%;border-collapse:collapse;table-layout:fixed}.emergency-table th,.emergency-table td{border:1px solid #888;padding:5px 4px;text-align:right;font-size:10px;overflow-wrap:anywhere}.emergency-table th{background:#eee}.emergency-table th:first-child{width:25px}.emergency-table th:nth-child(2){width:18%}.emergency-table th:nth-child(3){width:9%}.emergency-table th:nth-child(4){width:12%}.emergency-table th:nth-child(5){width:21%}.emergency-table tr{break-inside:avoid}.emergency-count{font-weight:bold}</style></head><body>${emergencyMarkup(shown)}</body></html>`);
@@ -2972,7 +2974,7 @@ document.querySelectorAll('.emergency-multi-menu').forEach(menu=>menu.addEventLi
 document.querySelectorAll('[data-emergency-clear]').forEach(btn=>btn.addEventListener('click',()=>{emergencySelections[btn.dataset.emergencyClear].clear();renderEmergencyLists();}));
 document.getElementById('emergencySearch').addEventListener('input',renderEmergencyLists);
 document.getElementById('emergencyPrint').addEventListener('click',()=>printEmergencyLists(false));
-document.getElementById('emergencyPrintAll').addEventListener('click',()=>printEmergencyLists(true));
+
 document.getElementById('attendanceSearch').addEventListener('input',renderAttendance);
 document.getElementById('attendanceDateMode').addEventListener('change',()=>{updateAttendanceDateControls();renderAttendance();});
 ['attendanceSingleDate','attendanceDateFrom','attendanceDateTo'].forEach(id=>document.getElementById(id).addEventListener('change',renderAttendance));
