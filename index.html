@@ -188,6 +188,8 @@ main{max-width:1500px;margin:22px auto;padding:0 18px 50px}.view{display:none}.v
         <select id="teacherSelect"><option value="">בחר מורה</option></select>
         <select id="teacherDay"><option value="">כל הימים</option></select>
         <button class="btn" onclick="print()">הדפס מערכת מורה</button>
+        <button class="btn" id="exportTeacherExcel" type="button">הורדת מערכת המורה לאקסל</button>
+        <button class="btn" id="exportAllTeachersExcel" type="button">הורדת מערכות כל המורים לאקסל</button>
       </div>
       <div id="teacherSummary" class="muted"></div>
       <div id="teacherSchedule"></div>
@@ -2875,6 +2877,39 @@ function renderCourseTeams(){
 
 function renderMissing(){let d=document.getElementById('missingDay').value,t=document.getElementById('missingType').value,c=document.getElementById('missingCourse').value,q=document.getElementById('missingSearch').value.trim().toLowerCase();let rows=data.filter(x=>(x.status==='חסר מורה'||x.status==='לבדיקה')&&(!d||x.day===d)&&(!t||x.status===t)&&(!c||x.course===c)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('missingTable').innerHTML=table(rows);}
 function resetMissing(){document.getElementById('missingDay').value='';document.getElementById('missingType').value='חסר מורה';document.getElementById('missingCourse').value='';document.getElementById('missingSearch').value='';renderMissing();}
+async function exportTeachersExcel(allTeachers=false){
+  const selected=document.getElementById('teacherSelect').value;
+  const day=document.getElementById('teacherDay').value;
+  if(!allTeachers&&!selected){alert('יש לבחור מורה לפני הורדת המערכת.');return;}
+  const teachers=allTeachers?[...new Set(data.flatMap(r=>Array.isArray(r.teachers)?r.teachers:[]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'he')):[selected];
+  const entries=teachers.map(teacher=>({teacher,rows:data.filter(r=>Array.isArray(r.teachers)&&r.teachers.includes(teacher)&&(!day||r.day===day))})).filter(x=>x.rows.length);
+  if(!entries.length){alert('לא נמצאו שיבוצים לייצוא לפי הבחירה הנוכחית.');return;}
+  const button=document.getElementById(allTeachers?'exportAllTeachersExcel':'exportTeacherExcel');
+  const original=button.textContent;button.disabled=true;button.textContent='מכין קובץ אקסל…';
+  try{
+    await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',()=>!!window.XLSX?.utils?.aoa_to_sheet);
+    const wb=XLSX.utils.book_new();const used=new Set();
+    for(const {teacher,rows} of entries){
+      // Extract the same cells and labels used by the on-screen teacher schedule.
+      const holder=document.createElement('div');holder.innerHTML=teacherTable(rows);
+      const table=holder.querySelector('table');if(!table)continue;
+      const values=[['מערכת שעות - '+teacher],['יום מסונן',day||'כל הימים'],[],...Array.from(table.rows,tr=>Array.from(tr.cells,td=>td.textContent.trim()))];
+      const ws=XLSX.utils.aoa_to_sheet(values);
+      ws['!sheetViews']=[{rightToLeft:true}];
+      ws['!cols']=[{wch:16},{wch:18},{wch:15},{wch:13},{wch:17},{wch:32},{wch:30},{wch:28},{wch:18},{wch:18}];
+      ws['!autofilter']={ref:'A4:J'+values.length};
+      for(const key of Object.keys(ws)){if(key[0]==='!')continue;const cell=ws[key];if(typeof cell.v==='string'&&/^[=+@-]/.test(cell.v))cell.v="'"+cell.v;}
+      let name=teacher.replace(/[\\/?*\[\]:]/g,' ').trim().slice(0,31)||'מורה';
+      const base=name;let i=2;while(used.has(name)){name=(base.slice(0,27)+' '+i++).slice(0,31);}used.add(name);
+      XLSX.utils.book_append_sheet(wb,ws,name);
+    }
+    if(!wb.SheetNames.length)throw new Error('אין גיליונות לייצוא');
+    const filename=allTeachers?'מערכות כל המורים':'מערכת מורה '+selected;
+    XLSX.writeFile(wb,safeFileName(filename+(day?' - '+day:''))+'.xlsx',{bookType:'xlsx'});
+  }catch(error){console.error(error);alert('לא ניתן ליצור קובץ אקסל. בדקו את החיבור לאינטרנט ונסו שוב.');}
+  finally{button.disabled=false;button.textContent=original;}
+}
+
 function renderTeacher(){let t=document.getElementById('teacherSelect').value,d=document.getElementById('teacherDay').value;let rows=data.filter(x=>Array.isArray(x.teachers)&&x.teachers.includes(t)&&(!d||x.day===d));document.getElementById('teacherSummary').textContent=t?`${rows.length} שיבוצים נמצאו עבור ${t}${d?' ב'+d:''}.`:'בחר מורה כדי להציג את המערכת שלו.';document.getElementById('teacherSchedule').innerHTML=t?teacherTable(rows):'';}
 function renderFull(){let d=document.getElementById('dayFilter').value,t=document.getElementById('timeFilter').value,s=document.getElementById('statusFilter').value,f=document.getElementById('floorFilter').value,q=document.getElementById('searchFilter').value.trim().toLowerCase();let rows=data.filter(x=>(!d||x.day===d)&&(!t||x.time===t)&&(!s||x.status===s)&&(!f||x.floor===f)&&(!q||JSON.stringify(x).toLowerCase().includes(q)));document.getElementById('fullTable').innerHTML=table(rows);}
 
@@ -2886,6 +2921,8 @@ document.querySelectorAll('.tab[data-view]').forEach(b=>b.onclick=()=>{
 });
 ['missingDay','missingType','missingCourse','missingSearch'].forEach(id=>document.getElementById(id).addEventListener(id.includes('Search')?'input':'change',renderMissing));
 ['teacherSelect','teacherDay'].forEach(id=>document.getElementById(id).addEventListener('change',renderTeacher));
+document.getElementById('exportTeacherExcel').addEventListener('click',()=>exportTeachersExcel(false));
+document.getElementById('exportAllTeachersExcel').addEventListener('click',()=>exportTeachersExcel(true));
 document.getElementById('courseTeamsSearch').addEventListener('input',renderCourseTeams);
 document.getElementById('courseTeamsGrid').addEventListener('click',e=>{const b=e.target.closest('[data-team-teacher]');if(b)openTeacherFromTeam(b.dataset.teamTeacher);});
 document.getElementById('socialProgramSelect').addEventListener('change',renderSocial);
